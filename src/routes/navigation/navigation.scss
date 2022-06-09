@@ -1,0 +1,13 @@
+.navbar {
+  border-radius: 50px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.navbar-right-link {
+  margin-right: 10px;
+}
+
+.avatar-dropdown-link > .dropdown-toggle::after {
+  display: none !important;
+}
