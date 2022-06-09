@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { IoCartOutline } from 'react-icons/io5';
 
 // Bootstrap
-import { Container, Nav, Navbar, NavDropdown, NavLink } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
 import { Avatar, IconButton } from '@chakra-ui/react';
@@ -90,6 +90,7 @@ function Navigation() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Outlet />
     </Container>
   );

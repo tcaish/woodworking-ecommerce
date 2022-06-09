@@ -22,15 +22,19 @@ import SignIn from './routes/sign-in/sign-in';
 import Cart from './routes/cart/cart';
 import Profile from './routes/profile/profile';
 
+// Styles
+import './App.scss';
+
 function App() {
   const dispatch = useDispatch();
 
+  // Listens for the user to sign in or out
   useEffect(() => {
     onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
-      console.log(user);
+
       dispatch(setUser(user));
     });
   }, [dispatch]);
