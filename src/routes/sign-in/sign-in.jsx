@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 // React Router
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // React Icons
 import { FcGoogle } from 'react-icons/fc';
@@ -16,7 +16,8 @@ import {
   FormLabel,
   IconButton,
   Input,
-  Switch
+  Switch,
+  useToast
 } from '@chakra-ui/react';
 
 // Firebase
@@ -38,16 +39,48 @@ const defaultFormInput = {
 };
 
 function SignIn() {
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const [formInput, setFormInput] = useState(defaultFormInput);
   const [isLoading, setIsLoading] = useState(false);
 
   function handleSignInErrors(err) {
-    if (
-      err.code !== 'auth/popup-closed-by-user' &&
-      err.code !== 'cancelled-popup-request'
-    ) {
-      console.log(err);
+    let title = 'Error Signing In';
+    let description = '';
+
+    switch (err.code) {
+      case 'auth/invalid-email':
+        description = 'This email address does not match our records.';
+        break;
+      case 'auth/wrong-password':
+        description = 'Password is invalid.';
+        break;
+      case 'auth/user-not-found':
+        description =
+          'This email/password combination does not match our records.';
+        break;
+      case 'auth/too-many-requests':
+        description =
+          'Account has been temporarily disabled due to many failed login ' +
+          'attempts. Restore it by resetting your password, or try again later.';
+        break;
+      default:
+        description = 'There was an issue logging in. Please try again!';
+        break;
     }
+
+    toast({
+      title: title,
+      description: description,
+      status: 'error',
+      duration: 6000,
+      isClosable: true
+    });
+  }
+
+  function redirectToHomePage() {
+    navigate('/');
   }
 
   async function signInViaGoogle() {
@@ -56,6 +89,7 @@ function SignIn() {
     await signInWithGooglePopup()
       .then((res) => {
         setIsLoading(false);
+        redirectToHomePage();
       })
       .catch((err) => {
         setIsLoading(false);
@@ -67,7 +101,10 @@ function SignIn() {
     setIsLoading(true);
 
     await signInWithFacebookPopup()
-      .then((res) => setIsLoading(false))
+      .then((res) => {
+        setIsLoading(false);
+        redirectToHomePage();
+      })
       .catch((err) => {
         setIsLoading(false);
         handleSignInErrors(err);
@@ -75,14 +112,7 @@ function SignIn() {
   }
 
   async function signInViaEmailPassword() {
-    if (!formInput.email) {
-      setFormInput({ ...formInput, email_missing: true });
-      return;
-    }
-    if (!formInput.password) {
-      setFormInput({ ...formInput, password_missing: true });
-      return;
-    }
+    if (!formInput.email || !formInput.password) return;
 
     setIsLoading(true);
 
@@ -90,28 +120,16 @@ function SignIn() {
       .then((res) => {
         setIsLoading(false);
         setFormInput(defaultFormInput);
+        redirectToHomePage();
       })
       .catch((err) => {
-        switch (err.code) {
-          case 'auth/invalid-email':
-            console.log('This email address does not match our records.');
-            break;
-          case 'auth/user-not-found':
-            console.log(
-              'This email/password combination does not match our records.'
-            );
-            break;
-          default:
-            console.log(err);
-            break;
-        }
-
         setIsLoading(false);
         setFormInput({
           ...formInput,
           email_missing: false,
           password_missing: false
         });
+        handleSignInErrors(err);
       });
   }
 
@@ -148,11 +166,16 @@ function SignIn() {
               type="Email"
               placeholder=" "
               size="md"
+              focusBorderColor="#f7d794"
               value={formInput.email}
               isInvalid={formInput.email_missing}
               required
               onChange={(event) =>
-                setFormInput({ ...formInput, email: event.target.value })
+                setFormInput({
+                  ...formInput,
+                  email: event.target.value,
+                  email_missing: event.target.value === ''
+                })
               }
             />
             <FormLabel>Email</FormLabel>
@@ -162,11 +185,16 @@ function SignIn() {
               type="Password"
               placeholder=" "
               size="md"
+              focusBorderColor="#f7d794"
               value={formInput.password}
               isInvalid={formInput.password_missing}
               required
               onChange={(event) =>
-                setFormInput({ ...formInput, password: event.target.value })
+                setFormInput({
+                  ...formInput,
+                  password: event.target.value,
+                  password_missing: event.target.value === ''
+                })
               }
             />
             <FormLabel>Password</FormLabel>
@@ -174,6 +202,7 @@ function SignIn() {
           <FormControl display="flex" alignItems="center">
             <Switch
               className="sign-in-switch"
+              isChecked={formInput.remember}
               onChange={(event) => {
                 setFormInput({ ...formInput, remember: event.target.checked });
               }}

@@ -1,10 +1,11 @@
 // React
 import { useEffect } from 'react';
+
 // React Router
 import { Routes, Route } from 'react-router-dom';
 
 // React Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Firebase
 import {
@@ -13,7 +14,7 @@ import {
 } from './utils/firebase/firebase';
 
 // Slices
-import { setUser } from './redux/slices/userSlice';
+import { selectUser, setUser } from './redux/slices/userSlice';
 
 // Components
 import Home from './routes/home/home';
@@ -25,8 +26,13 @@ import Profile from './routes/profile/profile';
 
 // Styles
 import './App.scss';
+import {
+  ProtectedUserRoute,
+  ProtectedNoUserRoute
+} from './routes/protected/protected';
 
 function App() {
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   // Listens for the user to sign in or out
@@ -36,7 +42,6 @@ function App() {
         createUserDocumentFromAuth(user);
       }
 
-      console.log(user);
       dispatch(setUser(user));
     });
   }, [dispatch]);
@@ -46,8 +51,22 @@ function App() {
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="sign-in" element={<SignIn />} />
+        <Route
+          path="profile"
+          element={
+            <ProtectedUserRoute user={user} redirectPath="/sign-in">
+              <Profile />
+            </ProtectedUserRoute>
+          }
+        />
+        <Route
+          path="sign-in"
+          element={
+            <ProtectedNoUserRoute user={user}>
+              <SignIn />
+            </ProtectedNoUserRoute>
+          }
+        />
         <Route path="sign-up" element={<SignUp />} />
       </Route>
     </Routes>
