@@ -112,7 +112,14 @@ function SignIn() {
   }
 
   async function signInViaEmailPassword() {
-    if (!formInput.email || !formInput.password) return;
+    if (!formInput.email || !formInput.password) {
+      setFormInput({
+        ...formInput,
+        email_missing: formInput.email === '',
+        password_missing: formInput.password === ''
+      });
+      return;
+    }
 
     setIsLoading(true);
 
