@@ -10,7 +10,7 @@ import { store } from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 
 // Chakra
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
 // Components
 import App from './App';
@@ -21,11 +21,49 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
+const activeLabelStyles = {
+  transform: 'scale(0.85) translateY(-24px)'
+};
+export const theme = extendTheme({
+  components: {
+    Form: {
+      variants: {
+        floating: {
+          container: {
+            _focusWithin: {
+              label: {
+                ...activeLabelStyles
+              }
+            },
+            'input:not(:placeholder-shown) + label, .chakra-select__wrapper + label':
+              {
+                ...activeLabelStyles
+              },
+            label: {
+              top: 0,
+              left: 0,
+              zIndex: 2,
+              position: 'absolute',
+              backgroundColor: 'white',
+              color: 'grey',
+              pointerEvents: 'none',
+              mx: 3,
+              px: 1,
+              my: 2,
+              transformOrigin: 'left top'
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <ChakraProvider>
+        <ChakraProvider theme={theme}>
           <App />
         </ChakraProvider>
       </BrowserRouter>

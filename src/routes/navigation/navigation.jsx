@@ -41,7 +41,7 @@ function Navigation() {
                 Link
               </Link>
 
-              <NavDropdown title="Dropdown">
+              <NavDropdown title="Dropdown" data-toggle="dropdown">
                 <Link className="dropdown-item" to="/">
                   Action
                 </Link>

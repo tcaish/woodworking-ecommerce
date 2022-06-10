@@ -2,11 +2,15 @@
 import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
 
-// Bootstrap
-import { Container } from 'react-bootstrap';
-
 // Chakra
-import { Center, IconButton } from '@chakra-ui/react';
+import {
+  Center,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Input,
+  Switch
+} from '@chakra-ui/react';
 
 // Firebase
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
@@ -16,7 +20,16 @@ import './sign-in.scss';
 
 function SignIn() {
   async function signInViaGoogle() {
-    await signInWithGooglePopup();
+    await signInWithGooglePopup()
+      .then((res) => {})
+      .catch((err) => {
+        if (
+          err.code !== 'auth/popup-closed-by-user' &&
+          err.code !== 'cancelled-popup-request'
+        ) {
+          console.log(err);
+        }
+      });
   }
 
   return (
@@ -40,11 +53,27 @@ function SignIn() {
                 aria-label="Google"
                 fontSize="30px"
                 icon={<FcGoogle />}
+                onClick={signInViaGoogle}
               />
             </div>
           </Center>
         </div>
-        <button onClick={signInViaGoogle}>Sign In with Google Popup</button>
+        <div className="sign-in-inputs-container">
+          <FormControl variant="floating">
+            <Input type="Email" placeholder=" " size="md" required />
+            <FormLabel>Email</FormLabel>
+          </FormControl>
+          <FormControl variant="floating">
+            <Input type="Password" placeholder=" " size="md" required />
+            <FormLabel>Password</FormLabel>
+          </FormControl>
+          <FormControl display="flex" alignItems="center">
+            <Switch className="sign-in-switch" />
+            <FormLabel htmlFor="email-alerts" mb="0">
+              Remember me
+            </FormLabel>
+          </FormControl>
+        </div>
       </div>
     </Center>
   );
