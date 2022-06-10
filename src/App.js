@@ -19,6 +19,7 @@ import { setUser } from './redux/slices/userSlice';
 import Home from './routes/home/home';
 import Navigation from './routes/navigation/navigation';
 import SignIn from './routes/sign-in/sign-in';
+import SignUp from './routes/sign-up/sign-up';
 import Cart from './routes/cart/cart';
 import Profile from './routes/profile/profile';
 
@@ -35,6 +36,7 @@ function App() {
         createUserDocumentFromAuth(user);
       }
 
+      console.log(user);
       dispatch(setUser(user));
     });
   }, [dispatch]);
@@ -46,6 +48,7 @@ function App() {
         <Route path="cart" element={<Cart />} />
         <Route path="profile" element={<Profile />} />
         <Route path="sign-in" element={<SignIn />} />
+        <Route path="sign-up" element={<SignUp />} />
       </Route>
     </Routes>
   );

@@ -29,7 +29,7 @@ function Navigation() {
 
   return (
     <Container>
-      <Navbar bg="light" expand="lg">
+      <Navbar expand="lg">
         <Container>
           <Link className="navbar-link" to="/">
             <Navbar.Brand>Woodworking Logo</Navbar.Brand>

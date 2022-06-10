@@ -3,7 +3,9 @@ import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   signInWithPopup,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged
@@ -26,13 +28,24 @@ const firebaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(firebaseApp);
 getAnalytics(firebaseApp);
 
+// Auth
+export const auth = getAuth();
+
 // Auth - Google provider
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
-export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+
+// Auth - Facebook provider
+const facebookProvider = new FacebookAuthProvider();
+facebookProvider.setCustomParameters({
+  display: 'popup'
+});
+export const signInWithFacebookPopup = () =>
+  signInWithPopup(auth, facebookProvider);
 
 // Auth - email and password
 export async function createAuthUserWithEmailAndPassword(email, password) {
@@ -40,6 +53,9 @@ export async function createAuthUserWithEmailAndPassword(email, password) {
 
   return await createUserWithEmailAndPassword(auth, email, password);
 }
+
+export const signInWithEmailPassword = (email, password) =>
+  signInWithEmailAndPassword(auth, email, password);
 
 export const signOutUser = async () => await signOut(auth);
 

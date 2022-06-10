@@ -38,4 +38,24 @@
       margin-bottom: 20px;
     }
   }
+
+  .sign-in-button-container {
+    margin-top: 35px;
+
+    .log-in-button {
+      background-color: #f7d794;
+      box-shadow: 0;
+      color: black;
+      transition: box-shadow 0.4s;
+      width: 100%;
+    }
+
+    .log-in-button:hover {
+      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+  }
+
+  .sign-in-create-account-container {
+    margin-top: 30px;
+  }
 }
