@@ -23,6 +23,7 @@ import SignIn from './routes/sign-in/sign-in';
 import SignUp from './routes/sign-up/sign-up';
 import Cart from './routes/cart/cart';
 import Profile from './routes/profile/profile';
+import Support from './routes/support/support';
 
 // Styles
 import './App.scss';
@@ -50,7 +51,6 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="cart" element={<Cart />} />
         <Route
           path="profile"
           element={
@@ -68,6 +68,8 @@ function App() {
           }
         />
         <Route path="sign-up" element={<SignUp />} />
+        <Route path="support" element={<Support />} />
+        <Route path="cart" element={<Cart />} />
       </Route>
     </Routes>
   );

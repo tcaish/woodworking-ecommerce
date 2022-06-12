@@ -6,12 +6,20 @@ import { useSelector } from 'react-redux';
 
 // React Icons
 import { IoCartOutline } from 'react-icons/io5';
+import { AiOutlineSearch } from 'react-icons/ai';
 
 // Bootstrap
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
-import { Avatar, IconButton } from '@chakra-ui/react';
+import {
+  Avatar,
+  Center,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement
+} from '@chakra-ui/react';
 
 // Firebase
 import { signOutUser } from '../../utils/firebase/firebase';
@@ -19,10 +27,11 @@ import { signOutUser } from '../../utils/firebase/firebase';
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
 
+// Images
+import Logo from '../../assets/images/logo.png';
+
 // Styles
 import './navigation.scss';
-
-// import { ReactComponent as CrownLogo } from '../../assets/crown.svg';
 
 function Navigation() {
   const user = useSelector(selectUser);
@@ -32,7 +41,13 @@ function Navigation() {
       <Navbar expand="lg">
         <Container>
           <Link className="navbar-link" to="/">
-            <Navbar.Brand>Woodworking Logo</Navbar.Brand>
+            <Navbar.Brand>
+              <img
+                className="navbar-logo d-inline-block align-top"
+                src={Logo}
+                alt="Caish Workshop Logo"
+              />
+            </Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -50,8 +65,27 @@ function Navigation() {
                   Action
                 </Link>
               </NavDropdown>
+
+              <InputGroup className="navbar-search-bar-container">
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<AiOutlineSearch color="gray.300" />}
+                />
+                <Input
+                  className="navbar-search-bar"
+                  type="text"
+                  placeholder="Search"
+                  focusBorderColor="#f7d794"
+                  variant="filled"
+                />
+              </InputGroup>
             </Nav>
             <Nav>
+              <Center>
+                <Link className="nav-link" to="/support">
+                  Support
+                </Link>
+              </Center>
               <NavDropdown
                 className="avatar-dropdown-link"
                 title={

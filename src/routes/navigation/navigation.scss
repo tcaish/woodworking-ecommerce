@@ -5,6 +5,19 @@
   margin-bottom: 10px;
 }
 
+.navbar-logo {
+  border-radius: 30px;
+  width: 250px;
+}
+
+.navbar-search-bar-container {
+  margin-left: 15px;
+
+  .navbar-search-bar {
+    width: 300px !important;
+  }
+}
+
 .navbar-right-link {
   margin-right: 10px;
 }
