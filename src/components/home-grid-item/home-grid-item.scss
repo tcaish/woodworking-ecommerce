@@ -1,0 +1,33 @@
+.home-grid-item {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+
+  .home-grid-item-container {
+    color: black;
+    height: 100%;
+
+    .home-grid-item-link:hover {
+      color: unset;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+    }
+  }
+}
+
+.hvr-grow {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+  transform: scale(1.01);
+}
