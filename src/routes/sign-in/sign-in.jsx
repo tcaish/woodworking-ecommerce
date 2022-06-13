@@ -49,8 +49,6 @@ function SignIn() {
     let title = 'Error Signing In';
     let description = '';
 
-    console.log(err);
-
     switch (err.code) {
       case 'auth/invalid-email':
         description = 'This email address does not match our records.';
@@ -61,6 +59,9 @@ function SignIn() {
       case 'auth/user-not-found':
         description =
           'This email/password combination does not match our records.';
+        break;
+      case 'auth/account-exists-with-different-credential':
+        description = 'This is not the original provider you signed in with.';
         break;
       case 'auth/too-many-requests':
         description =
