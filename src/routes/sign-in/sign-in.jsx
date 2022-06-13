@@ -49,6 +49,8 @@ function SignIn() {
     let title = 'Error Signing In';
     let description = '';
 
+    console.log(err);
+
     switch (err.code) {
       case 'auth/invalid-email':
         description = 'This email address does not match our records.';
