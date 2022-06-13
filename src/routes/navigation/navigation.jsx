@@ -31,6 +31,14 @@ import './navigation.scss';
 function Navigation() {
   const user = useSelector(selectUser);
 
+  // Hides the dropdown menu when clicking a menu item button
+  function hideDropdown() {
+    const dropdownDiv = document.getElementsByClassName('dropdown')[0];
+    const dropdownMenu = document.getElementsByClassName('dropdown-menu')[0];
+    dropdownDiv.classList.remove('show');
+    dropdownMenu.classList.remove('show');
+  }
+
   return (
     <Container>
       <Navbar expand="lg">
@@ -72,6 +80,7 @@ function Navigation() {
                 <Link
                   className="navbar-right-link dropdown-item"
                   to={user ? '/profile' : '/sign-in'}
+                  onClick={hideDropdown}
                 >
                   {user ? 'Profile' : 'Sign In'}
                 </Link>
