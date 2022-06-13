@@ -1,9 +1,14 @@
 .search-bar-container {
   margin-bottom: 15px;
-  margin-left: 25%;
   width: 100%;
 
-  .search-bar {
-    width: 50%;
+  .search-bar-input-group {
+    color: black;
+    margin: 0 auto;
+    width: 30%;
+
+    input:focus {
+      background-color: white;
+    }
   }
 }

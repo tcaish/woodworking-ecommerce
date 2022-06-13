@@ -1,5 +1,5 @@
 html {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
 }
 
@@ -8,6 +8,6 @@ body {
   background-position: center !important; /* Center the image */
   background-repeat: no-repeat !important; /* Do not repeat the image */
   background-size: cover !important;
-  height: 100% !important;
+  min-height: 100% !important;
   width: 100% !important;
 }

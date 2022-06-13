@@ -1,0 +1,28 @@
+.footer-container {
+  bottom: 0;
+  left: 0;
+  margin-bottom: 15px;
+  position: fixed;
+  width: 100%;
+
+  .footer-link-align-center {
+    text-align: center;
+
+    a:hover {
+      color: #f7d794;
+    }
+  }
+  .footer-link-align-right {
+    display: flex;
+    justify-content: right;
+
+    a:hover {
+      color: #f7d794;
+    }
+  }
+
+  .footer-social-icon {
+    height: 25px;
+    width: auto;
+  }
+}

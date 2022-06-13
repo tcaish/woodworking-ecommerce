@@ -11,7 +11,7 @@ import { IoCartOutline } from 'react-icons/io5';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
-import { Avatar, Center, IconButton } from '@chakra-ui/react';
+import { Avatar, IconButton } from '@chakra-ui/react';
 
 // Firebase
 import { signOutUser } from '../../utils/firebase/firebase';
@@ -25,6 +25,7 @@ import Logo from '../../assets/images/logo.png';
 // Styles
 import './navigation.scss';
 import Search from '../../components/search/search';
+import Footer from '../../components/footer/footer';
 
 function Navigation() {
   const user = useSelector(selectUser);
@@ -56,11 +57,6 @@ function Navigation() {
               </Link>
             </Nav>
             <Nav>
-              <Center>
-                <Link className="nav-link" to="/support">
-                  Support
-                </Link>
-              </Center>
               <NavDropdown
                 className="avatar-dropdown-link"
                 title={
@@ -101,6 +97,7 @@ function Navigation() {
       </Navbar>
       <Search />
       <Outlet />
+      <Footer />
     </Container>
   );
 }

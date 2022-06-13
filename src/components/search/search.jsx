@@ -14,7 +14,7 @@ function Search() {
   return (
     <Container>
       <div className="search-bar-container">
-        <InputGroup>
+        <InputGroup className="search-bar-input-group">
           <InputLeftElement
             pointerEvents="none"
             children={<AiOutlineSearch color="gray.300" />}
@@ -23,6 +23,7 @@ function Search() {
             className="search-bar"
             type="text"
             placeholder="Search"
+            _placeholder={{ opacity: 1, color: 'black' }}
             focusBorderColor="#f7d794"
             variant="filled"
           />
