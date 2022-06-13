@@ -6,20 +6,12 @@ import { useSelector } from 'react-redux';
 
 // React Icons
 import { IoCartOutline } from 'react-icons/io5';
-import { AiOutlineSearch } from 'react-icons/ai';
 
 // Bootstrap
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
-import {
-  Avatar,
-  Center,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement
-} from '@chakra-ui/react';
+import { Avatar, Center, IconButton } from '@chakra-ui/react';
 
 // Firebase
 import { signOutUser } from '../../utils/firebase/firebase';
@@ -32,6 +24,7 @@ import Logo from '../../assets/images/logo.png';
 
 // Styles
 import './navigation.scss';
+import Search from '../../components/search/search';
 
 function Navigation() {
   const user = useSelector(selectUser);
@@ -53,32 +46,14 @@ function Navigation() {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Link className="nav-link" to="/">
-                Link
+                Furniture
               </Link>
-
-              <NavDropdown title="Dropdown" data-toggle="dropdown">
-                <Link className="dropdown-item" to="/">
-                  Action
-                </Link>
-                <NavDropdown.Divider />
-                <Link className="dropdown-item" to="/">
-                  Action
-                </Link>
-              </NavDropdown>
-
-              <InputGroup className="navbar-search-bar-container">
-                <InputLeftElement
-                  pointerEvents="none"
-                  children={<AiOutlineSearch color="gray.300" />}
-                />
-                <Input
-                  className="navbar-search-bar"
-                  type="text"
-                  placeholder="Search"
-                  focusBorderColor="#f7d794"
-                  variant="filled"
-                />
-              </InputGroup>
+              <Link className="nav-link" to="/">
+                Custom Builds
+              </Link>
+              <Link className="nav-link" to="/">
+                Restoration
+              </Link>
             </Nav>
             <Nav>
               <Center>
@@ -124,7 +99,7 @@ function Navigation() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
+      <Search />
       <Outlet />
     </Container>
   );
