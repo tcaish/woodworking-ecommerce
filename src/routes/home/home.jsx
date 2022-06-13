@@ -25,7 +25,7 @@ function Home() {
         <HomeGridItem
           title="Furniture"
           buttonTitle="Shop Furniture"
-          path="/test"
+          path="/shop"
           image={bg1}
           rowSpan={2}
           colSpan={3}
@@ -33,7 +33,7 @@ function Home() {
         <HomeGridItem
           title="Custom Builds"
           buttonTitle="Submit Build"
-          path="/test"
+          path="/shop/custom"
           image={bg2}
           rowSpan={null}
           colSpan={2}
@@ -41,7 +41,7 @@ function Home() {
         <HomeGridItem
           title="Restoration"
           buttonTitle="Submit Restoration"
-          path="/test"
+          path="/shop/restoration"
           image={bg3}
           rowSpan={null}
           colSpan={2}

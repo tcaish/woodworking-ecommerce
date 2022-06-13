@@ -24,6 +24,10 @@ import SignUp from './routes/sign-up/sign-up';
 import Cart from './routes/cart/cart';
 import Profile from './routes/profile/profile';
 import Support from './routes/support/support';
+import Shop from './routes/shop/shop';
+import Furniture from './routes/shop/furniture/furniture';
+import Custom from './routes/shop/custom/custom';
+import Restoration from './routes/shop/restoration/restoration';
 
 // Styles
 import './App.scss';
@@ -51,6 +55,12 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigation />}>
         <Route index element={<Home />} />
+        <Route path="shop" element={<Shop />}>
+          <Route index element={<Furniture />} />
+          <Route path="custom" element={<Custom />} />
+          <Route path="restoration" element={<Restoration />} />
+        </Route>
+        <Route path="cart" element={<Cart />} />
         <Route
           path="profile"
           element={
@@ -69,7 +79,6 @@ function App() {
         />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="support" element={<Support />} />
-        <Route path="cart" element={<Cart />} />
       </Route>
     </Routes>
   );

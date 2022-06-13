@@ -19,13 +19,14 @@ import { signOutUser } from '../../utils/firebase/firebase';
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
 
+// Components
+import Footer from '../../components/footer/footer';
+
 // Images
 import Logo from '../../assets/images/logo.png';
 
 // Styles
 import './navigation.scss';
-import Search from '../../components/search/search';
-import Footer from '../../components/footer/footer';
 
 function Navigation() {
   const user = useSelector(selectUser);
@@ -46,13 +47,13 @@ function Navigation() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/shop">
                 Furniture
               </Link>
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/shop/custom">
                 Custom Builds
               </Link>
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/shop/restoration">
                 Restoration
               </Link>
             </Nav>
@@ -95,7 +96,6 @@ function Navigation() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <Search />
       <Outlet />
       <Footer />
     </Container>

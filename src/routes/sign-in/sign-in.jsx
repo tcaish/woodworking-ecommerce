@@ -153,6 +153,7 @@ function SignIn() {
           <Center>
             <div className="sign-in-auth-providers-container">
               <IconButton
+                className="facebook-icon"
                 color="#4267B2"
                 variant="link"
                 aria-label="Facebook"
