@@ -24,9 +24,10 @@ function Home() {
       >
         <HomeGridItem
           title="Furniture"
+          titleColor="white"
           buttonTitle="Shop Furniture"
           path="/shop"
-          image={bg1}
+          image={bg3}
           rowSpan={2}
           colSpan={3}
         />
@@ -42,7 +43,7 @@ function Home() {
           title="Restoration"
           buttonTitle="Submit Restoration"
           path="/shop/restoration"
-          image={bg3}
+          image={bg1}
           rowSpan={null}
           colSpan={2}
         />

@@ -7,11 +7,15 @@
 
 .navbar-logo {
   border-radius: 30px;
-  width: 250px;
+  width: 185px;
 }
 
 .nav-link {
   color: black !important;
+
+  &:hover {
+    color: grey !important;
+  }
 }
 
 .navbar-right-link {

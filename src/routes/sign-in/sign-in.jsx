@@ -27,6 +27,9 @@ import {
   signInWithEmailPassword
 } from '../../utils/firebase/firebase';
 
+// Functions
+import { handleSignInUpErrors } from '../../exports/functions';
+
 // Styles
 import './sign-in.scss';
 
@@ -47,31 +50,7 @@ function SignIn() {
 
   function handleSignInErrors(err) {
     let title = 'Error Signing In';
-    let description = '';
-
-    switch (err.code) {
-      case 'auth/invalid-email':
-        description = 'This email address does not match our records.';
-        break;
-      case 'auth/wrong-password':
-        description = 'Password is invalid.';
-        break;
-      case 'auth/user-not-found':
-        description =
-          'This email/password combination does not match our records.';
-        break;
-      case 'auth/account-exists-with-different-credential':
-        description = 'This is not the original provider you signed in with.';
-        break;
-      case 'auth/too-many-requests':
-        description =
-          'Account has been temporarily disabled due to many failed login ' +
-          'attempts. Restore it by resetting your password, or try again later.';
-        break;
-      default:
-        description = 'There was an issue logging in. Please try again!';
-        break;
-    }
+    const description = handleSignInUpErrors(err);
 
     toast({
       title: title,
@@ -174,6 +153,7 @@ function SignIn() {
         <div className="sign-in-inputs-container">
           <FormControl variant="floating">
             <Input
+              className="sign-in-input"
               type="Email"
               placeholder=" "
               size="md"
@@ -193,6 +173,7 @@ function SignIn() {
           </FormControl>
           <FormControl variant="floating">
             <Input
+              className="sign-in-input"
               type="Password"
               placeholder=" "
               size="md"

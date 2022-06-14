@@ -23,7 +23,7 @@ import { selectUser } from '../../redux/slices/userSlice';
 import Footer from '../../components/footer/footer';
 
 // Images
-import Logo from '../../assets/images/logo.png';
+import Logo from '../../assets/images/logo/logo-horiz-yellow.png';
 
 // Styles
 import './navigation.scss';

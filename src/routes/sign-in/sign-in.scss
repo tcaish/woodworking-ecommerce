@@ -35,11 +35,15 @@
   .sign-in-inputs-container {
     margin-top: 50px;
 
+    .sign-in-input {
+      margin-bottom: 20px;
+    }
+
     .sign-in-switch {
       margin-right: 10px;
     }
 
-    input {
+    .sign-in-input-helper-text {
       margin-bottom: 20px;
     }
   }

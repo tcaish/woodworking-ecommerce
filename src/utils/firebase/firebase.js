@@ -8,7 +8,8 @@ import {
   FacebookAuthProvider,
   createUserWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  updateProfile
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -61,6 +62,10 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+// Auth - profile
+export const updateUserProfile = (user, additionalInfo) =>
+  updateProfile(user, additionalInfo);
 
 // Firestore
 export const firestore = getFirestore();
