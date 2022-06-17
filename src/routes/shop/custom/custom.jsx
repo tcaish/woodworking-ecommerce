@@ -6,7 +6,7 @@ import './custom.scss';
 
 function Custom() {
   return (
-    <Container>
+    <Container className="main-container">
       <h1>Custom Build</h1>
     </Container>
   );

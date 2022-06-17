@@ -1,3 +1,5 @@
+@import '../../exports/constants.scss';
+
 .profile-container {
   .profile-name-container {
     .profile-name {
@@ -9,6 +11,36 @@
   .profile-email-container {
     .profile-email {
       font-size: 1.5rem;
+    }
+  }
+
+  .update-profile-container {
+    .profile-update-header {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    .profile-form-control {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .profile-email-not-verified-text {
+      color: #e04040;
+      margin-left: 5px;
+    }
+    .profile-email-verified-text {
+      color: green;
+    }
+
+    .profile-form-update-button {
+      background-color: $brand-yellow;
+
+      &:hover {
+        background-color: $brand-yellow;
+        opacity: 0.5;
+      }
     }
   }
 }

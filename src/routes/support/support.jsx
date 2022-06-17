@@ -5,7 +5,11 @@ import { Container } from 'react-bootstrap';
 import './support.scss';
 
 function Support() {
-  return <Container>Support</Container>;
+  return (
+    <Container className="main-container">
+      <h1>Support</h1>
+    </Container>
+  );
 }
 
 export default Support;

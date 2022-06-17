@@ -6,7 +6,7 @@ import './restoration.scss';
 
 function Restoration() {
   return (
-    <Container>
+    <Container className="main-container">
       <h1>Restoration</h1>
     </Container>
   );

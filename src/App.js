@@ -46,7 +46,6 @@ function App() {
       if (user) {
         createUserDocumentFromAuth(user);
       }
-
       dispatch(setUser(user));
     });
   }, [dispatch]);

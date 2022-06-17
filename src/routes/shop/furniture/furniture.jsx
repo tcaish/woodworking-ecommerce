@@ -6,7 +6,7 @@ import './furniture.scss';
 
 function Furniture() {
   return (
-    <Container>
+    <Container className="main-container">
       <h1>Furniture</h1>
     </Container>
   );

@@ -15,7 +15,7 @@ import './home.scss';
 
 function Home() {
   return (
-    <Container className="home-container">
+    <Container className="main-container home-container">
       <Grid
         h="650px"
         templateRows="repeat(2, 1fr)"
