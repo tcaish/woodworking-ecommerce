@@ -52,7 +52,7 @@ function Profile() {
   const toast = useToast();
   const dispatch = useDispatch();
 
-  let user = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const displayName = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
   const photoURL = useSelector(selectPhotoURL);
@@ -66,15 +66,9 @@ function Profile() {
   function handleProfileUpdate() {
     const nameUpdated = displayName !== formInput.displayName;
     const photoUpdated = photoURL !== formInput.photoURL;
-    const emailUpdated = email !== formInput.email;
 
-    if (!nameUpdated && !photoUpdated && !emailUpdated) return;
-
-    if (nameUpdated || photoUpdated) {
-      submitProfileUpdate(nameUpdated, photoUpdated);
-    } else {
-      submitEmailUpdate();
-    }
+    if (!nameUpdated && !photoUpdated) return;
+    submitProfileUpdate(nameUpdated, photoUpdated);
   }
 
   async function handleVerificationEmail(isChangingEmail) {
@@ -214,6 +208,9 @@ function Profile() {
   function handleProfileUpdateOrError(title, description, err) {
     if (err) {
       switch (err.code) {
+        case 'auth/invalid-email':
+          description = 'The email you entered is invalid.';
+          break;
         case 'auth/requires-recent-login':
           description =
             'Please sign out and sign back in to change your email.';
