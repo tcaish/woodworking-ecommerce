@@ -22,39 +22,218 @@ import {
   Grid,
   GridItem,
   Icon,
-  Input
+  Input,
+  useToast
 } from '@chakra-ui/react';
 
 // Firebase
-import { auth, updateUserProfile } from '../../utils/firebase/firebase';
+import {
+  updateUserProfile,
+  sendResetPasswordEmail,
+  updateUserEmail,
+  sendUserVerificationEmail
+} from '../../utils/firebase/firebase';
 
 // Slices
-import { selectUser, setUser } from '../../redux/slices/userSlice';
+import {
+  selectUser,
+  selectDisplayName,
+  selectEmail,
+  selectPhotoURL,
+  setDisplayName,
+  setEmail,
+  setPhotoURL
+} from '../../redux/slices/userSlice';
 
 // Styles
 import './profile.scss';
 
 function Profile() {
+  const toast = useToast();
   const dispatch = useDispatch();
+
   let user = useSelector(selectUser);
+  const displayName = useSelector(selectDisplayName);
+  const email = useSelector(selectEmail);
+  const photoURL = useSelector(selectPhotoURL);
 
   const [formInput, setFormInput] = useState(user);
+  const [updateNameLoading, setUpdateNameLoading] = useState(false);
+  const [updateEmailLoading, setUpdateEmailLoading] = useState(false);
+  const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
+  const [verifyEmailLoading, setVerifyEmailLoading] = useState(false);
 
-  async function submitProfileUpdate() {
-    if (formInput.email === '') {
-      return;
+  function handleProfileUpdate() {
+    const nameUpdated = displayName !== formInput.displayName;
+    const photoUpdated = photoURL !== formInput.photoURL;
+    const emailUpdated = email !== formInput.email;
+
+    if (!nameUpdated && !photoUpdated && !emailUpdated) return;
+
+    if (nameUpdated || photoUpdated) {
+      submitProfileUpdate(nameUpdated, photoUpdated);
+    } else {
+      submitEmailUpdate();
     }
+  }
 
-    let newUser = auth.currentUser;
+  async function handleVerificationEmail(isChangingEmail) {
+    if (!isChangingEmail) setVerifyEmailLoading(true);
 
-    await updateUserProfile(newUser, {
+    await sendUserVerificationEmail()
+      .then(() => {
+        const title = !isChangingEmail
+          ? 'Verification Email Sent Successfully'
+          : 'Email Changed Successfully';
+        handleProfileUpdateOrError(
+          title,
+          'Please check your inbox for a verification email.',
+          null
+        );
+        !isChangingEmail
+          ? setVerifyEmailLoading(false)
+          : setUpdateEmailLoading(false);
+      })
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Verification Email Failed',
+          'There was an error sending the verification email. Try again later.',
+          err
+        );
+        !isChangingEmail
+          ? setVerifyEmailLoading(false)
+          : setUpdateEmailLoading(false);
+      });
+  }
+
+  async function submitProfileUpdate(nameUpdated, photoUpdated) {
+    setUpdateNameLoading(true);
+
+    await updateUserProfile({
       displayName: formInput.displayName,
-      email: formInput.email
+      photoURL: formInput.photoURL
     })
       .then(() => {
-        dispatch(setUser(formInput));
+        dispatch(setDisplayName(formInput.displayName));
+        dispatch(setPhotoURL(formInput.photoURL));
+
+        let description = '';
+
+        if (nameUpdated && photoUpdated) {
+          description = 'Your full name and photo was updated successfully.';
+        } else {
+          description = nameUpdated
+            ? 'Your full name was updated successfully.'
+            : 'Your photo was updated successfully.';
+        }
+
+        handleProfileUpdateOrError(
+          'Profile Updated Successfully',
+          description,
+          null
+        );
+
+        setUpdateNameLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Profile Update Failed',
+          'There was an error updating your profile. Try again later.',
+          err
+        );
+        setUpdateNameLoading(false);
+      });
+  }
+
+  async function submitEmailUpdate() {
+    if (formInput.email === '' || email === formInput.email) return;
+
+    setUpdateEmailLoading(true);
+
+    await updateUserEmail(formInput.email)
+      .then(() => {
+        dispatch(setEmail(formInput.email));
+        handleVerificationEmail(true);
+      })
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Email Change Failed',
+          'There was an error changing your email. Try again later.',
+          err
+        );
+        setUpdateEmailLoading(false);
+      });
+  }
+
+  async function handlePasswordResetEmail() {
+    if (!email) return;
+
+    setResetPasswordLoading(true);
+
+    await sendResetPasswordEmail(email)
+      .then(() => {
+        handleProfileUpdateOrError(
+          'Email Sent Successfully',
+          `An email to reset your password has been sent to ${email}. Please check your spam folder!`,
+          null
+        );
+        setResetPasswordLoading(false);
+      })
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Reset Password Failed',
+          'There was an error sending the reset password email. Try again later.',
+          err
+        );
+        setResetPasswordLoading(false);
+      });
+  }
+
+  function isInputDisabled(inputType) {
+    if (updateNameLoading && inputType === 'name') {
+      return true;
+    } else if (
+      updateEmailLoading &&
+      user.providerData[0].providerId !== 'password' &&
+      inputType === 'email'
+    ) {
+      return true;
+    } else if (
+      resetPasswordLoading &&
+      user.providerData[0].providerId !== 'password' &&
+      inputType === 'password'
+    ) {
+      return true;
+    } else if (verifyEmailLoading && inputType === 'verify') {
+      return true;
+    }
+
+    return false;
+  }
+
+  function handleProfileUpdateOrError(title, description, err) {
+    if (err) {
+      switch (err.code) {
+        case 'auth/requires-recent-login':
+          description =
+            'Please sign out and sign back in to change your email.';
+          break;
+        case 'auth/email-already-in-use':
+          description =
+            'Email is already in use. Please use a different email.';
+          break;
+        default:
+          break;
+      }
+    }
+
+    toast({
+      title: title,
+      description: description,
+      status: err ? 'error' : 'success',
+      duration: 6000,
+      isClosable: true
+    });
   }
 
   return (
@@ -63,10 +242,11 @@ function Profile() {
         <GridItem rowSpan={2} colSpan={1}>
           <Center h="100%">
             <Avatar
+              className="profile-avatar"
               size="2xl"
-              bg={user && user.photoURL && 'none'}
-              name={user && user.displayName ? user.displayName : ''}
-              src={user && user.photoURL ? user.photoURL : ''}
+              bg={photoURL && 'none'}
+              name={displayName ? displayName : ''}
+              src={photoURL ? photoURL : ''}
             />
           </Center>
         </GridItem>
@@ -80,12 +260,20 @@ function Profile() {
               type="email"
               placeholder="e.g. John Doe"
               focusBorderColor="#f7d794"
-              value={formInput.displayName}
+              isDisabled={isInputDisabled('name')}
+              value={formInput.displayName ? formInput.displayName : ''}
               onChange={(e) =>
                 setFormInput({ ...formInput, displayName: e.target.value })
               }
             />
-            <FormHelperText>Optional</FormHelperText>
+            <Button
+              className="profile-form-update-button"
+              size="sm"
+              isLoading={updateNameLoading}
+              onClick={handleProfileUpdate}
+            >
+              Update Name
+            </Button>
           </FormControl>
 
           <FormControl className="profile-form-control">
@@ -94,13 +282,11 @@ function Profile() {
               type="email"
               placeholder="e.g. johndoe@gmail.com"
               focusBorderColor="#f7d794"
-              value={formInput.email}
+              value={formInput.email ? formInput.email : ''}
               onChange={(e) =>
                 setFormInput({ ...formInput, email: e.target.value })
               }
-              isDisabled={
-                user.providerData[0].providerId !== 'password' ? true : false
-              }
+              isDisabled={isInputDisabled('email')}
               isInvalid={formInput.email === ''}
             />
 
@@ -117,7 +303,14 @@ function Profile() {
                   Email not verified
                 </span>
                 {' | '}
-                <Button variant="link">Verify Email</Button>
+                <Button
+                  variant="link"
+                  isDisabled={isInputDisabled('verify')}
+                  isLoading={verifyEmailLoading}
+                  onClick={() => handleVerificationEmail(false)}
+                >
+                  Verify Email
+                </Button>
               </FormHelperText>
             ) : (
               <FormHelperText>
@@ -127,33 +320,46 @@ function Profile() {
                 </span>
               </FormHelperText>
             )}
+            <Button
+              className="profile-form-update-button"
+              size="sm"
+              isLoading={updateEmailLoading}
+              onClick={submitEmailUpdate}
+            >
+              Update Email
+            </Button>
           </FormControl>
 
           <FormControl className="profile-form-control">
             <FormLabel>Password</FormLabel>
-            <Button variant="link">Send Reset Password Email</Button>
+            <Button
+              variant="link"
+              isDisabled={isInputDisabled('password')}
+              isLoading={resetPasswordLoading}
+              onClick={handlePasswordResetEmail}
+            >
+              Send Reset Password Email
+            </Button>
+            {user.providerData[0].providerId !== 'password' && (
+              <FormHelperText>
+                You cannot change your password when signed in via a provider.
+              </FormHelperText>
+            )}
           </FormControl>
-
-          <Button
-            className="profile-form-update-button"
-            onClick={submitProfileUpdate}
-          >
-            Update Profile
-          </Button>
         </GridItem>
 
         <GridItem rowSpan={1} colSpan={1}>
-          {user.displayName && (
+          {displayName && (
             <Center>
               <div className="profile-name-container">
-                <h1 className="profile-name">{user.displayName}</h1>
+                <h1 className="profile-name">{displayName}</h1>
               </div>
             </Center>
           )}
-          {user.email && (
+          {email && (
             <Center>
               <div className="profile-email-container">
-                <h1 className="profile-email">{user.email}</h1>
+                <h1 className="profile-email">{email}</h1>
               </div>
             </Center>
           )}

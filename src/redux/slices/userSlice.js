@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  currentUser: null
+  currentUser: null,
+  displayName: '',
+  email: '',
+  photoURL: ''
 };
 
 export const userSlice = createSlice({
@@ -10,15 +13,30 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.currentUser = action.payload;
+      state.displayName = action.payload ? action.payload.displayName : '';
+      state.email = action.payload ? action.payload.email : '';
+      state.photoURL = action.payload ? action.payload.photoURL : '';
+    },
+    setDisplayName: (state, action) => {
+      state.displayName = action.payload;
+    },
+    setEmail: (state, action) => {
+      state.email = action.payload;
+    },
+    setPhotoURL: (state, action) => {
+      state.photoURL = action.payload;
     }
   }
 });
 
-export const { setUser } = userSlice.actions;
+// Setters
+export const { setUser, setDisplayName, setEmail, setPhotoURL } =
+  userSlice.actions;
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
+// Selectors
 export const selectUser = (state) => state.user.currentUser;
+export const selectDisplayName = (state) => state.user.displayName;
+export const selectEmail = (state) => state.user.email;
+export const selectPhotoURL = (state) => state.user.photoURL;
 
 export default userSlice.reducer;

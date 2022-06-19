@@ -9,7 +9,10 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail,
+  updateEmail,
+  sendEmailVerification
 } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
@@ -64,8 +67,16 @@ export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
 
 // Auth - profile
-export const updateUserProfile = (user, additionalInfo) =>
-  updateProfile(user, additionalInfo);
+export const updateUserProfile = (additionalInfo) =>
+  updateProfile(auth.currentUser, additionalInfo);
+
+export const sendResetPasswordEmail = (email) =>
+  sendPasswordResetEmail(auth, email);
+
+export const sendUserVerificationEmail = () =>
+  sendEmailVerification(auth.currentUser);
+
+export const updateUserEmail = (email) => updateEmail(auth.currentUser, email);
 
 // Firestore
 export const firestore = getFirestore();

@@ -17,7 +17,11 @@ import { Avatar, IconButton } from '@chakra-ui/react';
 import { signOutUser } from '../../utils/firebase/firebase';
 
 // Slices
-import { selectUser } from '../../redux/slices/userSlice';
+import {
+  selectUser,
+  selectDisplayName,
+  selectPhotoURL
+} from '../../redux/slices/userSlice';
 
 // Components
 import Footer from '../../components/footer/footer';
@@ -30,6 +34,8 @@ import './navigation.scss';
 
 function Navigation() {
   const user = useSelector(selectUser);
+  const displayName = useSelector(selectDisplayName);
+  const photoURL = useSelector(selectPhotoURL);
 
   // Hides the dropdown menu when clicking a menu item button
   function hideDropdown() {
@@ -71,9 +77,9 @@ function Navigation() {
                 title={
                   <Avatar
                     size="md"
-                    bg={user && user.photoURL && 'none'}
-                    name={user && user.displayName ? user.displayName : ''}
-                    src={user && user.photoURL ? user.photoURL : ''}
+                    bg={photoURL && 'none'}
+                    name={displayName ? displayName : ''}
+                    src={photoURL ? photoURL : ''}
                   />
                 }
               >
