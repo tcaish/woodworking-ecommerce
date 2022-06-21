@@ -28,24 +28,28 @@ import Shop from './routes/shop/shop';
 import Furniture from './routes/shop/furniture/furniture';
 import Custom from './routes/shop/custom/custom';
 import Restoration from './routes/shop/restoration/restoration';
-
-// Styles
-import './App.scss';
 import {
   ProtectedUserRoute,
   ProtectedNoUserRoute
 } from './routes/protected/protected';
 
+// Styles
+import './App.scss';
+
 function App() {
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   // Listens for the user to sign in or out
   useEffect(() => {
     onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
+        sessionStorage.setItem('Auth Token', user.refreshToken);
+      } else {
+        sessionStorage.removeItem('Auth Token');
       }
+
       dispatch(setUser(user));
     });
   }, [dispatch]);
@@ -71,7 +75,7 @@ function App() {
         <Route
           path="sign-in"
           element={
-            <ProtectedNoUserRoute user={user}>
+            <ProtectedNoUserRoute>
               <SignIn />
             </ProtectedNoUserRoute>
           }

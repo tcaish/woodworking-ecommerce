@@ -1,5 +1,5 @@
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,6 +48,12 @@ import {
 // Styles
 import './profile.scss';
 
+const defaultFormInput = {
+  displayName: '',
+  photoURL: '',
+  email: ''
+};
+
 function Profile() {
   const toast = useToast();
   const dispatch = useDispatch();
@@ -57,11 +63,16 @@ function Profile() {
   const email = useSelector(selectEmail);
   const photoURL = useSelector(selectPhotoURL);
 
-  const [formInput, setFormInput] = useState(user);
+  const [formInput, setFormInput] = useState(user ? user : defaultFormInput);
   const [updateNameLoading, setUpdateNameLoading] = useState(false);
   const [updateEmailLoading, setUpdateEmailLoading] = useState(false);
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
   const [verifyEmailLoading, setVerifyEmailLoading] = useState(false);
+
+  // Sets the form input to user data when user is available
+  useEffect(() => {
+    if (user) setFormInput(user);
+  }, [user]);
 
   // Handles the updating of the user's display name and picture
   async function handleNameUpdate() {
@@ -186,6 +197,9 @@ function Profile() {
           description =
             'Email is already in use. Please use a different email.';
           break;
+        case 'auth/too-many-requests':
+          description = 'Too many requests. Please try again later.';
+          break;
         default:
           break;
       }
@@ -277,13 +291,13 @@ function Profile() {
               isInvalid={formInput.email === ''}
             />
 
-            {user.providerData[0].providerId !== 'password' && (
+            {user && user.providerData[0].providerId !== 'password' && (
               <FormHelperText>
                 You cannot change your email when signed in via a provider.
               </FormHelperText>
             )}
 
-            {!user.emailVerified ? (
+            {user && !user.emailVerified ? (
               <FormHelperText>
                 <Icon as={FcCancel} />
                 <span className="profile-email-not-verified-text">
@@ -327,7 +341,7 @@ function Profile() {
             >
               Send Reset Password Email
             </Button>
-            {user.providerData[0].providerId !== 'password' && (
+            {user && user.providerData[0].providerId !== 'password' && (
               <FormHelperText>
                 You cannot change your password when signed in via a provider.
               </FormHelperText>
@@ -336,13 +350,17 @@ function Profile() {
         </GridItem>
 
         <GridItem rowSpan={1} colSpan={1}>
-          <Center>
-            <div className="profile-name-container">
-              <h1 className="profile-name">
-                {displayName ? displayName : `user-${user.uid.substring(0, 6)}`}
-              </h1>
-            </div>
-          </Center>
+          {user && (
+            <Center>
+              <div className="profile-name-container">
+                <h1 className="profile-name">
+                  {displayName
+                    ? displayName
+                    : `user-${user.uid.substring(0, 6)}`}
+                </h1>
+              </div>
+            </Center>
+          )}
           <Center>
             <div className="profile-email-container">
               <h1 className="profile-email">{email}</h1>
