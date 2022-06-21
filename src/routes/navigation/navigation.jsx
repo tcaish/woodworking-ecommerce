@@ -77,7 +77,7 @@ function Navigation() {
                 title={
                   <Avatar
                     size="md"
-                    bg={photoURL && 'none'}
+                    bg={photoURL && photoURL !== '' ? 'none' : null}
                     name={displayName ? displayName : ''}
                     src={photoURL ? photoURL : ''}
                   />

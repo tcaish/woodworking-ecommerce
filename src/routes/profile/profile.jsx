@@ -219,15 +219,17 @@ function Profile() {
     if (updateNameLoading && inputType === 'name') {
       return true;
     } else if (
-      updateEmailLoading &&
-      user.providerData[0].providerId !== 'password' &&
-      inputType === 'email'
+      user &&
+      (updateEmailLoading ||
+        (user.providerData[0].providerId !== 'password' &&
+          inputType === 'email'))
     ) {
       return true;
     } else if (
-      resetPasswordLoading &&
-      user.providerData[0].providerId !== 'password' &&
-      inputType === 'password'
+      user &&
+      (resetPasswordLoading ||
+        (user.providerData[0].providerId !== 'password' &&
+          inputType === 'password'))
     ) {
       return true;
     } else if (verifyEmailLoading && inputType === 'verify') {
