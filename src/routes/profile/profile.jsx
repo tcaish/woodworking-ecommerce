@@ -63,14 +63,39 @@ function Profile() {
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
   const [verifyEmailLoading, setVerifyEmailLoading] = useState(false);
 
-  function handleProfileUpdate() {
-    const nameUpdated = displayName !== formInput.displayName;
-    const photoUpdated = photoURL !== formInput.photoURL;
+  // Handles the updating of the user's display name and picture
+  async function handleNameUpdate() {
+    if (displayName === formInput.displayName) return;
 
-    if (!nameUpdated && !photoUpdated) return;
-    submitProfileUpdate(nameUpdated, photoUpdated);
+    setUpdateNameLoading(true);
+
+    await updateUserProfile({
+      displayName: formInput.displayName,
+      photoURL: formInput.photoURL
+    })
+      .then(() => {
+        dispatch(setDisplayName(formInput.displayName));
+        dispatch(setPhotoURL(formInput.photoURL));
+
+        handleProfileUpdateOrError(
+          'Profile Updated Successfully',
+          'Your full name was updated successfully!',
+          null
+        );
+
+        setUpdateNameLoading(false);
+      })
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Profile Update Failed',
+          'There was an error updating your full name. Try again later.',
+          err
+        );
+        setUpdateNameLoading(false);
+      });
   }
 
+  // Handles the sending of the email to verify the user's email
   async function handleVerificationEmail(isChangingEmail) {
     if (!isChangingEmail) setVerifyEmailLoading(true);
 
@@ -81,7 +106,7 @@ function Profile() {
           : 'Email Changed Successfully';
         handleProfileUpdateOrError(
           title,
-          'Please check your inbox for a verification email.',
+          'Please check your inbox or spam folder for a verification email.',
           null
         );
         !isChangingEmail
@@ -100,46 +125,8 @@ function Profile() {
       });
   }
 
-  async function submitProfileUpdate(nameUpdated, photoUpdated) {
-    setUpdateNameLoading(true);
-
-    await updateUserProfile({
-      displayName: formInput.displayName,
-      photoURL: formInput.photoURL
-    })
-      .then(() => {
-        dispatch(setDisplayName(formInput.displayName));
-        dispatch(setPhotoURL(formInput.photoURL));
-
-        let description = '';
-
-        if (nameUpdated && photoUpdated) {
-          description = 'Your full name and photo was updated successfully.';
-        } else {
-          description = nameUpdated
-            ? 'Your full name was updated successfully.'
-            : 'Your photo was updated successfully.';
-        }
-
-        handleProfileUpdateOrError(
-          'Profile Updated Successfully',
-          description,
-          null
-        );
-
-        setUpdateNameLoading(false);
-      })
-      .catch((err) => {
-        handleProfileUpdateOrError(
-          'Profile Update Failed',
-          'There was an error updating your profile. Try again later.',
-          err
-        );
-        setUpdateNameLoading(false);
-      });
-  }
-
-  async function submitEmailUpdate() {
+  // Handles the updating of the user email
+  async function handleEmailUpdate() {
     if (formInput.email === '' || email === formInput.email) return;
 
     setUpdateEmailLoading(true);
@@ -159,6 +146,7 @@ function Profile() {
       });
   }
 
+  // Handles the sending of the password reset email
   async function handlePasswordResetEmail() {
     if (!email) return;
 
@@ -183,28 +171,7 @@ function Profile() {
       });
   }
 
-  function isInputDisabled(inputType) {
-    if (updateNameLoading && inputType === 'name') {
-      return true;
-    } else if (
-      updateEmailLoading &&
-      user.providerData[0].providerId !== 'password' &&
-      inputType === 'email'
-    ) {
-      return true;
-    } else if (
-      resetPasswordLoading &&
-      user.providerData[0].providerId !== 'password' &&
-      inputType === 'password'
-    ) {
-      return true;
-    } else if (verifyEmailLoading && inputType === 'verify') {
-      return true;
-    }
-
-    return false;
-  }
-
+  // Shows toast depending on success or error when updating profile
   function handleProfileUpdateOrError(title, description, err) {
     if (err) {
       switch (err.code) {
@@ -228,9 +195,32 @@ function Profile() {
       title: title,
       description: description,
       status: err ? 'error' : 'success',
-      duration: 6000,
+      duration: 7000,
       isClosable: true
     });
+  }
+
+  // Returns if the input field is disabled given the input type
+  function isInputDisabled(inputType) {
+    if (updateNameLoading && inputType === 'name') {
+      return true;
+    } else if (
+      updateEmailLoading &&
+      user.providerData[0].providerId !== 'password' &&
+      inputType === 'email'
+    ) {
+      return true;
+    } else if (
+      resetPasswordLoading &&
+      user.providerData[0].providerId !== 'password' &&
+      inputType === 'password'
+    ) {
+      return true;
+    } else if (verifyEmailLoading && inputType === 'verify') {
+      return true;
+    }
+
+    return false;
   }
 
   return (
@@ -267,7 +257,7 @@ function Profile() {
               className="profile-form-update-button"
               size="sm"
               isLoading={updateNameLoading}
-              onClick={handleProfileUpdate}
+              onClick={handleNameUpdate}
             >
               Update Name
             </Button>
@@ -321,7 +311,7 @@ function Profile() {
               className="profile-form-update-button"
               size="sm"
               isLoading={updateEmailLoading}
-              onClick={submitEmailUpdate}
+              onClick={handleEmailUpdate}
             >
               Update Email
             </Button>
@@ -346,20 +336,18 @@ function Profile() {
         </GridItem>
 
         <GridItem rowSpan={1} colSpan={1}>
-          {displayName && (
-            <Center>
-              <div className="profile-name-container">
-                <h1 className="profile-name">{displayName}</h1>
-              </div>
-            </Center>
-          )}
-          {email && (
-            <Center>
-              <div className="profile-email-container">
-                <h1 className="profile-email">{email}</h1>
-              </div>
-            </Center>
-          )}
+          <Center>
+            <div className="profile-name-container">
+              <h1 className="profile-name">
+                {displayName ? displayName : `user-${user.uid.substring(0, 6)}`}
+              </h1>
+            </div>
+          </Center>
+          <Center>
+            <div className="profile-email-container">
+              <h1 className="profile-email">{email}</h1>
+            </div>
+          </Center>
         </GridItem>
       </Grid>
     </Container>
