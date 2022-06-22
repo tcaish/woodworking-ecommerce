@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // React Router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 // React Icons
 import { FcGoogle } from 'react-icons/fc';
 import { BsFacebook } from 'react-icons/bs';
+import { BsCheck2 } from 'react-icons/bs';
+import { FcCancel } from 'react-icons/fc';
 
 // Chakra
 import {
@@ -18,6 +20,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
+  Icon,
   IconButton,
   Input,
   useToast
@@ -39,6 +42,7 @@ import { handleSignInUpErrors } from '../../exports/functions';
 
 // Styles
 import '../sign-in/sign-in.scss';
+import './sign-up.scss';
 
 const defaultFormInput = {
   displayName: '',
@@ -59,6 +63,10 @@ function SignUp() {
   const [formInput, setFormInput] = useState(defaultFormInput);
   const [isLoading, setIsLoading] = useState(false);
 
+  function redirectToHomePage() {
+    navigate('/');
+  }
+
   function handleSignUpErrors(err) {
     let title = 'Error Signing Up';
     const description = handleSignInUpErrors(err);
@@ -72,8 +80,28 @@ function SignUp() {
     });
   }
 
-  function redirectToHomePage() {
-    navigate('/');
+  function renderConfirmPasswordHelperText() {
+    if (
+      !formInput.password ||
+      formInput.password === '' ||
+      !formInput.confirmPassword ||
+      formInput.confirmPassword === ''
+    )
+      return;
+
+    return formInput.password !== formInput.confirmPassword ? (
+      <FormHelperText className="sign-in-input-helper-text">
+        <Icon as={FcCancel} color="red" />{' '}
+        <span className="sign-up-passwords-not-verified-text">
+          Passwords do not match
+        </span>
+      </FormHelperText>
+    ) : (
+      <FormHelperText className="sign-in-input-helper-text">
+        <Icon as={BsCheck2} color="green" />{' '}
+        <span className="sign-up-passwords-verified-text">Passwords match</span>
+      </FormHelperText>
+    );
   }
 
   async function signInViaGoogle() {
@@ -260,7 +288,13 @@ function SignUp() {
           </FormControl>
           <FormControl variant="floating">
             <Input
-              className="sign-in-input"
+              className={
+                (!formInput.password ||
+                  formInput.password === '' ||
+                  !formInput.confirmPassword ||
+                  formInput.confirmPassword === '') &&
+                'sign-in-input'
+              }
               type="password"
               placeholder=" "
               size="md"
@@ -277,6 +311,7 @@ function SignUp() {
               }
             />
             <FormLabel>Confirm Password</FormLabel>
+            {renderConfirmPasswordHelperText()}
           </FormControl>
         </div>
         <div className="sign-in-button-container">
@@ -287,6 +322,13 @@ function SignUp() {
           >
             Sign Up
           </Button>
+        </div>
+        <div className="sign-in-create-account-container">
+          <Center>
+            <Link to="/sign-in">
+              <Button variant="link">Sign In</Button>
+            </Link>
+          </Center>
         </div>
       </div>
     </Center>

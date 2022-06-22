@@ -29,7 +29,7 @@ export function handleSignInUpErrors(err) {
         'attempts. Restore it by resetting your password, or try again later.';
       break;
     default:
-      description = 'There was an issue logging in. Please try again!';
+      description = 'There was an issue signing in. Please try again!';
       break;
   }
 

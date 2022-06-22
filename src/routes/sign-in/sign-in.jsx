@@ -205,7 +205,7 @@ function SignIn() {
             </FormLabel>
           </FormControl>
         </div>
-        <div className="sign-in-button-container">
+        <div className="sign-in-button-container sign-in-up-button-margin">
           <Button
             className="log-in-button"
             isLoading={isLoading}
