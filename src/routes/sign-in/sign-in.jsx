@@ -32,6 +32,7 @@ import { handleSignInUpErrors } from '../../exports/functions';
 
 // Styles
 import './sign-in.scss';
+import './sign-in.mobile.scss';
 
 const defaultFormInput = {
   email: '',

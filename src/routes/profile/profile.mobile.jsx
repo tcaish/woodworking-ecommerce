@@ -21,7 +21,7 @@ import './profile.mobile.scss';
 
 function ProfileMobile(props) {
   return (
-    <Grid templateRows="repeat(2, 1fr)" templateColumns="repeat(1, 1fr)">
+    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(1, 1fr)">
       <GridItem rowSpan={1} colSpan={1}>
         <Center>
           <Avatar
@@ -53,9 +53,7 @@ function ProfileMobile(props) {
         </div>
       </GridItem>
 
-      <GridItem className="update-profile-container" rowSpan={1} colSpan={1}>
-        <h1 className="profile-update-header">Update Profile</h1>
-
+      <GridItem className="update-profile-container" rowSpan={2} colSpan={1}>
         <FormControl className="profile-form-control">
           <FormLabel>Full Name</FormLabel>
           <Input
