@@ -1,0 +1,21 @@
+// Screen width 1199px and under
+@media only screen and (max-width: 1199px) {
+  .home-grid-item {
+    .home-grid-item-container {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+// Screen width 515px and under
+@media only screen and (max-width: 515px) {
+  .home-grid-item {
+    .home-grid-item-container {
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

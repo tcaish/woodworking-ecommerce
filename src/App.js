@@ -15,6 +15,7 @@ import {
 
 // Slices
 import { selectUser, setUser } from './redux/slices/userSlice';
+import { setScreenWidth } from './redux/slices/screenSlice';
 
 // Components
 import Home from './routes/home/home';
@@ -39,6 +40,8 @@ import './App.scss';
 function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
+  window.onresize = () => dispatch(setScreenWidth(window.innerWidth));
 
   // Listens for the user to sign in or out
   useEffect(() => {

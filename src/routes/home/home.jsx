@@ -12,6 +12,7 @@ import bg3 from '../../assets/images/grid-bg-3.jpg';
 
 // Styles
 import './home.scss';
+import '../../components/home-grid-item/home-grid-item-mobile.scss';
 
 function Home() {
   return (
