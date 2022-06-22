@@ -4,27 +4,11 @@ import { useEffect, useState } from 'react';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
-// React Icons
-import { BsCheck2 } from 'react-icons/bs';
-import { FcCancel } from 'react-icons/fc';
-
 // Bootstrap
 import { Container } from 'react-bootstrap';
 
 // Chakra
-import {
-  Avatar,
-  Button,
-  Center,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Grid,
-  GridItem,
-  Icon,
-  Input,
-  useToast
-} from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 // Firebase
 import {
@@ -44,9 +28,11 @@ import {
   setEmail,
   setPhotoURL
 } from '../../redux/slices/userSlice';
+import { selectScreenWidth } from '../../redux/slices/screenSlice';
 
-// Styles
-import './profile.scss';
+// Components
+import ProfileDesktop from './profile.desktop';
+import ProfileMobile from './profile.mobile';
 
 const defaultFormInput = {
   displayName: '',
@@ -62,6 +48,7 @@ function Profile() {
   const displayName = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
   const photoURL = useSelector(selectPhotoURL);
+  const screenWidth = useSelector(selectScreenWidth);
 
   const [formInput, setFormInput] = useState(user ? user : defaultFormInput);
   const [updateNameLoading, setUpdateNameLoading] = useState(false);
@@ -241,135 +228,43 @@ function Profile() {
 
   return (
     <Container className="main-container profile-container">
-      <Grid templateRows="repeat(4, 1fr)" templateColumns="repeat(2, 1fr)">
-        <GridItem rowSpan={2} colSpan={1}>
-          <Center h="100%">
-            <Avatar
-              className="profile-avatar"
-              size="2xl"
-              bg={photoURL && 'none'}
-              name={displayName ? displayName : ''}
-              src={photoURL ? photoURL : ''}
-            />
-          </Center>
-        </GridItem>
-
-        <GridItem className="update-profile-container" rowSpan={4}>
-          <h1 className="profile-update-header">Update Profile</h1>
-
-          <FormControl className="profile-form-control">
-            <FormLabel>Full Name</FormLabel>
-            <Input
-              type="email"
-              placeholder="e.g. John Doe"
-              focusBorderColor="#f7d794"
-              isDisabled={isInputDisabled('name')}
-              value={formInput.displayName ? formInput.displayName : ''}
-              onChange={(e) =>
-                setFormInput({ ...formInput, displayName: e.target.value })
-              }
-            />
-            <Button
-              className="profile-form-update-button"
-              size="sm"
-              isLoading={updateNameLoading}
-              onClick={handleNameUpdate}
-            >
-              Update Name
-            </Button>
-          </FormControl>
-
-          <FormControl className="profile-form-control">
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              placeholder="e.g. johndoe@gmail.com"
-              focusBorderColor="#f7d794"
-              value={formInput.email ? formInput.email : ''}
-              onChange={(e) =>
-                setFormInput({ ...formInput, email: e.target.value })
-              }
-              isDisabled={isInputDisabled('email')}
-              isInvalid={formInput.email === ''}
-            />
-
-            {user && user.providerData[0].providerId !== 'password' && (
-              <FormHelperText>
-                You cannot change your email when signed in via a provider.
-              </FormHelperText>
-            )}
-
-            {user && !user.emailVerified ? (
-              <FormHelperText>
-                <Icon as={FcCancel} />
-                <span className="profile-email-not-verified-text">
-                  Email not verified
-                </span>
-                {' | '}
-                <Button
-                  variant="link"
-                  isDisabled={isInputDisabled('verify')}
-                  isLoading={verifyEmailLoading}
-                  onClick={() => handleVerificationEmail(false)}
-                >
-                  Verify Email
-                </Button>
-              </FormHelperText>
-            ) : (
-              <FormHelperText>
-                <Icon as={BsCheck2} color="green" />{' '}
-                <span className="profile-email-verified-text">
-                  Email verified
-                </span>
-              </FormHelperText>
-            )}
-            <Button
-              className="profile-form-update-button"
-              size="sm"
-              isLoading={updateEmailLoading}
-              onClick={handleEmailUpdate}
-            >
-              Update Email
-            </Button>
-          </FormControl>
-
-          <FormControl className="profile-form-control">
-            <FormLabel>Password</FormLabel>
-            <Button
-              variant="link"
-              isDisabled={isInputDisabled('password')}
-              isLoading={resetPasswordLoading}
-              onClick={handlePasswordResetEmail}
-            >
-              Send Reset Password Email
-            </Button>
-            {user && user.providerData[0].providerId !== 'password' && (
-              <FormHelperText>
-                You cannot change your password when signed in via a provider.
-              </FormHelperText>
-            )}
-          </FormControl>
-        </GridItem>
-
-        <GridItem rowSpan={1} colSpan={1}>
-          {user && (
-            <Center>
-              <div className="profile-name-container">
-                <h1 className="profile-name">
-                  {displayName
-                    ? displayName
-                    : `user-${user.uid.substring(0, 6)}`}
-                </h1>
-              </div>
-            </Center>
-          )}
-          <Center>
-            <div className="profile-email-container">
-              <h1 className="profile-email">{email}</h1>
-            </div>
-          </Center>
-        </GridItem>
-      </Grid>
+      {screenWidth > 991 ? (
+        <ProfileDesktop
+          user={user}
+          displayName={displayName}
+          email={email}
+          photoURL={photoURL}
+          formInput={formInput}
+          setFormInput={setFormInput}
+          isInputDisabled={isInputDisabled}
+          updateNameLoading={updateNameLoading}
+          handleNameUpdate={handleNameUpdate}
+          verifyEmailLoading={verifyEmailLoading}
+          handleVerificationEmail={handleVerificationEmail}
+          updateEmailLoading={updateEmailLoading}
+          handleEmailUpdate={handleEmailUpdate}
+          resetPasswordLoading={resetPasswordLoading}
+          handlePasswordResetEmail={handlePasswordResetEmail}
+        />
+      ) : (
+        <ProfileMobile
+          user={user}
+          displayName={displayName}
+          email={email}
+          photoURL={photoURL}
+          formInput={formInput}
+          setFormInput={setFormInput}
+          isInputDisabled={isInputDisabled}
+          updateNameLoading={updateNameLoading}
+          handleNameUpdate={handleNameUpdate}
+          verifyEmailLoading={verifyEmailLoading}
+          handleVerificationEmail={handleVerificationEmail}
+          updateEmailLoading={updateEmailLoading}
+          handleEmailUpdate={handleEmailUpdate}
+          resetPasswordLoading={resetPasswordLoading}
+          handlePasswordResetEmail={handlePasswordResetEmail}
+        />
+      )}
     </Container>
   );
 }
