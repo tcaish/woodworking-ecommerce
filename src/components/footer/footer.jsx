@@ -12,6 +12,7 @@ import { Grid, GridItem, HStack } from '@chakra-ui/react';
 
 // Styles
 import './footer.scss';
+import './footer.mobile.scss';
 
 function Footer() {
   return (

@@ -1,0 +1,11 @@
+// Screen width 767px and under
+@media only screen and (max-width: 767px) {
+  .footer-container {
+    font-size: 0.8rem;
+
+    .footer-social-icon {
+      height: 20px;
+      width: auto;
+    }
+  }
+}
