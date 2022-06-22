@@ -3,25 +3,25 @@
   border-radius: 50px;
   margin-top: 15px;
   margin-bottom: 15px;
-}
 
-.navbar-logo {
-  border-radius: 30px;
-  width: 185px;
-}
-
-.nav-link {
-  color: black !important;
-
-  &:hover {
-    color: grey !important;
+  .navbar-logo {
+    border-radius: 30px;
+    width: 185px;
   }
-}
 
-.navbar-right-link {
-  margin-right: 10px;
-}
+  .nav-link {
+    color: black !important;
 
-.avatar-dropdown-link > .dropdown-toggle::after {
-  display: none !important;
+    &:hover {
+      color: grey !important;
+    }
+  }
+
+  .navbar-right-link {
+    margin-right: 10px;
+  }
+
+  .avatar-dropdown-link > .dropdown-toggle::after {
+    display: none !important;
+  }
 }

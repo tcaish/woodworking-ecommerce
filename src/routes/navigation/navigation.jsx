@@ -31,6 +31,7 @@ import Logo from '../../assets/images/logo/logo-horiz-yellow.png';
 
 // Styles
 import './navigation.scss';
+import './navigation.mobile.scss';
 
 function Navigation() {
   const user = useSelector(selectUser);

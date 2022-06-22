@@ -12,6 +12,7 @@ import { selectScreenWidth } from '../../redux/slices/screenSlice';
 
 // Styles
 import './home-grid-item.scss';
+import './home-grid-item.mobile.scss';
 
 function HomeGridItem({
   title,
