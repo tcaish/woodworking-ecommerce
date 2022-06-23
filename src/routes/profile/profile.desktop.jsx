@@ -113,6 +113,9 @@ function ProfileDesktop(props) {
             className="profile-form-update-button"
             size="sm"
             isLoading={props.updateEmailLoading}
+            isDisabled={
+              props.user && props.user.providerData[0].providerId !== 'password'
+            }
             onClick={props.handleEmailUpdate}
           >
             Update Email

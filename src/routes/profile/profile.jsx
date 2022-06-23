@@ -125,7 +125,12 @@ function Profile() {
 
   // Handles the updating of the user email
   async function handleEmailUpdate() {
-    if (formInput.email === '' || email === formInput.email) return;
+    if (
+      formInput.email === '' ||
+      email === formInput.email ||
+      (user && user.providerData[0].providerId !== 'password')
+    )
+      return;
 
     setUpdateEmailLoading(true);
 
@@ -146,7 +151,8 @@ function Profile() {
 
   // Handles the sending of the password reset email
   async function handlePasswordResetEmail() {
-    if (!email) return;
+    if (!email || (user && user.providerData[0].providerId !== 'password'))
+      return;
 
     setResetPasswordLoading(true);
 
