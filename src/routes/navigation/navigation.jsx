@@ -46,11 +46,24 @@ function Navigation() {
     dropdownMenu.classList.remove('show');
   }
 
+  // Collapses the navbar when on mobile if it is not collapsed
+  function collapseNavbar() {
+    const navbarToggler = document.getElementsByClassName('navbar-toggler')[0];
+    const navbarCollapse =
+      document.getElementsByClassName('navbar-collapse')[0];
+
+    // If navbar is not collapsed
+    if (navbarToggler.classList.length === 1) {
+      navbarToggler.classList.add('collapsed');
+      navbarCollapse.classList.remove('show');
+    }
+  }
+
   return (
     <Container>
       <Navbar expand="lg">
         <Container>
-          <Link className="navbar-link" to="/">
+          <Link className="navbar-link" to="/" onClick={collapseNavbar}>
             <Navbar.Brand>
               <img
                 className="navbar-logo d-inline-block align-top"
@@ -62,13 +75,21 @@ function Navigation() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link className="nav-link" to="/shop">
+              <Link className="nav-link" to="/shop" onClick={collapseNavbar}>
                 Furniture
               </Link>
-              <Link className="nav-link" to="/shop/custom">
+              <Link
+                className="nav-link"
+                to="/shop/custom"
+                onClick={collapseNavbar}
+              >
                 Custom Builds
               </Link>
-              <Link className="nav-link" to="/shop/restoration">
+              <Link
+                className="nav-link"
+                to="/shop/restoration"
+                onClick={collapseNavbar}
+              >
                 Restoration
               </Link>
             </Nav>
@@ -87,18 +108,32 @@ function Navigation() {
                 <Link
                   className="navbar-right-link dropdown-item"
                   to={user ? '/profile' : '/sign-in'}
-                  onClick={hideDropdown}
+                  onClick={() => {
+                    hideDropdown();
+                    collapseNavbar();
+                  }}
                 >
                   {user ? 'Profile' : 'Sign In'}
                 </Link>
 
                 {user && (
-                  <Link className="dropdown-item" to="/" onClick={signOutUser}>
+                  <Link
+                    className="dropdown-item"
+                    to="/"
+                    onClick={() => {
+                      signOutUser();
+                      collapseNavbar();
+                    }}
+                  >
                     Sign Out
                   </Link>
                 )}
               </NavDropdown>
-              <Link className="navbar-right-link nav-link" to="/cart">
+              <Link
+                className="navbar-right-link nav-link"
+                to="/cart"
+                onClick={collapseNavbar}
+              >
                 <IconButton
                   variant="outline"
                   colorScheme="green"
