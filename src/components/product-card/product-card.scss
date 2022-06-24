@@ -1,7 +1,13 @@
 @import '../../exports/constants.scss';
 
-.product-card {
-  .product-new-badge {
-    background-color: $brand-yellow;
+.product-card-container {
+  .product-card {
+    &:hover {
+      cursor: pointer;
+    }
+
+    .product-new-badge {
+      background-color: $brand-yellow;
+    }
   }
 }

@@ -1,3 +1,6 @@
+// Functions
+import { howManyDaysFromToday } from '../exports/functions';
+
 export class Product {
   constructor(
     availability,
@@ -32,7 +35,13 @@ export class Product {
 
   // Returns the total cost for the product
   totalCost() {
-    return this.cost.materials + this.cost.labor;
+    return (this.cost.materials + this.cost.labor).toFixed(2);
+  }
+
+  // Returns whether or not the product has been uploaded to the site
+  // within the past 2 weeks
+  isNew() {
+    return howManyDaysFromToday(this.created) < 14;
   }
 }
 

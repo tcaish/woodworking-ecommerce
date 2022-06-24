@@ -2,10 +2,9 @@
 import { useSelector } from 'react-redux';
 
 // Bootstrap
-import { Container } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { Grid, GridItem } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../redux/slices/inventorySlice';
@@ -19,16 +18,13 @@ function Furniture() {
 
   return (
     <Container className="main-container">
-      <Grid
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(3, 1fr)"
-        gap={4}
-      ></Grid>
-      {products.map((product) => (
-        <GridItem key={product.id} rowSpan={1} colSpan={1}>
-          <ProductCard product={product} />
-        </GridItem>
-      ))}
+      <Row sm={1} md={2} lg={3}>
+        {products.map((product) => (
+          <Col key={product.id}>
+            <ProductCard product={product} />
+          </Col>
+        ))}
+      </Row>
     </Container>
   );
 }
