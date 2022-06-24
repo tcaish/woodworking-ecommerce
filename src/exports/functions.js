@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 // Signing in and out
 export function handleSignInUpErrors(err) {
   let description = '';
@@ -34,4 +36,11 @@ export function handleSignInUpErrors(err) {
   }
 
   return description;
+}
+
+// Returns the amount of days that have gone by since the given timestamp
+export function howManyDaysFromToday(timestamp) {
+  const todaysTimestamp = Timestamp.fromDate(new Date()).toDate().getTime();
+  const diffInTime = todaysTimestamp - timestamp.toDate().getTime();
+  return diffInTime / (1000 * 3600 * 24);
 }

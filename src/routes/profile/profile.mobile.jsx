@@ -26,6 +26,7 @@ function ProfileMobile(props) {
         <Center>
           <Avatar
             className="profile-avatar"
+            referrerPolicy="no-referrer"
             size="2xl"
             bg={props.photoURL && 'none'}
             name={props.displayName ? props.displayName : ''}

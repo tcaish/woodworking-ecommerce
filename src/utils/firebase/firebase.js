@@ -14,7 +14,15 @@ import {
   updateEmail,
   sendEmailVerification
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection
+} from 'firebase/firestore';
+import { productConverter } from '../../classes/Product';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -108,4 +116,16 @@ export async function createUserDocumentFromAuth(
   }
 
   return userDocRef;
+}
+
+export async function getProducts() {
+  const products = [];
+  const ref = collection(firestore, 'products').withConverter(productConverter);
+  const querySnapshot = await getDocs(ref);
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    data.id = doc.id;
+    products.push(data);
+  });
+  return products;
 }

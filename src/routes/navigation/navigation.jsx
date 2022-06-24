@@ -99,6 +99,7 @@ function Navigation() {
                 title={
                   <Avatar
                     size="md"
+                    referrerPolicy="no-referrer"
                     bg={photoURL && photoURL !== '' ? 'none' : null}
                     name={displayName ? displayName : ''}
                     src={photoURL ? photoURL : ''}
