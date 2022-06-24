@@ -12,8 +12,8 @@ function ProductCard({ product }) {
   return (
     <Box
       className="product-card"
-      maxW="sm"
-      borderWidth="1px"
+      maxW="xs"
+      borderWidth="3px"
       borderRadius="lg"
       overflow="hidden"
     >
@@ -63,7 +63,7 @@ function ProductCard({ product }) {
             .map((_, i) => (
               <StarIcon
                 key={i}
-                color={i < product.averageRating() ? 'teal.500' : 'gray.300'}
+                color={i < product.averageRating() ? 'gold' : 'gray.300'}
               />
             ))}
           <Box as="span" ml="2" color="gray.600" fontSize="sm">

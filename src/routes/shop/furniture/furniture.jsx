@@ -22,10 +22,12 @@ function Furniture() {
       <Grid
         templateRows="repeat(2, 1fr)"
         templateColumns="repeat(3, 1fr)"
-        gap={2}
+        gap={4}
       ></Grid>
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <GridItem key={product.id} rowSpan={1} colSpan={1}>
+          <ProductCard product={product} />
+        </GridItem>
       ))}
     </Container>
   );
