@@ -33,6 +33,7 @@ import {
   ProtectedUserRoute,
   ProtectedNoUserRoute
 } from './routes/protected/protected';
+import Detail from './routes/shop/furniture/detail/detail';
 
 // Styles
 import './App.scss';
@@ -63,6 +64,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="shop" element={<Shop />}>
           <Route index element={<Furniture />} />
+          <Route path="product-details/:productId" element={<Detail />} />
           <Route path="custom" element={<Custom />} />
           <Route path="restoration" element={<Restoration />} />
         </Route>

@@ -118,6 +118,7 @@ export async function createUserDocumentFromAuth(
   return userDocRef;
 }
 
+// Returns the products from the database
 export async function getProducts() {
   const products = [];
   const ref = collection(firestore, 'products').withConverter(productConverter);
