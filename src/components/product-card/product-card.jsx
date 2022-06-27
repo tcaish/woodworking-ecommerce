@@ -1,16 +1,25 @@
+// React Redux
+import { useSelector } from 'react-redux';
+
 // Chakra
 import { Badge, Box, Image } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 
+// Slices
+import { selectScreenWidth } from '../../redux/slices/screenSlice';
+
 // Styles
 import './product-card.scss';
+import './product-card.mobile.scss';
 
 function ProductCard({ product }) {
+  const screenWidth = useSelector(selectScreenWidth);
+
   return (
     <div className="product-card-container">
       <Box
         className="product-card hvr-float"
-        maxW="sm"
+        maxW={screenWidth <= 767 ? 'auto' : 'sm'}
         borderWidth="3px"
         borderRadius="lg"
         overflow="hidden"

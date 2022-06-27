@@ -1,6 +1,7 @@
 @import '../../exports/constants.scss';
 
 .product-card-container {
+  margin-top: -10px;
   .product-card {
     &:hover {
       cursor: pointer;

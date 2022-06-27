@@ -22,6 +22,7 @@ import {
   selectDisplayName,
   selectPhotoURL
 } from '../../redux/slices/userSlice';
+import { selectScreenWidth } from '../../redux/slices/screenSlice';
 
 // Components
 import Footer from '../../components/footer/footer';
@@ -37,6 +38,7 @@ function Navigation() {
   const user = useSelector(selectUser);
   const displayName = useSelector(selectDisplayName);
   const photoURL = useSelector(selectPhotoURL);
+  const screenWidth = useSelector(selectScreenWidth);
 
   // Hides the dropdown menu when clicking a menu item button
   function hideDropdown() {
@@ -60,7 +62,7 @@ function Navigation() {
   }
 
   return (
-    <Container>
+    <Container fluid={screenWidth <= 767 ? 'true' : 'sm'}>
       <Navbar expand="lg">
         <Container>
           <Link className="navbar-link" to="/" onClick={collapseNavbar}>

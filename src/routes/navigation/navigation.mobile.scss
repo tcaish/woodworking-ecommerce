@@ -14,3 +14,11 @@
     }
   }
 }
+
+// Screen width 767px and under
+@media only screen and (max-width: 767px) {
+  .navbar {
+    border-radius: 0;
+    margin-top: 0;
+  }
+}

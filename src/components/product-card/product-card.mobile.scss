@@ -1,0 +1,8 @@
+// Screen width 991px and under
+@media only screen and (max-width: 991px) {
+  .product-card-container {
+    .product-card {
+      margin: 15px;
+    }
+  }
+}
