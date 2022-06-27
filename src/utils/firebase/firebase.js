@@ -20,7 +20,10 @@ import {
   getDoc,
   setDoc,
   getDocs,
-  collection
+  collection,
+  query,
+  where,
+  addDoc
 } from 'firebase/firestore';
 import { productConverter } from '../../classes/Product';
 
@@ -129,4 +132,39 @@ export async function getProducts() {
     products.push(data);
   });
   return products;
+}
+
+// Returns the items in the user's cart
+export async function getCartProducts(userId) {
+  const products = [];
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const cartSnapshot = await getDocs(cartRef);
+  cartSnapshot.forEach((doc) => {
+    const data = doc.data();
+    data.id = doc.id;
+    products.push(data);
+  });
+  return products;
+}
+
+// Adds a product to the user's cart
+export async function addProductToCart(productId, quantity, userId) {
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+
+  const q = query(cartRef, where('productId', '==', productId));
+  const querySnapshot = await getDocs(q);
+
+  // If the cart item already exists
+  if (!querySnapshot.empty) return { added: false, error: 'already-exists' };
+
+  return await addDoc(cartRef, {
+    productId,
+    quantity
+  })
+    .then((res) => {
+      return { added: true, error: '' };
+    })
+    .catch((err) => {
+      return { added: false, error: err.code };
+    });
 }

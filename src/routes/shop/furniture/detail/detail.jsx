@@ -1,3 +1,6 @@
+// React
+import { useEffect, useState } from 'react';
+
 // React Router
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,26 +11,42 @@ import { useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { Box, Divider, Image, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Divider,
+  Image,
+  HStack,
+  useToast
+} from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
 import {
+  addToCart,
   selectCartProducts,
   setCartProducts
 } from '../../../../redux/slices/cartSlice';
+import { selectUser } from '../../../../redux/slices/userSlice';
+
+// Firebase
+import {
+  addProductToCart,
+  getCartProducts
+} from '../../../../utils/firebase/firebase';
 
 // Components
 import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 
 // Styles
 import './detail.scss';
-import { useEffect, useState } from 'react';
 
 function Detail() {
+  const toast = useToast();
   const dispatch = useDispatch();
   const params = useParams();
 
+  const user = useSelector(selectUser);
   const products = useSelector(selectProducts);
   const cartProducts = useSelector(selectCartProducts);
 
@@ -38,6 +57,7 @@ function Detail() {
   const [mainImage, setMainImage] = useState('');
   const [otherImages, setOtherImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [addingToCart, setAddingToCart] = useState(false);
 
   // Sets the main image and other images when available
   useEffect(() => {
@@ -48,6 +68,12 @@ function Detail() {
     );
   }, [selectedProduct]);
 
+  // Brings down the user's cart if it hasn't been loaded already
+  useEffect(() => {
+    if (cartProducts.length === 0 && user)
+      getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
+  }, [cartProducts.length, user, dispatch]);
+
   // Handles setting the main image and updating the list of other images
   function handleSelectedImage(event) {
     const selectedImage = event.target;
@@ -56,6 +82,77 @@ function Detail() {
       selectedProduct.pictures.filter(
         (picture) => picture !== selectedImage.src
       )
+    );
+  }
+
+  // Returns whether or not a product is already in the user's cart
+  function isItemAlreadyInCart() {
+    return (
+      cartProducts.filter((item) => item.productId === selectedProduct.id)
+        .length === 1
+    );
+  }
+
+  // Handles showing success or error messages when adding an item to the cart
+  function handleAddToCartSuccessOrError(res) {
+    const failedTitle = 'Failed to Add to Cart';
+    const alreadyInCartDesc = 'This item is already in your cart.';
+
+    if (!user) return true;
+    else if (isItemAlreadyInCart()) {
+      toast({
+        title: failedTitle,
+        description: alreadyInCartDesc,
+        status: 'error',
+        duration: 6000,
+        isClosable: true
+      });
+      return true;
+    }
+
+    if (res) {
+      const description = () => {
+        if (res.added) {
+          const numOrders =
+            quantity === 1 ? '1 order of ' : `${quantity} orders of `;
+          const wasOrWere = quantity === 1 ? 'was' : 'were';
+          return `${numOrders} ${selectedProduct.title} ${wasOrWere} added to your cart successfully!`;
+        }
+
+        if (!res.added && res.error === 'already-exists')
+          return alreadyInCartDesc;
+
+        return 'There was an error adding your item to your cart. Please try again later.';
+      };
+
+      toast({
+        title: res.added ? 'Added to Cart' : failedTitle,
+        description: description(),
+        status: res.added ? 'success' : 'error',
+        duration: 6000,
+        isClosable: true
+      });
+    }
+    return false;
+  }
+
+  // Handles adding an item to the user's cart
+  async function handleAddToCart() {
+    if (handleAddToCartSuccessOrError()) return;
+
+    setAddingToCart(true);
+
+    await addProductToCart(selectedProduct.id, quantity, user.uid).then(
+      (res) => {
+        handleAddToCartSuccessOrError(res);
+
+        if (res.added) {
+          dispatch(addToCart({ productId: selectedProduct.id, quantity }));
+          setQuantity(1);
+        }
+
+        setAddingToCart(false);
+      }
     );
   }
 
@@ -119,6 +216,16 @@ function Detail() {
                   quantity={quantity}
                   setQuantity={setQuantity}
                 />
+              </div>
+
+              <div className="detail-add-to-cart-container">
+                <Button
+                  size="lg"
+                  isLoading={addingToCart}
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </Button>
               </div>
             </Col>
           </Row>
