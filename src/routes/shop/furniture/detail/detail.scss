@@ -34,6 +34,7 @@
     }
 
     .detail-category-avail-container {
+      font-size: large;
       margin-top: 35px;
 
       span {
@@ -53,5 +54,9 @@
     .detail-divider {
       margin: 20px 0;
     }
+  }
+
+  .detail-quantity-container {
+    margin-top: 35px;
   }
 }

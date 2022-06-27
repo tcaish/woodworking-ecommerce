@@ -1,5 +1,5 @@
 // React Router
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // React Router
 import { useParams } from 'react-router-dom';
@@ -12,14 +12,24 @@ import { Box, Divider, Image, HStack } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
+import {
+  selectCartProducts,
+  setCartProducts
+} from '../../../../redux/slices/cartSlice';
+
+// Components
+import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 
 // Styles
 import './detail.scss';
 import { useEffect, useState } from 'react';
 
 function Detail() {
+  const dispatch = useDispatch();
   const params = useParams();
+
   const products = useSelector(selectProducts);
+  const cartProducts = useSelector(selectCartProducts);
 
   const selectedProduct = products.filter(
     (product) => product.id === params.productId
@@ -27,6 +37,7 @@ function Detail() {
 
   const [mainImage, setMainImage] = useState('');
   const [otherImages, setOtherImages] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   // Sets the main image and other images when available
   useEffect(() => {
@@ -100,10 +111,15 @@ function Detail() {
                   </span>
                 </h3>
               </div>
-
               <Divider className="detail-divider" color="lightgrey" />
-
               <p>{selectedProduct.description}</p>
+
+              <div className="detail-quantity-container">
+                <QuantityController
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                />
+              </div>
             </Col>
           </Row>
         )}
