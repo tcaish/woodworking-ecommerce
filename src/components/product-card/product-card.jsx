@@ -1,3 +1,6 @@
+// React Router
+import { useLocation, useNavigate } from 'react-router-dom';
+
 // React Redux
 import { useSelector } from 'react-redux';
 
@@ -13,7 +16,15 @@ import './product-card.scss';
 import './product-card.mobile.scss';
 
 function ProductCard({ product }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const screenWidth = useSelector(selectScreenWidth);
+
+  // Handles showing the correct product detail page
+  function showProductDetailsPage() {
+    navigate(`${location.pathname}/product-details/${product.id}`);
+  }
 
   return (
     <div className="product-card-container">
@@ -23,6 +34,7 @@ function ProductCard({ product }) {
         borderWidth="3px"
         borderRadius="lg"
         overflow="hidden"
+        onClick={showProductDetailsPage}
       >
         <Image src={product.pictures[0]} alt={product.title} h="auto" />
         <Box p="6">
