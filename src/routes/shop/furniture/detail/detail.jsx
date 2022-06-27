@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { Box, Image, HStack } from '@chakra-ui/react';
+import { Box, Divider, Image, HStack } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -51,32 +51,62 @@ function Detail() {
   return (
     <div className="main-container">
       <div className="detail-container">
-        <Row sm={1} lg={2}>
-          <Col>
-            <Box className="detail-main-image-container" boxSize="md">
-              <Image boxSize="md" alt="Main Picture" src={mainImage} />
-            </Box>
+        {selectedProduct && (
+          <Row sm={1} lg={2}>
+            <Col className="detail-images-container">
+              <Box className="detail-main-image-container" boxSize="md">
+                <Image boxSize="md" alt="Main Picture" src={mainImage} />
+              </Box>
 
-            <HStack>
-              {otherImages &&
-                otherImages.map((pictureUrl, index) => (
-                  <Box
-                    className="detail-image-container"
-                    boxSize="100px"
-                    key={index}
+              <HStack>
+                {otherImages &&
+                  otherImages.map((pictureUrl, index) => (
+                    <Box
+                      className="detail-image-container"
+                      boxSize="100px"
+                      key={index}
+                    >
+                      <Image
+                        h="100%"
+                        alt="Additional Picture"
+                        src={pictureUrl}
+                        onClick={handleSelectedImage}
+                      />
+                    </Box>
+                  ))}
+              </HStack>
+            </Col>
+            <Col className="detail-description-container">
+              <h1 className="detail-title">{selectedProduct.title}</h1>
+
+              <div className="detail-cost-container">
+                <h2 className="detail-cost">${selectedProduct.totalCost()}</h2>
+                <ul className="detail-cost-breakdown">
+                  <li>Materials: ${selectedProduct.cost.materials}</li>
+                  <li>Labor: ${selectedProduct.cost.labor}</li>
+                </ul>
+              </div>
+
+              <div className="detail-category-avail-container">
+                <h3 className="detail-category">
+                  Category: <span>{selectedProduct.category}</span>
+                </h3>
+                <h3 className="detail-availability">
+                  Availability:{' '}
+                  <span
+                    style={{ color: selectedProduct.getAvailabilityColor() }}
                   >
-                    <Image
-                      h="100%"
-                      alt="Additional Picture"
-                      src={pictureUrl}
-                      onClick={handleSelectedImage}
-                    />
-                  </Box>
-                ))}
-            </HStack>
-          </Col>
-          <Col>Description</Col>
-        </Row>
+                    {selectedProduct.getAvailabilityString()}
+                  </span>
+                </h3>
+              </div>
+
+              <Divider className="detail-divider" color="lightgrey" />
+
+              <p>{selectedProduct.description}</p>
+            </Col>
+          </Row>
+        )}
       </div>
     </div>
   );

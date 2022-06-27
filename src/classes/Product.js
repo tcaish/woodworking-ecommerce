@@ -43,6 +43,16 @@ export class Product {
   isNew() {
     return howManyDaysFromToday(this.created) < 14;
   }
+
+  // Returns the string respective for if it's available or not
+  getAvailabilityString() {
+    return this.availability ? 'Available' : 'Out of Stock';
+  }
+
+  // Returns the color that will be on the availability text
+  getAvailabilityColor() {
+    return this.availability ? 'green' : 'darkred';
+  }
 }
 
 // Converts a product collection in the Firestore database to a Product object

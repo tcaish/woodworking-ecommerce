@@ -1,10 +1,57 @@
+@import '../../../../exports/constants.scss';
+
 .detail-container {
-  .detail-main-image-container {
-    margin-bottom: 15px;
+  padding: 40px;
+
+  .detail-images-container {
+    .detail-main-image-container {
+      margin-bottom: 15px;
+    }
+
+    .detail-image-container:hover {
+      cursor: pointer;
+      opacity: 0.75;
+    }
   }
 
-  .detail-image-container:hover {
-    cursor: pointer;
-    opacity: 0.75;
+  .detail-description-container {
+    .detail-title {
+      font-size: xx-large;
+      font-weight: 700;
+    }
+
+    .detail-cost-container {
+      margin-top: 10px;
+
+      .detail-cost {
+        color: $brand-dark-yellow;
+        font-size: x-large;
+        font-weight: 700;
+      }
+      .detail-cost-breakdown {
+        padding-left: 20px;
+      }
+    }
+
+    .detail-category-avail-container {
+      margin-top: 35px;
+
+      span {
+        font-weight: 400;
+      }
+
+      .detail-category {
+        font-weight: 600;
+      }
+
+      .detail-availability {
+        font-weight: 600;
+        margin-top: 10px;
+      }
+    }
+
+    .detail-divider {
+      margin: 20px 0;
+    }
   }
 }

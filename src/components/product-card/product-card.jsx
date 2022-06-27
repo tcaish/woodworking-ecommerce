@@ -42,10 +42,8 @@ function ProductCard({ product }) {
               ml={product.isNew() ? '2' : '0'}
             >
               <span>{product.category}</span> &bull;{' '}
-              <span
-                style={{ color: product.availability ? 'green' : 'darkred' }}
-              >
-                {product.availability ? 'Available' : 'Out of Stock'}
+              <span style={{ color: product.getAvailabilityColor() }}>
+                {product.getAvailabilityString()}
               </span>
             </Box>
           </Box>
