@@ -35,6 +35,9 @@ import {
 } from './routes/protected/protected';
 import Detail from './routes/shop/furniture/detail/detail';
 
+// Exports
+import { NAVIGATION_PATHS } from './exports/constants';
+
 // Styles
 import './App.scss';
 
@@ -60,33 +63,40 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Navigation />}>
+      <Route path={NAVIGATION_PATHS.home} element={<Navigation />}>
         <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />}>
+        <Route path={NAVIGATION_PATHS.shop} element={<Shop />}>
           <Route index element={<Furniture />} />
           <Route path="product-details/:productId" element={<Detail />} />
-          <Route path="custom" element={<Custom />} />
-          <Route path="restoration" element={<Restoration />} />
+          <Route path={NAVIGATION_PATHS.shop_custom} element={<Custom />} />
+          <Route
+            path={NAVIGATION_PATHS.shop_restoration}
+            element={<Restoration />}
+          />
         </Route>
-        <Route path="cart" element={<Cart />} />
+        <Route path={NAVIGATION_PATHS.cart} element={<Cart />} />
         <Route
-          path="profile"
+          path={NAVIGATION_PATHS.profile}
           element={
-            <ProtectedUserRoute user={user} redirectPath="/sign-in">
+            <ProtectedUserRoute
+              user={user}
+              redirectPath={NAVIGATION_PATHS.sign_in}
+            >
               <Profile />
             </ProtectedUserRoute>
           }
         />
         <Route
-          path="sign-in"
+          path={NAVIGATION_PATHS.sign_in}
           element={
             <ProtectedNoUserRoute>
               <SignIn />
             </ProtectedNoUserRoute>
           }
         />
-        <Route path="sign-up" element={<SignUp />} />
-        <Route path="support" element={<Support />} />
+        <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
+        <Route path={NAVIGATION_PATHS.support} element={<Support />} />
+        {/* <Route path={NAVIGATION_PATHS.return} element={<Return />} /> */}
       </Route>
     </Routes>
   );

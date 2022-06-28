@@ -10,6 +10,9 @@ import bg1 from '../../assets/images/grid-bg-1.jpg';
 import bg2 from '../../assets/images/grid-bg-2.jpg';
 import bg3 from '../../assets/images/grid-bg-3.jpg';
 
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+
 // Styles
 import './home.scss';
 
@@ -26,7 +29,7 @@ function Home() {
           title="Furniture"
           titleColor="white"
           buttonTitle="Shop Furniture"
-          path="/shop"
+          path={NAVIGATION_PATHS.shop}
           image={bg3}
           rowSpan={2}
           colSpan={3}
@@ -34,7 +37,7 @@ function Home() {
         <HomeGridItem
           title="Custom Builds"
           buttonTitle="Submit Build"
-          path="/shop/custom"
+          path={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_custom}`}
           image={bg2}
           rowSpan={null}
           colSpan={2}
@@ -42,7 +45,7 @@ function Home() {
         <HomeGridItem
           title="Restoration"
           buttonTitle="Submit Restoration"
-          path="/shop/restoration"
+          path={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_restoration}`}
           image={bg1}
           rowSpan={null}
           colSpan={2}

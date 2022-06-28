@@ -16,6 +16,9 @@ import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 // Components
 import Search from '../../components/search/search';
 
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+
 function Shop() {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -30,7 +33,7 @@ function Shop() {
 
   return (
     <div>
-      {location.pathname === '/shop' && <Search />}
+      {location.pathname === `/${NAVIGATION_PATHS.shop}` && <Search />}
       <Outlet />
     </div>
   );

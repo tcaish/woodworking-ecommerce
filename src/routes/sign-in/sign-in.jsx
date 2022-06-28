@@ -27,8 +27,9 @@ import {
   signInWithEmailPassword
 } from '../../utils/firebase/firebase';
 
-// Functions
+// Exports
 import { handleSignInUpErrors } from '../../exports/functions';
+import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './sign-in.scss';
@@ -217,7 +218,7 @@ function SignIn() {
 
         <div className="sign-in-create-account-container">
           <Center>
-            <Link to="/sign-up">
+            <Link to={`/${NAVIGATION_PATHS.sign_up}`}>
               <Button variant="link">Create an Account</Button>
             </Link>
           </Center>

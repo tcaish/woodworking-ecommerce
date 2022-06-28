@@ -30,6 +30,9 @@ import Footer from '../../components/footer/footer';
 // Images
 import Logo from '../../assets/images/logo/logo-horiz-yellow.png';
 
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+
 // Styles
 import './navigation.scss';
 import './navigation.mobile.scss';
@@ -77,19 +80,23 @@ function Navigation() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link className="nav-link" to="/shop" onClick={collapseNavbar}>
+              <Link
+                className="nav-link"
+                to={NAVIGATION_PATHS.shop}
+                onClick={collapseNavbar}
+              >
                 Furniture
               </Link>
               <Link
                 className="nav-link"
-                to="/shop/custom"
+                to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_custom}`}
                 onClick={collapseNavbar}
               >
                 Custom Builds
               </Link>
               <Link
                 className="nav-link"
-                to="/shop/restoration"
+                to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_restoration}`}
                 onClick={collapseNavbar}
               >
                 Restoration
@@ -110,7 +117,9 @@ function Navigation() {
               >
                 <Link
                   className="navbar-right-link dropdown-item"
-                  to={user ? '/profile' : '/sign-in'}
+                  to={
+                    user ? NAVIGATION_PATHS.profile : NAVIGATION_PATHS.sign_in
+                  }
                   onClick={() => {
                     hideDropdown();
                     collapseNavbar();
@@ -122,7 +131,7 @@ function Navigation() {
                 {user && (
                   <Link
                     className="dropdown-item"
-                    to="/"
+                    to={NAVIGATION_PATHS.home}
                     onClick={() => {
                       signOutUser();
                       collapseNavbar();
@@ -134,7 +143,7 @@ function Navigation() {
               </NavDropdown>
               <Link
                 className="navbar-right-link nav-link"
-                to="/cart"
+                to={NAVIGATION_PATHS.cart}
                 onClick={collapseNavbar}
               >
                 <IconButton

@@ -47,6 +47,7 @@ import BackButton from '../../../../components/back-button/back-button';
 
 // Exports
 import { shareToSocialMedia } from '../../../../exports/functions';
+import { NAVIGATION_PATHS } from '../../../../exports/constants';
 
 // Styles
 import './detail.scss';
@@ -181,7 +182,7 @@ function Detail() {
         <Row>
           <Col>
             <div className="detail-back-button">
-              <BackButton path="/shop" />
+              <BackButton path={`/${NAVIGATION_PATHS.shop}`} />
             </div>
           </Col>
         </Row>

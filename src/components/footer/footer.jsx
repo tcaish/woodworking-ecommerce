@@ -10,6 +10,9 @@ import { Container } from 'react-bootstrap';
 // Chakra
 import { Grid, GridItem, HStack } from '@chakra-ui/react';
 
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+
 // Styles
 import './footer.scss';
 import './footer.mobile.scss';
@@ -21,9 +24,9 @@ function Footer() {
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
           <GridItem>Copyright © 2022 Caish Enterprises, LLC</GridItem>
           <GridItem className="footer-link-align-center">
-            <Link to="/support">Support</Link>
+            <Link to={`/${NAVIGATION_PATHS.support}`}>Support</Link>
             {' • '}
-            <Link to="/returns">Returns</Link>
+            <Link to={`/${NAVIGATION_PATHS.return}`}>Returns</Link>
           </GridItem>
           <GridItem className="footer-link-align-right">
             <HStack spacing="15px">

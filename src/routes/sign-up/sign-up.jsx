@@ -43,6 +43,7 @@ import { handleSignInUpErrors } from '../../exports/functions';
 // Styles
 import '../sign-in/sign-in.scss';
 import './sign-up.scss';
+import { NAVIGATION_PATHS } from '../../exports/constants';
 
 const defaultFormInput = {
   displayName: '',
@@ -325,7 +326,7 @@ function SignUp() {
         </div>
         <div className="sign-in-create-account-container">
           <Center>
-            <Link to="/sign-in">
+            <Link to={`/${NAVIGATION_PATHS.sign_in}`}>
               <Button variant="link">Sign In</Button>
             </Link>
           </Center>
