@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 // React Router
 import { useParams } from 'react-router-dom';
 
+// React Icons
+import { FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { BsArrow90DegDown } from 'react-icons/bs';
+
 // Bootstrap
 import { Col, Row } from 'react-bootstrap';
 
@@ -15,9 +19,11 @@ import {
   Box,
   Button,
   Divider,
+  Icon,
   Image,
   HStack,
-  useToast
+  useToast,
+  Tooltip
 } from '@chakra-ui/react';
 
 // Slices
@@ -219,13 +225,47 @@ function Detail() {
               </div>
 
               <div className="detail-add-to-cart-container">
-                <Button
-                  size="lg"
-                  isLoading={addingToCart}
-                  onClick={handleAddToCart}
+                <Tooltip
+                  hasArrow
+                  shouldWrapChildren
+                  mt="5"
+                  label="This item is already in your cart."
+                  isDisabled={!isItemAlreadyInCart()}
                 >
-                  Add to Cart
-                </Button>
+                  <Button
+                    size="lg"
+                    isLoading={addingToCart}
+                    isDisabled={isItemAlreadyInCart()}
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                  </Button>
+                </Tooltip>
+              </div>
+
+              <div className="detail-social-icons">
+                <h3 className="detail-share-text">
+                  Share on social media{' '}
+                  <Icon
+                    className="detail-social-arrow flip-svg-horizontally"
+                    as={BsArrow90DegDown}
+                  />
+                </h3>
+
+                <HStack>
+                  <Button colorScheme="facebook" leftIcon={<FaFacebook />}>
+                    Facebook
+                  </Button>
+                  <Button colorScheme="twitter" leftIcon={<FaTwitter />}>
+                    Twitter
+                  </Button>
+                  <Button
+                    className="detail-social-button-linkedin"
+                    leftIcon={<FaLinkedin />}
+                  >
+                    LinkedIn
+                  </Button>
+                </HStack>
               </div>
             </Col>
           </Row>

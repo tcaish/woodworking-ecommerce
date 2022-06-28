@@ -18,6 +18,10 @@ body {
   padding: 20px;
 }
 
+.flip-svg-horizontally {
+  transform: scale(-1, 1);
+}
+
 .hvr-float {
   box-shadow: 0;
   display: inline-block;
