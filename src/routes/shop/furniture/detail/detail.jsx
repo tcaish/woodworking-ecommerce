@@ -117,6 +117,15 @@ function Detail() {
         isClosable: true
       });
       return true;
+    } else if (!selectedProduct.availability) {
+      toast({
+        title: failedTitle,
+        description: 'This item is currently out of stock.',
+        status: 'error',
+        duration: 6000,
+        isClosable: true
+      });
+      return true;
     }
 
     if (res) {
@@ -232,13 +241,19 @@ function Detail() {
                   hasArrow
                   shouldWrapChildren
                   mt="5"
-                  label="This item is already in your cart."
+                  label={
+                    !selectedProduct.availability
+                      ? 'This item is currently out of stock.'
+                      : 'This item is already in your cart.'
+                  }
                   isDisabled={!isItemAlreadyInCart()}
                 >
                   <Button
                     size="lg"
                     isLoading={addingToCart}
-                    isDisabled={isItemAlreadyInCart()}
+                    isDisabled={
+                      isItemAlreadyInCart() || !selectedProduct.availability
+                    }
                     onClick={handleAddToCart}
                   >
                     Add to Cart
