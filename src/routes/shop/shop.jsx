@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // React Router
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 
 // Firebase
 import { getProducts } from '../../utils/firebase/firebase';
@@ -18,6 +18,8 @@ import Search from '../../components/search/search';
 
 function Shop() {
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const products = useSelector(selectProducts);
 
   // Fetches and stores the products if not already done
@@ -28,7 +30,7 @@ function Shop() {
 
   return (
     <div>
-      <Search />
+      {location.pathname === '/shop' && <Search />}
       <Outlet />
     </div>
   );
