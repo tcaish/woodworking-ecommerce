@@ -43,6 +43,7 @@ import {
 
 // Components
 import QuantityController from '../../../../components/quantity-controller/quantity-controller';
+import BackButton from '../../../../components/back-button/back-button';
 
 // Exports
 import { shareToSocialMedia } from '../../../../exports/functions';
@@ -177,6 +178,13 @@ function Detail() {
   return (
     <div className="main-container">
       <div className="detail-container">
+        <Row>
+          <Col>
+            <div className="detail-back-button">
+              <BackButton path="/shop" />
+            </div>
+          </Col>
+        </Row>
         {selectedProduct && (
           <Row sm={1} lg={2}>
             <Col className="detail-images-container">
