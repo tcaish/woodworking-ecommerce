@@ -44,6 +44,9 @@ import {
 // Components
 import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 
+// Exports
+import { shareToSocialMedia } from '../../../../exports/functions';
+
 // Styles
 import './detail.scss';
 
@@ -253,15 +256,24 @@ function Detail() {
                 </h3>
 
                 <HStack>
-                  <Button colorScheme="facebook" leftIcon={<FaFacebook />}>
+                  <Button
+                    colorScheme="facebook"
+                    leftIcon={<FaFacebook />}
+                    onClick={() => shareToSocialMedia('facebook')}
+                  >
                     Facebook
                   </Button>
-                  <Button colorScheme="twitter" leftIcon={<FaTwitter />}>
+                  <Button
+                    colorScheme="twitter"
+                    leftIcon={<FaTwitter />}
+                    onClick={() => shareToSocialMedia('twitter')}
+                  >
                     Twitter
                   </Button>
                   <Button
                     className="detail-social-button-linkedin"
                     leftIcon={<FaLinkedin />}
+                    onClick={() => shareToSocialMedia('linkedin')}
                   >
                     LinkedIn
                   </Button>

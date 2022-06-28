@@ -44,3 +44,30 @@ export function howManyDaysFromToday(timestamp) {
   const diffInTime = todaysTimestamp - timestamp.toDate().getTime();
   return diffInTime / (1000 * 3600 * 24);
 }
+
+// Returns the full URL of the current page encoded
+export function getFullURLEncoded() {
+  return encodeURIComponent(window.location.href);
+}
+
+// Opens a popup window to share page to specified social media
+export function shareToSocialMedia(socialType) {
+  let shareLink = '';
+
+  if (socialType === 'facebook') {
+    shareLink = 'https://www.facebook.com/sharer/sharer.php?u=';
+  } else if (socialType === 'twitter') {
+    shareLink = 'https://twitter.com/intent/tweet?url=';
+  } else if (socialType === 'linkedin') {
+    shareLink = 'http://www.linkedin.com/shareArticle?mini=true&url=';
+  } else {
+    return;
+  }
+
+  window.open(
+    `${shareLink}${getFullURLEncoded()}`,
+    'popup',
+    'width=600,height=600,scrollbars=no,resizable=no'
+  );
+  return false;
+}
