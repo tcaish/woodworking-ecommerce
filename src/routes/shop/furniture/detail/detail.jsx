@@ -16,11 +16,9 @@ import { Col, Row } from 'react-bootstrap';
 
 // Chakra
 import {
-  Box,
   Button,
   Divider,
   Icon,
-  Image,
   HStack,
   useToast,
   Tooltip
@@ -44,6 +42,7 @@ import {
 // Components
 import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 import BackButton from '../../../../components/back-button/back-button';
+import DetailImages from '../../../../components/detail/detail-images/detail-images';
 
 // Exports
 import { shareToSocialMedia } from '../../../../exports/functions';
@@ -189,27 +188,11 @@ function Detail() {
         {selectedProduct && (
           <Row sm={1} lg={2}>
             <Col className="detail-images-container">
-              <Box className="detail-main-image-container" boxSize="md">
-                <Image boxSize="md" alt="Main Picture" src={mainImage} />
-              </Box>
-
-              <HStack>
-                {otherImages &&
-                  otherImages.map((pictureUrl, index) => (
-                    <Box
-                      className="detail-image-container"
-                      boxSize="100px"
-                      key={index}
-                    >
-                      <Image
-                        h="100%"
-                        alt="Additional Picture"
-                        src={pictureUrl}
-                        onClick={handleSelectedImage}
-                      />
-                    </Box>
-                  ))}
-              </HStack>
+              <DetailImages
+                mainImage={mainImage}
+                otherImages={otherImages}
+                handleSelectedImage={handleSelectedImage}
+              />
             </Col>
             <Col className="detail-description-container">
               <h1 className="detail-title">{selectedProduct.title}</h1>
