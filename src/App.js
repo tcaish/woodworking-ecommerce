@@ -34,6 +34,7 @@ import {
   ProtectedNoUserRoute
 } from './routes/protected/protected';
 import Detail from './routes/shop/furniture/detail/detail';
+import Return from './routes/return/return';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -96,7 +97,7 @@ function App() {
         />
         <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
         <Route path={NAVIGATION_PATHS.support} element={<Support />} />
-        {/* <Route path={NAVIGATION_PATHS.return} element={<Return />} /> */}
+        <Route path={NAVIGATION_PATHS.return} element={<Return />} />
       </Route>
     </Routes>
   );
