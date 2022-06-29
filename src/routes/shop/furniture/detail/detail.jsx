@@ -36,13 +36,14 @@ import QuantityController from '../../../../components/quantity-controller/quant
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
 import AddToCartButton from '../../../../components/add-to-cart-button/add-to-cart-button';
+import ShareToSocialButtons from '../../../../components/share-to-social-buttons/share-to-social-buttons';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
 
 // Styles
 import './detail.scss';
-import ShareToSocialButtons from '../../../../components/share-to-social-buttons/share-to-social-buttons';
+import './detail.mobile.scss';
 
 function Detail() {
   const toast = useToast();
@@ -179,7 +180,7 @@ function Detail() {
           </Col>
         </Row>
         {selectedProduct && (
-          <Row sm={1} lg={2}>
+          <Row sm={1} md={1} lg={1} xl={2}>
             <Col className="detail-images-container">
               <DetailImages
                 mainImage={mainImage}
