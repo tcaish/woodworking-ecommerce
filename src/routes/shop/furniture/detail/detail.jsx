@@ -15,14 +15,7 @@ import { BsArrow90DegDown } from 'react-icons/bs';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import {
-  Button,
-  Divider,
-  Icon,
-  HStack,
-  useToast,
-  Tooltip
-} from '@chakra-ui/react';
+import { Button, Divider, Icon, HStack, useToast } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -43,6 +36,7 @@ import {
 import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
+import AddToCartButton from '../../../../components/add-to-cart-button/add-to-cart-button';
 
 // Exports
 import { shareToSocialMedia } from '../../../../exports/functions';
@@ -229,28 +223,12 @@ function Detail() {
               </div>
 
               <div className="detail-add-to-cart-container">
-                <Tooltip
-                  hasArrow
-                  shouldWrapChildren
-                  mt="5"
-                  label={
-                    !selectedProduct.availability
-                      ? 'This item is currently out of stock.'
-                      : 'This item is already in your cart.'
-                  }
-                  isDisabled={!isItemAlreadyInCart()}
-                >
-                  <Button
-                    size="lg"
-                    isLoading={addingToCart}
-                    isDisabled={
-                      isItemAlreadyInCart() || !selectedProduct.availability
-                    }
-                    onClick={handleAddToCart}
-                  >
-                    Add to Cart
-                  </Button>
-                </Tooltip>
+                <AddToCartButton
+                  selectedProduct={selectedProduct}
+                  isItemAlreadyInCart={isItemAlreadyInCart}
+                  addingToCart={addingToCart}
+                  handleAddToCart={handleAddToCart}
+                />
               </div>
 
               <div className="detail-social-icons">

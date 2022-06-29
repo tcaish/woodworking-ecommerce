@@ -1,0 +1,9 @@
+@import '../../exports/constants.scss';
+
+.add-to-cart-button {
+  background-color: $brand-yellow !important;
+
+  &:hover {
+    opacity: 0.75;
+  }
+}
