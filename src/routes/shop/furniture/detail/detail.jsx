@@ -7,14 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 // React Router
 import { useParams } from 'react-router-dom';
 
-// React Icons
-import { BsArrow90DegDown } from 'react-icons/bs';
-
 // Bootstrap
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { Divider, Icon, useToast } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -32,11 +29,9 @@ import {
 } from '../../../../utils/firebase/firebase';
 
 // Components
-import QuantityController from '../../../../components/quantity-controller/quantity-controller';
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
-import AddToCartButton from '../../../../components/add-to-cart-button/add-to-cart-button';
-import ShareToSocialButtons from '../../../../components/share-to-social-buttons/share-to-social-buttons';
+import DetailInfo from '../../../../components/detail/detail-info/detail-info';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
@@ -188,60 +183,15 @@ function Detail() {
                 handleSelectedImage={handleSelectedImage}
               />
             </Col>
-            <Col className="detail-description-container">
-              <h1 className="detail-title">{selectedProduct.title}</h1>
-
-              <div className="detail-cost-container">
-                <h2 className="detail-cost">${selectedProduct.totalCost()}</h2>
-                <ul className="detail-cost-breakdown">
-                  <li>Materials: ${selectedProduct.cost.materials}</li>
-                  <li>Labor: ${selectedProduct.cost.labor}</li>
-                </ul>
-              </div>
-
-              <div className="detail-category-avail-container">
-                <h3 className="detail-category">
-                  Category: <span>{selectedProduct.category}</span>
-                </h3>
-                <h3 className="detail-availability">
-                  Availability:{' '}
-                  <span
-                    style={{ color: selectedProduct.getAvailabilityColor() }}
-                  >
-                    {selectedProduct.getAvailabilityString()}
-                  </span>
-                </h3>
-              </div>
-              <Divider className="detail-divider" color="lightgrey" />
-              <p>{selectedProduct.description}</p>
-
-              <div className="detail-quantity-container">
-                <QuantityController
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                />
-              </div>
-
-              <div className="detail-add-to-cart-container">
-                <AddToCartButton
-                  selectedProduct={selectedProduct}
-                  isItemAlreadyInCart={isItemAlreadyInCart}
-                  addingToCart={addingToCart}
-                  handleAddToCart={handleAddToCart}
-                />
-              </div>
-
-              <div className="detail-social-share-container">
-                <h3 className="detail-share-text">
-                  Share on social media{' '}
-                  <Icon
-                    className="detail-social-arrow flip-svg-horizontally"
-                    as={BsArrow90DegDown}
-                  />
-                </h3>
-
-                <ShareToSocialButtons />
-              </div>
+            <Col>
+              <DetailInfo
+                selectedProduct={selectedProduct}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                isItemAlreadyInCart={isItemAlreadyInCart}
+                addingToCart={addingToCart}
+                handleAddToCart={handleAddToCart}
+              />
             </Col>
           </Row>
         )}
