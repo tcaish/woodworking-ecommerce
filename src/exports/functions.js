@@ -1,4 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
+import { SOCIAL_TYPES } from './constants';
 
 // Signing in and out
 export function handleSignInUpErrors(err) {
@@ -54,11 +55,11 @@ export function getFullURLEncoded() {
 export function shareToSocialMedia(socialType) {
   let shareLink = '';
 
-  if (socialType === 'facebook') {
+  if (socialType === SOCIAL_TYPES.facebook) {
     shareLink = 'https://www.facebook.com/sharer/sharer.php?u=';
-  } else if (socialType === 'twitter') {
+  } else if (socialType === SOCIAL_TYPES.twitter) {
     shareLink = 'https://twitter.com/intent/tweet?url=';
-  } else if (socialType === 'linkedin') {
+  } else if (socialType === SOCIAL_TYPES.linkedin) {
     shareLink = 'http://www.linkedin.com/shareArticle?mini=true&url=';
   } else {
     return;

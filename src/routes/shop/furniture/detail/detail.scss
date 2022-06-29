@@ -57,7 +57,7 @@
     margin-top: 20px;
   }
 
-  .detail-social-icons {
+  .detail-social-share-container {
     margin-top: 35px;
 
     .detail-share-text {
@@ -67,15 +67,6 @@
 
     .detail-share-arrow {
       margin-top: 13px;
-    }
-
-    .detail-social-button-linkedin {
-      background-color: $linkedin;
-      color: white;
-
-      &:hover {
-        background-color: $linkedin-hover;
-      }
     }
   }
 }

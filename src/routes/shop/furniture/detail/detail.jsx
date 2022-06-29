@@ -8,14 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 // React Icons
-import { FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { BsArrow90DegDown } from 'react-icons/bs';
 
 // Bootstrap
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Divider, Icon, HStack, useToast } from '@chakra-ui/react';
+import { Divider, Icon, useToast } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -39,11 +38,11 @@ import DetailImages from '../../../../components/detail/detail-images/detail-ima
 import AddToCartButton from '../../../../components/add-to-cart-button/add-to-cart-button';
 
 // Exports
-import { shareToSocialMedia } from '../../../../exports/functions';
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
 
 // Styles
 import './detail.scss';
+import ShareToSocialButtons from '../../../../components/share-to-social-buttons/share-to-social-buttons';
 
 function Detail() {
   const toast = useToast();
@@ -231,7 +230,7 @@ function Detail() {
                 />
               </div>
 
-              <div className="detail-social-icons">
+              <div className="detail-social-share-container">
                 <h3 className="detail-share-text">
                   Share on social media{' '}
                   <Icon
@@ -240,29 +239,7 @@ function Detail() {
                   />
                 </h3>
 
-                <HStack>
-                  <Button
-                    colorScheme="facebook"
-                    leftIcon={<FaFacebook />}
-                    onClick={() => shareToSocialMedia('facebook')}
-                  >
-                    Facebook
-                  </Button>
-                  <Button
-                    colorScheme="twitter"
-                    leftIcon={<FaTwitter />}
-                    onClick={() => shareToSocialMedia('twitter')}
-                  >
-                    Twitter
-                  </Button>
-                  <Button
-                    className="detail-social-button-linkedin"
-                    leftIcon={<FaLinkedin />}
-                    onClick={() => shareToSocialMedia('linkedin')}
-                  >
-                    LinkedIn
-                  </Button>
-                </HStack>
+                <ShareToSocialButtons />
               </div>
             </Col>
           </Row>

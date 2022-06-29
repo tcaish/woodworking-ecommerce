@@ -1,0 +1,10 @@
+@import '../../exports/constants.scss';
+
+.detail-social-button-linkedin {
+  background-color: $linkedin;
+  color: white;
+
+  &:hover {
+    background-color: $linkedin-hover;
+  }
+}

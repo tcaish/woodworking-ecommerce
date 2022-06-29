@@ -10,3 +10,9 @@ export const NAVIGATION_PATHS = {
   support: 'support',
   return: 'return'
 };
+
+export const SOCIAL_TYPES = {
+  facebook: 'facebook',
+  twitter: 'twitter',
+  linkedin: 'linkedin'
+};
