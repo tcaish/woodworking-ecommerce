@@ -11,7 +11,16 @@ import { useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { useToast } from '@chakra-ui/react';
+import {
+  useToast,
+  Stat,
+  Box,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  Divider,
+  Text
+} from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -32,6 +41,7 @@ import {
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
 import DetailInfo from '../../../../components/detail/detail-info/detail-info';
+import StarRating from '../../../../components/star-rating/star-rating';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
@@ -39,6 +49,7 @@ import { NAVIGATION_PATHS } from '../../../../exports/constants';
 // Styles
 import './detail.scss';
 import './detail.mobile.scss';
+import { StarIcon } from '@chakra-ui/icons';
 
 function Detail() {
   const toast = useToast();
@@ -182,27 +193,71 @@ function Detail() {
           </Col>
         </Row>
         {selectedProduct && (
-          <Row sm={1} md={1} lg={1} xl={2}>
-            <Col className="detail-images-container">
-              <DetailImages
-                mainImage={mainImage}
-                otherImages={otherImages}
-                handleSelectedImage={handleSelectedImage}
-                pageLoading={pageLoading}
-              />
-            </Col>
-            <Col>
-              <DetailInfo
-                selectedProduct={selectedProduct}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                isItemAlreadyInCart={isItemAlreadyInCart}
-                addingToCart={addingToCart}
-                handleAddToCart={handleAddToCart}
-                pageLoading={pageLoading}
-              />
-            </Col>
-          </Row>
+          <>
+            <Row sm={1} md={1} lg={1} xl={2}>
+              <Col className="detail-images-container">
+                <DetailImages
+                  mainImage={mainImage}
+                  otherImages={otherImages}
+                  handleSelectedImage={handleSelectedImage}
+                  pageLoading={pageLoading}
+                />
+              </Col>
+              <Col>
+                <DetailInfo
+                  selectedProduct={selectedProduct}
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  isItemAlreadyInCart={isItemAlreadyInCart}
+                  addingToCart={addingToCart}
+                  handleAddToCart={handleAddToCart}
+                  pageLoading={pageLoading}
+                />
+              </Col>
+            </Row>
+
+            <Divider className="review-divider" color="lightgrey" />
+
+            <Row className="review-container">
+              <Col>
+                <Row>
+                  <Col className="review-overall-container">
+                    <Box w="100%" p={4}>
+                      <Stat>
+                        <StatLabel fontSize="2xl">Overall Rating</StatLabel>
+                        <StatNumber className="review-stat-number">
+                          4.7
+                        </StatNumber>
+                        <StatHelpText>4 reivews</StatHelpText>
+                      </Stat>
+                    </Box>
+                  </Col>
+                  <Col className="review-stars-container">
+                    {Array(5)
+                      .fill('')
+                      .map((_, i) => (
+                        <StarRating
+                          totalStars={5}
+                          numGoldStars={5 - i}
+                          numRatings={i}
+                        />
+                      ))}
+                  </Col>
+                </Row>
+              </Col>
+              <Col style={{ textAlign: 'center' }}>
+                <Text fontSize="3xl">Submit Rating</Text>
+
+                <div className="review-submit-stars-container">
+                  <StarIcon fontSize="4xl" color="gray.300" />
+                  <StarIcon fontSize="4xl" color="gray.300" />
+                  <StarIcon fontSize="4xl" color="gray.300" />
+                  <StarIcon fontSize="4xl" color="gray.300" />
+                  <StarIcon fontSize="4xl" color="gray.300" />
+                </div>
+              </Col>
+            </Row>
+          </>
         )}
       </div>
     </div>

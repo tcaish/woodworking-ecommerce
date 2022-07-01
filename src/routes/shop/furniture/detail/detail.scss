@@ -7,3 +7,20 @@
     margin-bottom: 20px;
   }
 }
+
+.review-container {
+  .review-overall-container {
+    text-align: center;
+
+    .review-stat-number {
+      font-weight: 900;
+    }
+  }
+
+  .review-submit-stars-container {
+  }
+}
+
+.review-divider {
+  margin: 40px 0 !important;
+}
