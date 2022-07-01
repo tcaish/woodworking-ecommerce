@@ -11,16 +11,7 @@ import { useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import {
-  useToast,
-  Stat,
-  Box,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  Divider,
-  Text
-} from '@chakra-ui/react';
+import { useToast, Divider } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -49,7 +40,10 @@ import { NAVIGATION_PATHS } from '../../../../exports/constants';
 // Styles
 import './detail.scss';
 import './detail.mobile.scss';
-import { StarIcon } from '@chakra-ui/icons';
+import {
+  OverallRating,
+  SubmitRating
+} from '../../../../components/rating/rating';
 
 function Detail() {
   const toast = useToast();
@@ -218,25 +212,18 @@ function Detail() {
 
             <Divider className="review-divider" color="lightgrey" />
 
-            <Row className="review-container">
+            <Row className="review-container" sm={1} md={1} lg={1} xl={2}>
               <Col>
-                <Row>
+                <Row sm={2}>
                   <Col className="review-overall-container">
-                    <Box w="100%" p={4}>
-                      <Stat>
-                        <StatLabel fontSize="2xl">Overall Rating</StatLabel>
-                        <StatNumber className="review-stat-number">
-                          4.7
-                        </StatNumber>
-                        <StatHelpText>4 reivews</StatHelpText>
-                      </Stat>
-                    </Box>
+                    <OverallRating />
                   </Col>
-                  <Col className="review-stars-container">
+                  <Col>
                     {Array(5)
                       .fill('')
                       .map((_, i) => (
                         <StarRating
+                          key={i}
                           totalStars={5}
                           numGoldStars={5 - i}
                           numRatings={i}
@@ -245,16 +232,8 @@ function Detail() {
                   </Col>
                 </Row>
               </Col>
-              <Col style={{ textAlign: 'center' }}>
-                <Text fontSize="3xl">Submit Rating</Text>
-
-                <div className="review-submit-stars-container">
-                  <StarIcon fontSize="4xl" color="gray.300" />
-                  <StarIcon fontSize="4xl" color="gray.300" />
-                  <StarIcon fontSize="4xl" color="gray.300" />
-                  <StarIcon fontSize="4xl" color="gray.300" />
-                  <StarIcon fontSize="4xl" color="gray.300" />
-                </div>
+              <Col>
+                <SubmitRating />
               </Col>
             </Row>
           </>

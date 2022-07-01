@@ -1,0 +1,23 @@
+@import '../../exports/constants.scss';
+
+.review-stat-number {
+  font-weight: 900;
+}
+
+.review-submit-container {
+  text-align: center;
+
+  .review-submit-rating-container {
+    padding-bottom: 15px;
+    padding-top: 5px;
+  }
+
+  .review-submit-button {
+    background-color: $brand-yellow !important;
+
+    &:hover {
+      background-color: $brand-yellow;
+      opacity: 0.75;
+    }
+  }
+}

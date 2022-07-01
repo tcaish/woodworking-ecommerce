@@ -10,9 +10,7 @@ function StarRating({ totalStars, numGoldStars, numRatings }) {
       {Array(totalStars)
         .fill('')
         .map((_, i) => (
-          <>
-            <StarIcon key={i} color={i < numGoldStars ? 'gold' : 'gray.300'} />
-          </>
+          <StarIcon key={i} color={i < numGoldStars ? 'gold' : 'gray.300'} />
         ))}
       <span className="star-rating-num-reviews">{numRatings} reviews</span>
     </div>
