@@ -49,14 +49,15 @@ function Detail() {
   const products = useSelector(selectProducts);
   const cartProducts = useSelector(selectCartProducts);
 
-  const selectedProduct = products.filter(
-    (product) => product.id === params.productId
-  )[0];
-
   const [mainImage, setMainImage] = useState('');
   const [otherImages, setOtherImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+
+  const selectedProduct = products.filter(
+    (product) => product.id === params.productId
+  )[0];
 
   // Sets the main image and other images when available
   useEffect(() => {
@@ -69,8 +70,14 @@ function Detail() {
 
   // Brings down the user's cart if it hasn't been loaded already
   useEffect(() => {
-    if (cartProducts.length === 0 && user)
-      getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
+    if (cartProducts.length === 0 && user) {
+      setPageLoading(true);
+
+      getCartProducts(user.uid).then((res) => {
+        dispatch(setCartProducts(res));
+        setPageLoading(false);
+      });
+    }
   }, [cartProducts.length, user, dispatch]);
 
   // Handles setting the main image and updating the list of other images
@@ -181,6 +188,7 @@ function Detail() {
                 mainImage={mainImage}
                 otherImages={otherImages}
                 handleSelectedImage={handleSelectedImage}
+                pageLoading={pageLoading}
               />
             </Col>
             <Col>
@@ -191,6 +199,7 @@ function Detail() {
                 isItemAlreadyInCart={isItemAlreadyInCart}
                 addingToCart={addingToCart}
                 handleAddToCart={handleAddToCart}
+                pageLoading={pageLoading}
               />
             </Col>
           </Row>

@@ -7,6 +7,9 @@ import { Box, HStack, Image } from '@chakra-ui/react';
 // Slices
 import { selectScreenWidth } from '../../../redux/slices/screenSlice';
 
+// Images
+import placeholder_img from '../../../assets/images/placeholder_img.gif';
+
 // Styles
 import './detail-images.scss';
 import './detail-images.mobile.scss';
@@ -23,7 +26,7 @@ function DetailImages(props) {
         <Image
           boxSize={screenWidth <= 575 ? 'xs' : 'md'}
           alt="Main Picture"
-          src={props.mainImage}
+          src={!props.pageLoading ? props.mainImage : placeholder_img}
         />
       </Box>
 
@@ -38,7 +41,7 @@ function DetailImages(props) {
               <Image
                 h="100%"
                 alt="Additional Picture"
-                src={pictureUrl}
+                src={!props.pageLoading ? pictureUrl : placeholder_img}
                 onClick={props.handleSelectedImage}
               />
             </Box>

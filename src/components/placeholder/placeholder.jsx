@@ -1,6 +1,9 @@
 // Bootstrap
 import { Card, Col, Container, Placeholder, Row } from 'react-bootstrap';
 
+// Chakra
+import { Divider } from '@chakra-ui/react';
+
 // Images
 import placeholder_img from '../../assets/images/placeholder_img.gif';
 
@@ -8,18 +11,65 @@ import placeholder_img from '../../assets/images/placeholder_img.gif';
 import './placeholder.scss';
 import './placeholder.mobile.scss';
 
-export function PlaceholderDetailPage() {
+export function PlaceholderDetailInfo() {
   return (
-    <Container className="main-container">
-      <Row sm={1} md={1} lg={1} xl={2}>
-        <Col>
+    <div>
+      <Placeholder className="detail-title" xs={8} size="lg" />
+
+      <div className="detail-cost-container">
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={4} />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={2} size="xs" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={2} size="xs" />
+        </Placeholder>
+      </div>
+
+      <div className="detail-category-avail-container">
+        <Placeholder as="p" animation="wave">
           <Placeholder xs={6} />
-          <Placeholder className="w-75" />{' '}
-          <Placeholder style={{ width: '25%' }} />
-        </Col>
-        <Col></Col>
-      </Row>
-    </Container>
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={6} />
+        </Placeholder>
+      </div>
+
+      <Divider className="detail-divider" color="lightgrey" />
+
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={8} size="sm" />
+      </Placeholder>
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={7} size="sm" />
+      </Placeholder>
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={6} size="sm" />
+      </Placeholder>
+
+      <div className="detail-quantity-container">
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={2} size="lg" />
+        </Placeholder>
+      </div>
+
+      <div className="detail-add-to-cart-container">
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={4} size="lg" />
+        </Placeholder>
+      </div>
+
+      <div className="detail-social-share-container">
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={10} size="lg" />
+        </Placeholder>
+      </div>
+    </div>
   );
 }
 

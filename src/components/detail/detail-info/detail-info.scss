@@ -1,6 +1,8 @@
 @import '../../../exports/constants.scss';
 
 .detail-info-container {
+  min-width: 100px;
+
   .detail-title {
     font-size: xx-large;
     font-weight: 700;
