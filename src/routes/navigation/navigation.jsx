@@ -1,20 +1,23 @@
+// React
+import { useEffect } from 'react';
+
 // React Router
 import { Link, Outlet } from 'react-router-dom';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // React Icons
 import { IoCartOutline } from 'react-icons/io5';
 
 // Bootstrap
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
 import { Avatar, IconButton } from '@chakra-ui/react';
 
 // Firebase
-import { signOutUser } from '../../utils/firebase/firebase';
+import { getCartProducts, signOutUser } from '../../utils/firebase/firebase';
 
 // Slices
 import {
@@ -23,6 +26,10 @@ import {
   selectPhotoURL
 } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
+import {
+  selectCartProducts,
+  setCartProducts
+} from '../../redux/slices/cartSlice';
 
 // Components
 import Footer from '../../components/footer/footer';
@@ -38,10 +45,19 @@ import './navigation.scss';
 import './navigation.mobile.scss';
 
 function Navigation() {
+  const dispatch = useDispatch();
+
   const user = useSelector(selectUser);
   const displayName = useSelector(selectDisplayName);
   const photoURL = useSelector(selectPhotoURL);
   const screenWidth = useSelector(selectScreenWidth);
+  const cartProducts = useSelector(selectCartProducts);
+
+  // Brings down the user's cart if it hasn't been loaded already
+  useEffect(() => {
+    if (cartProducts.length === 0 && user)
+      getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
+  }, [cartProducts.length, user, dispatch]);
 
   // Hides the dropdown menu when clicking a menu item button
   function hideDropdown() {
@@ -146,14 +162,21 @@ function Navigation() {
                 to={NAVIGATION_PATHS.cart}
                 onClick={collapseNavbar}
               >
-                <IconButton
-                  variant="outline"
-                  colorScheme="green"
-                  aria-label="Cart"
-                  size="lg"
-                  fontSize="25px"
-                  icon={<IoCartOutline />}
-                />
+                <div className="cart-container">
+                  <IconButton
+                    variant="outline"
+                    colorScheme="green"
+                    aria-label="Cart"
+                    size="lg"
+                    fontSize="25px"
+                    icon={<IoCartOutline />}
+                  />
+                  {cartProducts.length > 0 && (
+                    <Badge pill text="dark">
+                      {cartProducts.length}
+                    </Badge>
+                  )}
+                </div>
               </Link>
             </Nav>
           </Navbar.Collapse>
