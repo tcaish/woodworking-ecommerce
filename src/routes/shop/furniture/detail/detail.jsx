@@ -53,7 +53,7 @@ function Detail() {
   const [otherImages, setOtherImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
-  const [pageLoading, setPageLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(false);
 
   const selectedProduct = products.filter(
     (product) => product.id === params.productId
