@@ -1,3 +1,6 @@
+// React Redux
+import { useSelector } from 'react-redux';
+
 // Chakra
 import {
   Box,
@@ -13,15 +16,25 @@ import { useState } from 'react';
 // Third-party
 import Ratings from 'react-ratings-declarative';
 
+// Slices
+import { selectScreenWidth } from '../../redux/slices/screenSlice';
+
 // Styles
 import './rating.scss';
 
 export function OverallRating() {
+  const screenWidth = useSelector(selectScreenWidth);
+
   return (
     <Box w="100%" p={4}>
       <Stat>
-        <StatLabel fontSize="2xl">Overall Rating</StatLabel>
-        <StatNumber className="review-stat-number" fontSize="3xl">
+        <StatLabel fontSize={screenWidth > 575 ? '2xl' : '1xl'}>
+          Overall Rating
+        </StatLabel>
+        <StatNumber
+          className="review-stat-number"
+          fontSize={screenWidth > 575 ? '3xl' : '2xl'}
+        >
           4.7
         </StatNumber>
         <StatHelpText fontSize="1xl">4 reviews</StatHelpText>
@@ -30,7 +43,9 @@ export function OverallRating() {
   );
 }
 
-export function SubmitRating(props) {
+export function SubmitRating() {
+  const screenWidth = useSelector(selectScreenWidth);
+
   const [rating, setRating] = useState(0);
   const [submittingRating, setSubmittingRating] = useState(false);
 
@@ -43,12 +58,12 @@ export function SubmitRating(props) {
 
   return (
     <div className="review-submit-container">
-      <Text fontSize="3xl">Submit Rating</Text>
+      <Text fontSize={screenWidth > 575 ? '3xl' : '2xl'}>Submit Rating</Text>
       <div className="review-submit-rating-container">
         <Ratings
           rating={rating}
-          widgetDimensions="40px"
-          widgetSpacings="7px"
+          widgetDimensions={screenWidth > 575 ? '40px' : '25px'}
+          widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
           widgetRatedColors="gold"
           widgetHoverColors="gold"
           changeRating={(rating) => setRating(rating)}

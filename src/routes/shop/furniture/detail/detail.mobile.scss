@@ -1,3 +1,17 @@
+// Screen width 576px and under
+@media only screen and (max-width: 576px) {
+  .review-divider {
+    margin-bottom: 20px !important;
+    margin-top: 40px !important;
+  }
+
+  .review-container {
+    .review-overall-container {
+      margin-top: -10px;
+    }
+  }
+}
+
 // Screen width 455px and under
 @media only screen and (max-width: 455px) {
   .detail-container {

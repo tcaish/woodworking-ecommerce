@@ -8,10 +8,12 @@
 
 .review-container {
   .review-overall-container {
+    min-width: 155px;
     text-align: center;
   }
 }
 
 .review-divider {
-  margin: 40px 0 !important;
+  margin-bottom: 40px !important;
+  margin-top: 40px !important;
 }
