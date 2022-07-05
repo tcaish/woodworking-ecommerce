@@ -63,7 +63,8 @@ function Detail() {
   const [otherImages, setOtherImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
-  const [pageLoading, setPageLoading] = useState(false);
+  const [cartProductsLoading, setCartProductsLoading] = useState(false);
+  const [ratingsLoading, setRatingsLoading] = useState(false);
 
   const selectedProduct = products.filter(
     (product) => product.id === params.productId
@@ -81,19 +82,25 @@ function Detail() {
   // Brings down the user's cart if it hasn't been loaded already
   useEffect(() => {
     if (cartProducts.length === 0 && user) {
-      setPageLoading(true);
+      setCartProductsLoading(true);
 
       getCartProducts(user.uid).then((res) => {
         dispatch(setCartProducts(res));
-        setPageLoading(false);
+        setCartProductsLoading(false);
       });
     }
   }, [cartProducts.length, user, dispatch]);
 
   // Brings down the ratings if it hasn't been loaded already
   useEffect(() => {
-    if (ratings.length === 0 && user && selectedProduct)
-      getRatings().then((res) => dispatch(setRatings(res)));
+    if (ratings.length === 0 && user && selectedProduct) {
+      setRatingsLoading(true);
+
+      getRatings().then((res) => {
+        dispatch(setRatings(res));
+        setRatingsLoading(false);
+      });
+    }
   }, [ratings.length, user, dispatch, selectedProduct]);
 
   // Handles setting the main image and updating the list of other images
@@ -205,7 +212,7 @@ function Detail() {
                   mainImage={mainImage}
                   otherImages={otherImages}
                   handleSelectedImage={handleSelectedImage}
-                  pageLoading={pageLoading}
+                  pageLoading={cartProductsLoading}
                 />
               </Col>
               <Col>
@@ -216,7 +223,7 @@ function Detail() {
                   isItemAlreadyInCart={isItemAlreadyInCart}
                   addingToCart={addingToCart}
                   handleAddToCart={handleAddToCart}
-                  pageLoading={pageLoading}
+                  pageLoading={cartProductsLoading}
                 />
               </Col>
             </Row>
@@ -225,10 +232,16 @@ function Detail() {
 
             <Row className="review-container" sm={1} md={1} lg={1} xl={2}>
               <Col>
-                <OverallRating productId={selectedProduct.id} />
+                <OverallRating
+                  productId={selectedProduct.id}
+                  ratingsLoading={ratingsLoading}
+                />
               </Col>
               <Col>
-                <SubmitRating productId={selectedProduct.id} />
+                <SubmitRating
+                  productId={selectedProduct.id}
+                  ratingsLoading={ratingsLoading}
+                />
               </Col>
             </Row>
           </>

@@ -51,8 +51,12 @@ import {
 
 // Styles
 import './rating.scss';
+import {
+  PlaceholderOverallRating,
+  PlaceholderSubmitRating
+} from '../placeholder/placeholder';
 
-export function OverallRating({ productId }) {
+export function OverallRating({ productId, ratingsLoading }) {
   const screenWidth = useSelector(selectScreenWidth);
   const ratings = useSelector(selectRatings);
 
@@ -76,43 +80,49 @@ export function OverallRating({ productId }) {
 
   return (
     <Row sm={2}>
-      <Col className="review-overall-container">
-        <Box w="100%" p={4}>
-          <Stat>
-            <StatLabel fontSize={screenWidth > 575 ? '2xl' : '1xl'}>
-              Overall Rating
-            </StatLabel>
-            <StatNumber
-              className="review-stat-number"
-              fontSize={screenWidth > 575 ? '3xl' : '2xl'}
-            >
-              {getAverageRatingForProduct(productRatings)}
-            </StatNumber>
-            <StatHelpText fontSize="1xl">
-              {`${productRatings.length} ${
-                productRatings.length === 1 ? 'rating' : 'ratings'
-              }`}
-            </StatHelpText>
-          </Stat>
-        </Box>
-      </Col>
-      <Col>
-        {Array(5)
-          .fill('')
-          .map((_, i) => (
-            <StarRating
-              key={i}
-              totalStars={5}
-              numGoldStars={5 - i}
-              numRatings={getNumRatingsForType(5 - i)}
-            />
-          ))}
-      </Col>
+      {ratingsLoading ? (
+        <PlaceholderOverallRating />
+      ) : (
+        <>
+          <Col className="review-overall-container">
+            <Box w="100%" p={4}>
+              <Stat>
+                <StatLabel fontSize={screenWidth > 575 ? '2xl' : '1xl'}>
+                  Overall Rating
+                </StatLabel>
+                <StatNumber
+                  className="review-stat-number"
+                  fontSize={screenWidth > 575 ? '3xl' : '2xl'}
+                >
+                  {getAverageRatingForProduct(productRatings)}
+                </StatNumber>
+                <StatHelpText fontSize="1xl">
+                  {`${productRatings.length} ${
+                    productRatings.length === 1 ? 'rating' : 'ratings'
+                  }`}
+                </StatHelpText>
+              </Stat>
+            </Box>
+          </Col>
+          <Col>
+            {Array(5)
+              .fill('')
+              .map((_, i) => (
+                <StarRating
+                  key={i}
+                  totalStars={5}
+                  numGoldStars={5 - i}
+                  numRatings={getNumRatingsForType(5 - i)}
+                />
+              ))}
+          </Col>
+        </>
+      )}
     </Row>
   );
 }
 
-export function SubmitRating({ productId }) {
+export function SubmitRating({ productId, ratingsLoading }) {
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -226,51 +236,57 @@ export function SubmitRating({ productId }) {
   return (
     <div className="review-submit-container">
       <Text fontSize={screenWidth > 575 ? '3xl' : '2xl'}>Submit Rating</Text>
-      <div className="review-submit-rating-container">
-        <Ratings
-          rating={selectedRating}
-          widgetDimensions={screenWidth > 575 ? '40px' : '25px'}
-          widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
-          widgetRatedColors="gold"
-          widgetHoverColors="gold"
-          changeRating={(rating) => user && setSelectedRating(rating)}
-        >
-          <Ratings.Widget />
-          <Ratings.Widget />
-          <Ratings.Widget />
-          <Ratings.Widget />
-          <Ratings.Widget />
-        </Ratings>
-      </div>
-
-      {!userHasRated || editingRating ? (
-        <Tooltip
-          hasArrow
-          label="Create an account to submit a review"
-          shouldWrapChildren
-          mt="4"
-          isDisabled={user}
-        >
-          <Button
-            className="review-submit-button"
-            isLoading={submittingRating}
-            isDisabled={!user}
-            onClick={submitRating}
-          >
-            Submit
-          </Button>
-        </Tooltip>
+      {ratingsLoading ? (
+        <PlaceholderSubmitRating />
       ) : (
         <>
-          <Icon as={BsCheck2} color="green" /> <span>Rating Submitted</span>
-          <br />
-          <Button
-            className="rating-edit-button"
-            variant="link"
-            onClick={() => setEditingRating(true)}
-          >
-            Edit Rating
-          </Button>
+          <div className="review-submit-rating-container">
+            <Ratings
+              rating={selectedRating}
+              widgetDimensions={screenWidth > 575 ? '40px' : '25px'}
+              widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
+              widgetRatedColors="gold"
+              widgetHoverColors="gold"
+              changeRating={(rating) => user && setSelectedRating(rating)}
+            >
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+              <Ratings.Widget />
+            </Ratings>
+          </div>
+
+          {!userHasRated || editingRating ? (
+            <Tooltip
+              hasArrow
+              label="Create an account to submit a review"
+              shouldWrapChildren
+              mt="4"
+              isDisabled={user}
+            >
+              <Button
+                className="review-submit-button"
+                isLoading={submittingRating}
+                isDisabled={!user}
+                onClick={submitRating}
+              >
+                Submit
+              </Button>
+            </Tooltip>
+          ) : (
+            <>
+              <Icon as={BsCheck2} color="green" /> <span>Rating Submitted</span>
+              <br />
+              <Button
+                className="rating-edit-button"
+                variant="link"
+                onClick={() => setEditingRating(true)}
+              >
+                Edit Rating
+              </Button>
+            </>
+          )}
         </>
       )}
     </div>

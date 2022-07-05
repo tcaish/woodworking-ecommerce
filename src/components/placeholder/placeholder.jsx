@@ -104,3 +104,51 @@ export function PlaceholderShopPage() {
     </Container>
   );
 }
+
+export function PlaceholderOverallRating() {
+  return (
+    <>
+      <Col className="review-overall-container">
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={8} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={4} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={6} size="lg" />
+        </Placeholder>
+      </Col>
+      <Col>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={8} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={6} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={8} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={6} size="lg" />
+        </Placeholder>
+        <Placeholder as="p" animation="wave">
+          <Placeholder xs={8} size="lg" />
+        </Placeholder>
+      </Col>
+    </>
+  );
+}
+
+export function PlaceholderSubmitRating() {
+  return (
+    <>
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={6} size="lg" />
+      </Placeholder>
+      <Placeholder as="p" animation="wave">
+        <Placeholder xs={4} size="lg" />
+      </Placeholder>
+    </>
+  );
+}
