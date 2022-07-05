@@ -1,5 +1,5 @@
 // React
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,10 +26,18 @@ function Furniture() {
   const products = useSelector(selectProducts);
   const ratings = useSelector(selectRatings);
 
+  const [ratingsLoading, setRatingsLoading] = useState(false);
+
   // Brings down the ratings if it hasn't been loaded already
   useEffect(() => {
-    if (ratings.length === 0)
-      getRatings().then((res) => dispatch(setRatings(res)));
+    if (ratings.length === 0) {
+      setRatingsLoading(true);
+
+      getRatings().then((res) => {
+        dispatch(setRatings(res));
+        setRatingsLoading(false);
+      });
+    }
   }, [dispatch, ratings.length]);
 
   return (
@@ -37,7 +45,7 @@ function Furniture() {
       <Row sm={1} md={2} lg={3}>
         {products.map((product) => (
           <Col key={product.id}>
-            <ProductCard product={product} />
+            <ProductCard product={product} ratingsLoading={ratingsLoading} />
           </Col>
         ))}
       </Row>

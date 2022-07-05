@@ -11,6 +11,9 @@ import { useSelector } from 'react-redux';
 import { Badge, Box, Image } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 
+// Bootstrap
+import { Placeholder } from 'react-bootstrap';
+
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import { selectRatings } from '../../redux/slices/ratingSlice';
@@ -25,7 +28,7 @@ import {
 import './product-card.scss';
 import './product-card.mobile.scss';
 
-function ProductCard({ product }) {
+function ProductCard({ product, ratingsLoading }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -96,25 +99,31 @@ function ProductCard({ product }) {
             </Box>
           </Box>
 
-          <Box display="flex" mt="2" alignItems="center">
-            {Array(5)
-              .fill('')
-              .map((_, i) => (
-                <StarIcon
-                  key={i}
-                  color={
-                    i < getAverageRatingForProduct(productRatings)
-                      ? 'gold'
-                      : 'gray.300'
-                  }
-                />
-              ))}
-            <Box as="span" ml="2" color="gray.600" fontSize="sm">
-              {`${productRatings.length} ${
-                productRatings.length === 1 ? 'rating' : 'ratings'
-              }`}
+          {ratingsLoading ? (
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={4} size="lg" />
+            </Placeholder>
+          ) : (
+            <Box display="flex" mt="2" alignItems="center">
+              {Array(5)
+                .fill('')
+                .map((_, i) => (
+                  <StarIcon
+                    key={i}
+                    color={
+                      i < getAverageRatingForProduct(productRatings)
+                        ? 'gold'
+                        : 'gray.300'
+                    }
+                  />
+                ))}
+              <Box as="span" ml="2" color="gray.600" fontSize="sm">
+                {`${productRatings.length} ${
+                  productRatings.length === 1 ? 'rating' : 'ratings'
+                }`}
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
       </Box>
     </div>
