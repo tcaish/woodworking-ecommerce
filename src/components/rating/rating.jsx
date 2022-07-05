@@ -4,10 +4,14 @@ import { useEffect, useState } from 'react';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// React Icons
+import { BsCheck2 } from 'react-icons/bs';
+
 // Chakra
 import {
   Box,
   Button,
+  Icon,
   Stat,
   StatHelpText,
   StatLabel,
@@ -258,8 +262,13 @@ export function SubmitRating({ productId }) {
         </Tooltip>
       ) : (
         <>
-          <p>Rating already submitted.</p>
-          <Button variant="link" onClick={() => setEditingRating(true)}>
+          <Icon as={BsCheck2} color="green" /> <span>Rating Submitted</span>
+          <br />
+          <Button
+            className="rating-edit-button"
+            variant="link"
+            onClick={() => setEditingRating(true)}
+          >
             Edit Rating
           </Button>
         </>

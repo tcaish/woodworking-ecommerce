@@ -25,4 +25,10 @@
       opacity: 0.75;
     }
   }
+
+  .rating-edit-button {
+    &:hover {
+      color: $brand-dark-yellow;
+    }
+  }
 }
