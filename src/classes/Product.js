@@ -55,7 +55,8 @@ export class Product {
   }
 }
 
-// Converts a product collection in the Firestore database to a Product object
+// Converts a rating collection in the Firestore database to
+// a Rating object and vice versa.
 export const productConverter = {
   toFirestore: (product) => {
     return {

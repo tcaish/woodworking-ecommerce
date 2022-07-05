@@ -21,11 +21,16 @@ import {
   setCartProducts
 } from '../../../../redux/slices/cartSlice';
 import { selectUser } from '../../../../redux/slices/userSlice';
+import {
+  selectRatings,
+  setRatings
+} from '../../../../redux/slices/ratingSlice';
 
 // Firebase
 import {
   addProductToCart,
-  getCartProducts
+  getCartProducts,
+  getRatingsForProduct
 } from '../../../../utils/firebase/firebase';
 
 // Components
@@ -53,6 +58,7 @@ function Detail() {
   const user = useSelector(selectUser);
   const products = useSelector(selectProducts);
   const cartProducts = useSelector(selectCartProducts);
+  const ratings = useSelector(selectRatings);
 
   const [mainImage, setMainImage] = useState('');
   const [otherImages, setOtherImages] = useState([]);
@@ -84,6 +90,14 @@ function Detail() {
       });
     }
   }, [cartProducts.length, user, dispatch]);
+
+  // Brings down the ratings if it hasn't been loaded already
+  useEffect(() => {
+    if (ratings.length === 0 && user && selectedProduct)
+      getRatingsForProduct(selectedProduct.id).then((res) =>
+        dispatch(setRatings(res))
+      );
+  }, [ratings.length, user, dispatch, selectedProduct]);
 
   // Handles setting the main image and updating the list of other images
   function handleSelectedImage(event) {

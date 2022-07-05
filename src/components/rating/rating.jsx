@@ -18,12 +18,25 @@ import Ratings from 'react-ratings-declarative';
 
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
+import { selectRatings } from '../../redux/slices/ratingSlice';
 
 // Styles
 import './rating.scss';
 
 export function OverallRating() {
   const screenWidth = useSelector(selectScreenWidth);
+  const ratings = useSelector(selectRatings);
+
+  // Averages the ratings when ratings gets loaded
+  function getAverageRating() {
+    if (ratings.length === 0) return 0;
+
+    const totalRating = ratings.reduce(
+      (prevValue, rating) => prevValue + rating.rating,
+      0
+    );
+    return (totalRating / ratings.length).toFixed(1);
+  }
 
   return (
     <Box w="100%" p={4}>
@@ -35,9 +48,11 @@ export function OverallRating() {
           className="review-stat-number"
           fontSize={screenWidth > 575 ? '3xl' : '2xl'}
         >
-          4.7
+          {getAverageRating()}
         </StatNumber>
-        <StatHelpText fontSize="1xl">4 reviews</StatHelpText>
+        <StatHelpText fontSize="1xl">
+          {`${ratings.length} ${ratings.length === 1 ? 'rating' : 'ratings'}`}
+        </StatHelpText>
       </Stat>
     </Box>
   );
@@ -45,6 +60,7 @@ export function OverallRating() {
 
 export function SubmitRating() {
   const screenWidth = useSelector(selectScreenWidth);
+  const ratings = useSelector(selectRatings);
 
   const [rating, setRating] = useState(0);
   const [submittingRating, setSubmittingRating] = useState(false);

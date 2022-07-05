@@ -26,6 +26,7 @@ import {
   addDoc
 } from 'firebase/firestore';
 import { productConverter } from '../../classes/Product';
+import { ratingConverter } from '../../classes/Rating';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -145,6 +146,22 @@ export async function getCartProducts(userId) {
     products.push(data);
   });
   return products;
+}
+
+// Returns the ratings from the database
+export async function getRatingsForProduct(productId) {
+  const ratings = [];
+
+  const ref = collection(firestore, 'ratings').withConverter(ratingConverter);
+  const q = query(ref, where('product', '==', productId));
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    data.id = doc.id;
+    ratings.push(data);
+  });
+  return ratings;
 }
 
 // Adds a product to the user's cart
