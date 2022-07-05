@@ -23,10 +23,12 @@ import {
   collection,
   query,
   where,
-  addDoc
+  addDoc,
+  updateDoc
 } from 'firebase/firestore';
 import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
+import { getFirebaseTimestampFromDate } from '../../exports/functions';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -95,6 +97,7 @@ export const updateUserEmail = (email) => updateEmail(auth.currentUser, email);
 // Firestore
 export const firestore = getFirestore();
 
+// Adds user to database if not already there
 export async function createUserDocumentFromAuth(
   userAuth,
   additionalInfo = {}
@@ -184,4 +187,61 @@ export async function addProductToCart(productId, quantity, userId) {
     .catch((err) => {
       return { added: false, error: err.code };
     });
+}
+
+// Adds user to database if not already there
+export async function addUserRating(rating, userId, productId) {
+  if (!rating || !userId || !productId) return;
+
+  const ratingsRef = collection(firestore, 'ratings');
+  const q = query(
+    ratingsRef,
+    where('user', '==', userId),
+    where('product', '==', productId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  // If rating doesn't exist for the user for this specific product
+  if (querySnapshot.empty) {
+    const createdAt = getFirebaseTimestampFromDate(new Date());
+
+    try {
+      const doc = await addDoc(ratingsRef, {
+        rating,
+        user: userId,
+        product: productId,
+        submitted: createdAt
+      });
+      return doc.id;
+    } catch (err) {
+      return null;
+    }
+  } else {
+    return null;
+  }
+}
+
+export async function editUserRating(rating, ratingId, userId, productId) {
+  if (!rating || !ratingId || !userId || !productId) return;
+
+  const ratingRef = doc(firestore, 'ratings', ratingId);
+
+  // If rating exists for user for given product
+  if (!ratingRef.empty) {
+    const createdAt = getFirebaseTimestampFromDate(new Date());
+
+    try {
+      return await updateDoc(ratingRef, {
+        rating,
+        submitted: createdAt
+      })
+        .then((res) => true)
+        .catch((err) => null);
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  } else {
+    return null;
+  }
 }

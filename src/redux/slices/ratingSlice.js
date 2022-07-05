@@ -18,12 +18,19 @@ export const ratingsSlice = createSlice({
       state.ratings = state.ratings.filter(
         (rating) => rating.id !== action.payload.id
       );
+    },
+    updateRating: (state, action) => {
+      const filteredRatings = state.ratings.filter(
+        (rating) => rating.id !== action.payload.id
+      );
+      state.ratings = [...filteredRatings, action.payload];
     }
   }
 });
 
 // Setters
-export const { removeRating, setRatings } = ratingsSlice.actions;
+export const { setRatings, addRating, removeRating, updateRating } =
+  ratingsSlice.actions;
 
 // Selectors
 export const selectRatings = (state) => state.ratings.ratings;

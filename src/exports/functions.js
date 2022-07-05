@@ -39,9 +39,15 @@ export function handleSignInUpErrors(err) {
   return description;
 }
 
+export function getFirebaseTimestampFromDate(date) {
+  return Timestamp.fromDate(date);
+}
+
 // Returns the amount of days that have gone by since the given timestamp
 export function howManyDaysFromToday(timestamp) {
-  const todaysTimestamp = Timestamp.fromDate(new Date()).toDate().getTime();
+  const todaysTimestamp = getFirebaseTimestampFromDate(new Date())
+    .toDate()
+    .getTime();
   const diffInTime = todaysTimestamp - timestamp.toDate().getTime();
   return diffInTime / (1000 * 3600 * 24);
 }

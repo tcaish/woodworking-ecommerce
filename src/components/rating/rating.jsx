@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Chakra
 import {
@@ -28,11 +28,19 @@ import StarRating from '../star-rating/star-rating';
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
-import { selectRatings } from '../../redux/slices/ratingSlice';
+import {
+  addRating,
+  selectRatings,
+  updateRating
+} from '../../redux/slices/ratingSlice';
+
+// Firebase
+import { addUserRating, editUserRating } from '../../utils/firebase/firebase';
 
 // Exports
 import {
   getAverageRatingForProduct,
+  getFirebaseTimestampFromDate,
   getRatingsForProduct
 } from '../../exports/functions';
 
@@ -100,13 +108,17 @@ export function OverallRating({ productId }) {
 }
 
 export function SubmitRating({ productId }) {
+  const dispatch = useDispatch();
+
   const user = useSelector(selectUser);
   const screenWidth = useSelector(selectScreenWidth);
   const ratings = useSelector(selectRatings);
 
   const [productRatings, setProductRatings] = useState([]);
+  const [userRating, setUserRating] = useState({});
   const [selectedRating, setSelectedRating] = useState(0);
   const [userHasRated, setUserHasRated] = useState(false);
+  const [editingRating, setEditingRating] = useState(false);
   const [submittingRating, setSubmittingRating] = useState(false);
 
   // Sets the ratings for the given product
@@ -121,16 +133,55 @@ export function SubmitRating({ productId }) {
     const userRatings = productRatings.filter(
       (rating) => rating.user === user.uid
     );
+    setUserRating(userRatings.length === 1 ? userRatings[0] : {});
     setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
     setUserHasRated(userRatings.length === 1);
   }, [productRatings, user]);
 
   // Submits the rating chosen by the user
   async function submitRating() {
-    if (!user) return;
+    if (!user || !productId || selectedRating === 0) return;
+
     setSubmittingRating(true);
-    console.log(selectedRating);
-    setSubmittingRating(false);
+
+    if (!editingRating) {
+      await addUserRating(selectedRating, user.uid, productId)
+        .then((docId) => {
+          dispatch(
+            addRating({
+              id: docId,
+              product: productId,
+              rating: selectedRating,
+              submitted: getFirebaseTimestampFromDate(new Date()),
+              user: user.uid
+            })
+          );
+
+          setSubmittingRating(false);
+        })
+        .catch((err) => {
+          setSubmittingRating(false);
+        });
+    } else {
+      await editUserRating(selectedRating, userRating.id, user.uid, productId)
+        .then((res) => {
+          dispatch(
+            updateRating({
+              id: userRating.id,
+              product: productId,
+              rating: selectedRating,
+              submitted: getFirebaseTimestampFromDate(new Date()),
+              user: user.uid
+            })
+          );
+
+          setSubmittingRating(false);
+          setEditingRating(false);
+        })
+        .catch((err) => {
+          setSubmittingRating(false);
+        });
+    }
   }
 
   return (
@@ -153,7 +204,7 @@ export function SubmitRating({ productId }) {
         </Ratings>
       </div>
 
-      {!userHasRated ? (
+      {!userHasRated || editingRating ? (
         <Tooltip
           hasArrow
           label="Create an account to submit a review"
@@ -173,6 +224,9 @@ export function SubmitRating({ productId }) {
       ) : (
         <>
           <p>Rating already submitted.</p>
+          <Button variant="link" onClick={() => setEditingRating(true)}>
+            Edit Rating
+          </Button>
         </>
       )}
     </div>
