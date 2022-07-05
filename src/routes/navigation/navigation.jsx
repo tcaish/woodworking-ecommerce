@@ -1,5 +1,5 @@
 // React
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Router
 import { Link, Outlet } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { IoCartOutline } from 'react-icons/io5';
 import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 
 // Chakra
-import { Avatar, IconButton } from '@chakra-ui/react';
+import { Avatar, IconButton, Spinner } from '@chakra-ui/react';
 
 // Firebase
 import { getCartProducts, signOutUser } from '../../utils/firebase/firebase';
@@ -54,6 +54,8 @@ function Navigation() {
   const screenWidth = useSelector(selectScreenWidth);
   const cartProducts = useSelector(selectCartProducts);
 
+  const [signingOut, setSigningOut] = useState(false);
+
   // Brings down the user's cart if it hasn't been loaded already
   useEffect(() => {
     if (cartProducts.length === 0 && user)
@@ -81,13 +83,24 @@ function Navigation() {
     }
   }
 
+  // Handles signing the user out
   async function handleSigningOut() {
-    await signOutUser().then((res) => {
-      collapseNavbar();
+    if (signingOut) return;
 
-      dispatch(setCartProducts([]));
-      dispatch(setUser(null));
-    });
+    setSigningOut(true);
+
+    await signOutUser()
+      .then((res) => {
+        collapseNavbar();
+
+        dispatch(setCartProducts([]));
+        dispatch(setUser(null));
+
+        setSigningOut(false);
+      })
+      .catch((err) => {
+        setSigningOut(false);
+      });
   }
 
   return (
@@ -160,7 +173,7 @@ function Navigation() {
                     to={NAVIGATION_PATHS.home}
                     onClick={handleSigningOut}
                   >
-                    Sign Out
+                    Sign Out {signingOut && <Spinner size="sm" />}
                   </Link>
                 )}
               </NavDropdown>
