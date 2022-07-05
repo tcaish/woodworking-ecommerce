@@ -87,7 +87,9 @@ export function getRatingsForProduct(ratings, productId) {
 
 // Returns the average rating for a given product's ratings
 export function getAverageRatingForProduct(productRatings) {
-  if (productRatings.length === 0) return 0;
+  let avgRating = 0;
+
+  if (productRatings.length === 0) return avgRating.toFixed(1);
 
   const totalRating = productRatings.reduce(
     (prevValue, rating) => prevValue + rating.rating,
