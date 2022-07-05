@@ -37,7 +37,6 @@ import {
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
 import DetailInfo from '../../../../components/detail/detail-info/detail-info';
-import StarRating from '../../../../components/star-rating/star-rating';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
@@ -228,23 +227,7 @@ function Detail() {
 
             <Row className="review-container" sm={1} md={1} lg={1} xl={2}>
               <Col>
-                <Row sm={2}>
-                  <Col className="review-overall-container">
-                    <OverallRating />
-                  </Col>
-                  <Col>
-                    {Array(5)
-                      .fill('')
-                      .map((_, i) => (
-                        <StarRating
-                          key={i}
-                          totalStars={5}
-                          numGoldStars={5 - i}
-                          numRatings={i}
-                        />
-                      ))}
-                  </Col>
-                </Row>
+                <OverallRating />
               </Col>
               <Col>
                 <SubmitRating />

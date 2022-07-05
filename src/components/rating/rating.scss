@@ -1,7 +1,12 @@
 @import '../../exports/constants.scss';
 
-.review-stat-number {
-  font-weight: 900;
+.review-overall-container {
+  min-width: 155px;
+  text-align: center;
+
+  .review-stat-number {
+    font-weight: 900;
+  }
 }
 
 .review-submit-container {

@@ -1,3 +1,6 @@
+// React
+import { useState } from 'react';
+
 // React Redux
 import { useSelector } from 'react-redux';
 
@@ -11,10 +14,15 @@ import {
   StatNumber,
   Text
 } from '@chakra-ui/react';
-import { useState } from 'react';
+
+// Bootstrap
+import { Col, Row } from 'react-bootstrap';
 
 // Third-party
 import Ratings from 'react-ratings-declarative';
+
+// Components
+import StarRating from '../star-rating/star-rating';
 
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
@@ -38,23 +46,52 @@ export function OverallRating() {
     return (totalRating / ratings.length).toFixed(1);
   }
 
+  // Returns the number of ratings for a specific type of rating
+  // (e.g. 1 rating for a 5-star rating)
+  function getNumRatingsForType(typeOfRating) {
+    if (ratings.length === 0) return 0;
+
+    const numRatings = ratings.filter(
+      (rating) => rating.rating === typeOfRating
+    );
+    return numRatings.length;
+  }
+
   return (
-    <Box w="100%" p={4}>
-      <Stat>
-        <StatLabel fontSize={screenWidth > 575 ? '2xl' : '1xl'}>
-          Overall Rating
-        </StatLabel>
-        <StatNumber
-          className="review-stat-number"
-          fontSize={screenWidth > 575 ? '3xl' : '2xl'}
-        >
-          {getAverageRating()}
-        </StatNumber>
-        <StatHelpText fontSize="1xl">
-          {`${ratings.length} ${ratings.length === 1 ? 'rating' : 'ratings'}`}
-        </StatHelpText>
-      </Stat>
-    </Box>
+    <Row sm={2}>
+      <Col className="review-overall-container">
+        <Box w="100%" p={4}>
+          <Stat>
+            <StatLabel fontSize={screenWidth > 575 ? '2xl' : '1xl'}>
+              Overall Rating
+            </StatLabel>
+            <StatNumber
+              className="review-stat-number"
+              fontSize={screenWidth > 575 ? '3xl' : '2xl'}
+            >
+              {getAverageRating()}
+            </StatNumber>
+            <StatHelpText fontSize="1xl">
+              {`${ratings.length} ${
+                ratings.length === 1 ? 'rating' : 'ratings'
+              }`}
+            </StatHelpText>
+          </Stat>
+        </Box>
+      </Col>
+      <Col>
+        {Array(5)
+          .fill('')
+          .map((_, i) => (
+            <StarRating
+              key={i}
+              totalStars={5}
+              numGoldStars={5 - i}
+              numRatings={getNumRatingsForType(5 - i)}
+            />
+          ))}
+      </Col>
+    </Row>
   );
 }
 
