@@ -1,5 +1,5 @@
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Redux
 import { useSelector } from 'react-redux';
@@ -25,6 +25,7 @@ import Ratings from 'react-ratings-declarative';
 import StarRating from '../star-rating/star-rating';
 
 // Slices
+import { selectUser } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import { selectRatings } from '../../redux/slices/ratingSlice';
 
@@ -96,30 +97,37 @@ export function OverallRating() {
 }
 
 export function SubmitRating() {
+  const user = useSelector(selectUser);
   const screenWidth = useSelector(selectScreenWidth);
   const ratings = useSelector(selectRatings);
 
-  const [rating, setRating] = useState(0);
+  const [selectedRating, setSelectedRating] = useState(0);
   const [submittingRating, setSubmittingRating] = useState(false);
 
   // Submits the rating chosen by the user
-  function submitRating() {
+  async function submitRating() {
     setSubmittingRating(true);
-    console.log(rating);
+    console.log(selectedRating);
     setSubmittingRating(false);
   }
+
+  // Sets the rating submitted by the user
+  useEffect(() => {
+    const userRatings = ratings.filter((rating) => rating.user === user.uid);
+    setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
+  }, [ratings, user.uid]);
 
   return (
     <div className="review-submit-container">
       <Text fontSize={screenWidth > 575 ? '3xl' : '2xl'}>Submit Rating</Text>
       <div className="review-submit-rating-container">
         <Ratings
-          rating={rating}
+          rating={selectedRating}
           widgetDimensions={screenWidth > 575 ? '40px' : '25px'}
           widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
           widgetRatedColors="gold"
           widgetHoverColors="gold"
-          changeRating={(rating) => setRating(rating)}
+          changeRating={(rating) => setSelectedRating(rating)}
         >
           <Ratings.Widget />
           <Ratings.Widget />
