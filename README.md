@@ -1,18 +1,21 @@
-# React Libraries
-React Redux
+# Caish Workshop
+
+
+## Frameworks and Libraries
+### Backend
+Firebase - https://firebase.google.com/
+
+### React
+React Redux<br/>
 React Router
 
-### UI Frameworks
-Bootstrap - https://react-bootstrap.github.io/
-Chakra UI - https://chakra-ui.com/
-
 ### Styling
-CSS
 SASS
 
 ### Third-Party Repos
-React Icons - https://react-icons.github.io/react-icons
+React Icons - https://react-icons.github.io/react-icons<br/>
 React Ratings - https://github.com/ekeric13/react-ratings-declarative
 
-### Backend
-Firebase - https://firebase.google.com/
+### UI
+Bootstrap - https://react-bootstrap.github.io/<br/>
+Chakra UI - https://chakra-ui.com/
