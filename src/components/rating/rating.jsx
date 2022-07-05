@@ -106,6 +106,7 @@ export function SubmitRating({ productId }) {
 
   const [productRatings, setProductRatings] = useState([]);
   const [selectedRating, setSelectedRating] = useState(0);
+  const [userHasRated, setUserHasRated] = useState(false);
   const [submittingRating, setSubmittingRating] = useState(false);
 
   // Sets the ratings for the given product
@@ -121,6 +122,7 @@ export function SubmitRating({ productId }) {
       (rating) => rating.user === user.uid
     );
     setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
+    setUserHasRated(userRatings.length === 1);
   }, [productRatings, user]);
 
   // Submits the rating chosen by the user
@@ -150,22 +152,29 @@ export function SubmitRating({ productId }) {
           <Ratings.Widget />
         </Ratings>
       </div>
-      <Tooltip
-        hasArrow
-        label="Create an account to submit a review"
-        shouldWrapChildren
-        mt="4"
-        isDisabled={user}
-      >
-        <Button
-          className="review-submit-button"
-          isLoading={submittingRating}
-          isDisabled={!user}
-          onClick={submitRating}
+
+      {!userHasRated ? (
+        <Tooltip
+          hasArrow
+          label="Create an account to submit a review"
+          shouldWrapChildren
+          mt="4"
+          isDisabled={user}
         >
-          Submit
-        </Button>
-      </Tooltip>
+          <Button
+            className="review-submit-button"
+            isLoading={submittingRating}
+            isDisabled={!user}
+            onClick={submitRating}
+          >
+            Submit
+          </Button>
+        </Tooltip>
+      ) : (
+        <>
+          <p>Rating already submitted.</p>
+        </>
+      )}
     </div>
   );
 }
