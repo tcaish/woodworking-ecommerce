@@ -23,7 +23,8 @@ import { getCartProducts, signOutUser } from '../../utils/firebase/firebase';
 import {
   selectUser,
   selectDisplayName,
-  selectPhotoURL
+  selectPhotoURL,
+  setUser
 } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import {
@@ -78,6 +79,15 @@ function Navigation() {
       navbarToggler.classList.add('collapsed');
       navbarCollapse.classList.remove('show');
     }
+  }
+
+  async function handleSigningOut() {
+    await signOutUser().then((res) => {
+      collapseNavbar();
+
+      dispatch(setCartProducts([]));
+      dispatch(setUser(null));
+    });
   }
 
   return (
@@ -148,10 +158,7 @@ function Navigation() {
                   <Link
                     className="dropdown-item"
                     to={NAVIGATION_PATHS.home}
-                    onClick={() => {
-                      signOutUser();
-                      collapseNavbar();
-                    }}
+                    onClick={handleSigningOut}
                   >
                     Sign Out
                   </Link>
