@@ -1,3 +1,6 @@
+// React
+import { useEffect, useState } from 'react';
+
 // React Router
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -10,6 +13,13 @@ import { StarIcon } from '@chakra-ui/icons';
 
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
+import { selectRatings } from '../../redux/slices/ratingSlice';
+
+// Exports
+import {
+  getAverageRatingForProduct,
+  getRatingsForProduct
+} from '../../exports/functions';
 
 // Styles
 import './product-card.scss';
@@ -20,6 +30,14 @@ function ProductCard({ product }) {
   const navigate = useNavigate();
 
   const screenWidth = useSelector(selectScreenWidth);
+  const ratings = useSelector(selectRatings);
+
+  const [productRatings, setProductRatings] = useState([]);
+
+  // Sets the ratings for the given product
+  useEffect(() => {
+    setProductRatings(getRatingsForProduct(ratings, product.id));
+  }, [ratings, product.id]);
 
   // Handles showing the correct product detail page
   function showProductDetailsPage() {
@@ -84,11 +102,17 @@ function ProductCard({ product }) {
               .map((_, i) => (
                 <StarIcon
                   key={i}
-                  color={i < product.averageRating() ? 'gold' : 'gray.300'}
+                  color={
+                    i < getAverageRatingForProduct(productRatings)
+                      ? 'gold'
+                      : 'gray.300'
+                  }
                 />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
-              {product.ratings.length} reviews
+              {`${productRatings.length} ${
+                productRatings.length === 1 ? 'rating' : 'ratings'
+              }`}
             </Box>
           </Box>
         </Box>

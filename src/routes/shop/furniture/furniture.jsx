@@ -1,20 +1,36 @@
+// React
+import { useEffect } from 'react';
+
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Bootstrap
 import { Container, Col, Row } from 'react-bootstrap';
 
-// Chakra
+// Firebase
+import { getRatings } from '../../../utils/firebase/firebase';
+
+// Components
+import ProductCard from '../../../components/product-card/product-card';
 
 // Slices
 import { selectProducts } from '../../../redux/slices/inventorySlice';
+import { selectRatings, setRatings } from '../../../redux/slices/ratingSlice';
 
 // Styles
 import './furniture.scss';
-import ProductCard from '../../../components/product-card/product-card';
 
 function Furniture() {
+  const dispatch = useDispatch();
+
   const products = useSelector(selectProducts);
+  const ratings = useSelector(selectRatings);
+
+  // Brings down the ratings if it hasn't been loaded already
+  useEffect(() => {
+    if (ratings.length === 0)
+      getRatings().then((res) => dispatch(setRatings(res)));
+  }, [dispatch, ratings.length]);
 
   return (
     <Container className="main-container">

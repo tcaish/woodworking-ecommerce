@@ -30,7 +30,7 @@ import {
 import {
   addProductToCart,
   getCartProducts,
-  getRatingsForProduct
+  getRatings
 } from '../../../../utils/firebase/firebase';
 
 // Components
@@ -93,9 +93,7 @@ function Detail() {
   // Brings down the ratings if it hasn't been loaded already
   useEffect(() => {
     if (ratings.length === 0 && user && selectedProduct)
-      getRatingsForProduct(selectedProduct.id).then((res) =>
-        dispatch(setRatings(res))
-      );
+      getRatings().then((res) => dispatch(setRatings(res)));
   }, [ratings.length, user, dispatch, selectedProduct]);
 
   // Handles setting the main image and updating the list of other images
@@ -227,10 +225,10 @@ function Detail() {
 
             <Row className="review-container" sm={1} md={1} lg={1} xl={2}>
               <Col>
-                <OverallRating />
+                <OverallRating productId={selectedProduct.id} />
               </Col>
               <Col>
-                <SubmitRating />
+                <SubmitRating productId={selectedProduct.id} />
               </Col>
             </Row>
           </>

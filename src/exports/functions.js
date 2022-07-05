@@ -72,3 +72,20 @@ export function shareToSocialMedia(socialType) {
   );
   return false;
 }
+
+// Returns the ratings for a given product
+export function getRatingsForProduct(ratings, productId) {
+  if (ratings.length === 0) return [];
+  return ratings.filter((rating) => rating.product === productId);
+}
+
+// Returns the average rating for a given product's ratings
+export function getAverageRatingForProduct(productRatings) {
+  if (productRatings.length === 0) return 0;
+
+  const totalRating = productRatings.reduce(
+    (prevValue, rating) => prevValue + rating.rating,
+    0
+  );
+  return (totalRating / productRatings.length).toFixed(1);
+}

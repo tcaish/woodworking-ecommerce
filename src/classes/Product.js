@@ -10,7 +10,6 @@ export class Product {
     description,
     id,
     pictures,
-    ratings,
     specifications,
     title
   ) {
@@ -21,16 +20,8 @@ export class Product {
     this.description = description;
     this.id = id;
     this.pictures = pictures;
-    this.ratings = ratings;
     this.specifications = specifications;
     this.title = title;
-  }
-
-  // Returns the average rounded down rating for a product
-  averageRating() {
-    if (this.ratings.length === 0) return 0;
-    const sum = this.ratings.reduce((total, num) => total + num);
-    return Math.floor(sum / this.ratings.length);
   }
 
   // Returns the total cost for the product
@@ -67,7 +58,6 @@ export const productConverter = {
       description: product.description,
       id: product.id,
       pictures: product.pictures,
-      ratings: product.ratings,
       specifications: product.specifications,
       title: product.title
     };
@@ -82,7 +72,6 @@ export const productConverter = {
       data.description,
       data.id,
       data.pictures,
-      data.ratings,
       data.specifications,
       data.title
     );

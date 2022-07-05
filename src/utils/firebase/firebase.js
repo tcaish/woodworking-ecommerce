@@ -73,7 +73,9 @@ export async function createAuthUserWithEmailAndPassword(email, password) {
 export const signInWithEmailPassword = (email, password) =>
   signInWithEmailAndPassword(auth, email, password);
 
-export const signOutUser = async () => await signOut(auth);
+export const signOutUser = async () => {
+  await signOut(auth);
+};
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
@@ -149,13 +151,11 @@ export async function getCartProducts(userId) {
 }
 
 // Returns the ratings from the database
-export async function getRatingsForProduct(productId) {
+export async function getRatings() {
   const ratings = [];
 
   const ref = collection(firestore, 'ratings').withConverter(ratingConverter);
-  const q = query(ref, where('product', '==', productId));
-
-  const querySnapshot = await getDocs(q);
+  const querySnapshot = await getDocs(ref);
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     data.id = doc.id;

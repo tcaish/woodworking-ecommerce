@@ -12,7 +12,8 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
-  Text
+  Text,
+  Tooltip
 } from '@chakra-ui/react';
 
 // Bootstrap
@@ -29,30 +30,32 @@ import { selectUser } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import { selectRatings } from '../../redux/slices/ratingSlice';
 
+// Exports
+import {
+  getAverageRatingForProduct,
+  getRatingsForProduct
+} from '../../exports/functions';
+
 // Styles
 import './rating.scss';
 
-export function OverallRating() {
+export function OverallRating({ productId }) {
   const screenWidth = useSelector(selectScreenWidth);
   const ratings = useSelector(selectRatings);
 
-  // Averages the ratings when ratings gets loaded
-  function getAverageRating() {
-    if (ratings.length === 0) return 0;
+  const [productRatings, setProductRatings] = useState([]);
 
-    const totalRating = ratings.reduce(
-      (prevValue, rating) => prevValue + rating.rating,
-      0
-    );
-    return (totalRating / ratings.length).toFixed(1);
-  }
+  // Sets the ratings for the given product
+  useEffect(() => {
+    setProductRatings(getRatingsForProduct(ratings, productId));
+  }, [ratings, productId]);
 
   // Returns the number of ratings for a specific type of rating
   // (e.g. 1 rating for a 5-star rating)
   function getNumRatingsForType(typeOfRating) {
-    if (ratings.length === 0) return 0;
+    if (productRatings.length === 0) return 0;
 
-    const numRatings = ratings.filter(
+    const numRatings = productRatings.filter(
       (rating) => rating.rating === typeOfRating
     );
     return numRatings.length;
@@ -70,11 +73,11 @@ export function OverallRating() {
               className="review-stat-number"
               fontSize={screenWidth > 575 ? '3xl' : '2xl'}
             >
-              {getAverageRating()}
+              {getAverageRatingForProduct(productRatings)}
             </StatNumber>
             <StatHelpText fontSize="1xl">
-              {`${ratings.length} ${
-                ratings.length === 1 ? 'rating' : 'ratings'
+              {`${productRatings.length} ${
+                productRatings.length === 1 ? 'rating' : 'ratings'
               }`}
             </StatHelpText>
           </Stat>
@@ -96,26 +99,37 @@ export function OverallRating() {
   );
 }
 
-export function SubmitRating() {
+export function SubmitRating({ productId }) {
   const user = useSelector(selectUser);
   const screenWidth = useSelector(selectScreenWidth);
   const ratings = useSelector(selectRatings);
 
+  const [productRatings, setProductRatings] = useState([]);
   const [selectedRating, setSelectedRating] = useState(0);
   const [submittingRating, setSubmittingRating] = useState(false);
 
+  // Sets the ratings for the given product
+  useEffect(() => {
+    setProductRatings(getRatingsForProduct(ratings, productId));
+  }, [ratings, productId]);
+
+  // Sets the rating submitted by the user
+  useEffect(() => {
+    if (!user) return;
+
+    const userRatings = productRatings.filter(
+      (rating) => rating.user === user.uid
+    );
+    setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
+  }, [productRatings, user]);
+
   // Submits the rating chosen by the user
   async function submitRating() {
+    if (!user) return;
     setSubmittingRating(true);
     console.log(selectedRating);
     setSubmittingRating(false);
   }
-
-  // Sets the rating submitted by the user
-  useEffect(() => {
-    const userRatings = ratings.filter((rating) => rating.user === user.uid);
-    setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
-  }, [ratings, user.uid]);
 
   return (
     <div className="review-submit-container">
@@ -127,7 +141,7 @@ export function SubmitRating() {
           widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
           widgetRatedColors="gold"
           widgetHoverColors="gold"
-          changeRating={(rating) => setSelectedRating(rating)}
+          changeRating={(rating) => user && setSelectedRating(rating)}
         >
           <Ratings.Widget />
           <Ratings.Widget />
@@ -136,13 +150,22 @@ export function SubmitRating() {
           <Ratings.Widget />
         </Ratings>
       </div>
-      <Button
-        className="review-submit-button"
-        isLoading={submittingRating}
-        onClick={submitRating}
+      <Tooltip
+        hasArrow
+        label="Create an account to submit a review"
+        shouldWrapChildren
+        mt="4"
+        isDisabled={user}
       >
-        Submit
-      </Button>
+        <Button
+          className="review-submit-button"
+          isLoading={submittingRating}
+          isDisabled={!user}
+          onClick={submitRating}
+        >
+          Submit
+        </Button>
+      </Tooltip>
     </div>
   );
 }
