@@ -13,7 +13,8 @@ import {
   StatLabel,
   StatNumber,
   Text,
-  Tooltip
+  Tooltip,
+  useToast
 } from '@chakra-ui/react';
 
 // Bootstrap
@@ -109,6 +110,7 @@ export function OverallRating({ productId }) {
 
 export function SubmitRating({ productId }) {
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const user = useSelector(selectUser);
   const screenWidth = useSelector(selectScreenWidth);
@@ -138,6 +140,35 @@ export function SubmitRating({ productId }) {
     setUserHasRated(userRatings.length === 1);
   }, [productRatings, user]);
 
+  // Handles showing toast depending on success or error of submitting rating
+  function handleSuccessError(addingRating, err) {
+    let title = '';
+    let description = '';
+
+    if (err) {
+      title = addingRating
+        ? 'Failed to Submit Rating'
+        : 'Failed to Edit Rating';
+      description = addingRating
+        ? 'There was an error submitting your rating. Please try again later!'
+        : 'There was an error editing your rating. Please try again later!';
+    } else {
+      title = addingRating
+        ? 'Successfully Submitted Rating'
+        : 'Successfully Edited Rating';
+      description = addingRating
+        ? `Your rating of ${selectedRating} was submitted.`
+        : `Your rating has been updated to ${selectedRating}.`;
+    }
+    toast({
+      title: title,
+      description: description,
+      status: err ? 'error' : 'success',
+      duration: 6000,
+      isClosable: true
+    });
+  }
+
   // Submits the rating chosen by the user
   async function submitRating() {
     if (!user || !productId || selectedRating === 0) return;
@@ -158,9 +189,11 @@ export function SubmitRating({ productId }) {
           );
 
           setSubmittingRating(false);
+          handleSuccessError(true, false);
         })
         .catch((err) => {
           setSubmittingRating(false);
+          handleSuccessError(true, true);
         });
     } else {
       await editUserRating(selectedRating, userRating.id, user.uid, productId)
@@ -177,9 +210,11 @@ export function SubmitRating({ productId }) {
 
           setSubmittingRating(false);
           setEditingRating(false);
+          handleSuccessError(false, false);
         })
         .catch((err) => {
           setSubmittingRating(false);
+          handleSuccessError(false, true);
         });
     }
   }
