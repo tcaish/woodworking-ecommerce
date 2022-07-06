@@ -25,16 +25,17 @@
     font-size: large;
     margin-top: 35px;
 
+    h3 {
+      font-weight: 600;
+    }
+
     span {
       font-weight: 400;
     }
 
-    .detail-category {
-      font-weight: 600;
-    }
-
-    .detail-availability {
-      font-weight: 600;
+    .detail-category,
+    .detail-color,
+    .detail-size {
       margin-top: 10px;
     }
   }

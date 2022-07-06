@@ -10,6 +10,9 @@ import AddToCartButton from '../../add-to-cart-button/add-to-cart-button';
 import ShareToSocialButtons from '../../share-to-social-buttons/share-to-social-buttons';
 import { PlaceholderDetailInfo } from '../../placeholder/placeholder';
 
+// Exports
+import { capitalizeFirstLetter } from '../../../exports/functions';
+
 // Styles
 import './detail-info.scss';
 import './detail-info.mobile.scss';
@@ -34,9 +37,6 @@ function DetailInfo(props) {
           </div>
 
           <div className="detail-category-avail-container">
-            <h3 className="detail-category">
-              Category: <span>{props.selectedProduct.category}</span>
-            </h3>
             <h3 className="detail-availability">
               Availability:{' '}
               <span
@@ -44,6 +44,19 @@ function DetailInfo(props) {
               >
                 {props.selectedProduct.getAvailabilityString()}
               </span>
+            </h3>
+            <h3 className="detail-category">
+              Category:{' '}
+              <span>
+                {capitalizeFirstLetter(props.selectedProduct.category)}
+              </span>
+            </h3>
+            <h3 className="detail-color">
+              Color: <span>{props.selectedProduct.specifications.color}</span>
+            </h3>
+            <h3 className="detail-size">
+              Size:{' '}
+              <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
             </h3>
           </div>
           <Divider className="detail-divider" color="lightgrey" />
