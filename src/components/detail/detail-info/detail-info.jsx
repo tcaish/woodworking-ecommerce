@@ -45,32 +45,47 @@ function DetailInfo(props) {
             </ul>
           </div>
 
-          <div className="detail-category-avail-container">
-            <h3 className="detail-availability">
-              Availability:{' '}
-              <span
-                style={{ color: props.selectedProduct.getAvailabilityColor() }}
-              >
-                {props.selectedProduct.getAvailabilityString()}
-              </span>
-            </h3>
-            <h3 className="detail-category">
-              Category:{' '}
-              <span>
-                {capitalizeFirstLetter(props.selectedProduct.category)}
-              </span>
-            </h3>
-            <h3 className="detail-color">
-              Color: <span>{props.selectedProduct.specifications.color}</span>
-            </h3>
-            <h3 className="detail-size">
-              Size:{' '}
-              <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
-            </h3>
-            <h3 className="detail-weight">
-              Weight (Est.):{' '}
-              <span>{`${props.selectedProduct.specifications.weight} lbs.`}</span>
-            </h3>
+          <div className="detail-specs-container">
+            <table>
+              <tr>
+                <td className="detail-specs-title">Availability:</td>
+                <td className="detail-specs-value">
+                  <span
+                    style={{
+                      color: props.selectedProduct.getAvailabilityColor()
+                    }}
+                  >
+                    {props.selectedProduct.getAvailabilityString()}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td className="detail-specs-title">Category:</td>
+                <td className="detail-specs-value">
+                  <span>
+                    {capitalizeFirstLetter(props.selectedProduct.category)}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td className="detail-specs-title">Color:</td>
+                <td className="detail-specs-value">
+                  <span>{props.selectedProduct.specifications.color}</span>
+                </td>
+              </tr>
+              <tr>
+                <td className="detail-specs-title">Size:</td>
+                <td className="detail-specs-value">
+                  <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
+                </td>
+              </tr>
+              <tr>
+                <td className="detail-specs-title">Weight (Est.):</td>
+                <td className="detail-specs-value">
+                  <span>{`${props.selectedProduct.specifications.weight} lbs.`}</span>
+                </td>
+              </tr>
+            </table>
           </div>
 
           <Divider className="detail-divider" color="lightgrey" />

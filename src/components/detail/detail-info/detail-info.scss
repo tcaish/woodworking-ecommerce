@@ -21,23 +21,17 @@
     }
   }
 
-  .detail-category-avail-container {
+  .detail-specs-container {
     font-size: large;
     margin-top: 35px;
 
-    h3 {
+    .detail-specs-title {
       font-weight: 600;
+      text-align: right;
     }
 
-    span {
-      font-weight: 400;
-    }
-
-    .detail-category,
-    .detail-color,
-    .detail-size,
-    .detail-weight {
-      margin-top: 10px;
+    .detail-specs-value {
+      padding-left: 10px;
     }
   }
 
