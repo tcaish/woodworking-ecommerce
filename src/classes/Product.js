@@ -8,6 +8,7 @@ export class Product {
     cost,
     created,
     description,
+    description2,
     id,
     pictures,
     specifications,
@@ -18,6 +19,7 @@ export class Product {
     this.cost = cost;
     this.created = created;
     this.description = description;
+    this.description2 = description2;
     this.id = id;
     this.pictures = pictures;
     this.specifications = specifications;
@@ -56,6 +58,7 @@ export const productConverter = {
       cost: product.cost,
       created: product.created,
       description: product.description,
+      description2: product.description2,
       id: product.id,
       pictures: product.pictures,
       specifications: product.specifications,
@@ -70,6 +73,7 @@ export const productConverter = {
       data.cost,
       data.created,
       data.description,
+      data.description2,
       data.id,
       data.pictures,
       data.specifications,

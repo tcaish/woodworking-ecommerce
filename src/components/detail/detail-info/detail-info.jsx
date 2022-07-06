@@ -31,8 +31,10 @@ function DetailInfo(props) {
               ${props.selectedProduct.totalCost()}
             </h2>
             <ul className="detail-cost-breakdown">
-              <li>Materials: ${props.selectedProduct.cost.materials}</li>
-              <li>Labor: ${props.selectedProduct.cost.labor}</li>
+              <li>
+                Materials: ${props.selectedProduct.cost.materials.toFixed(2)}
+              </li>
+              <li>Labor: ${props.selectedProduct.cost.labor.toFixed(2)}</li>
             </ul>
           </div>
 
@@ -58,9 +60,18 @@ function DetailInfo(props) {
               Size:{' '}
               <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
             </h3>
+            <h3 className="detail-weight">
+              Weight (Est.):{' '}
+              <span>{`${props.selectedProduct.specifications.weight} lbs.`}</span>
+            </h3>
           </div>
+
           <Divider className="detail-divider" color="lightgrey" />
+
           <p>{props.selectedProduct.description}</p>
+          <p className="detail-description-2">
+            {props.selectedProduct.description2}
+          </p>
 
           <div className="detail-quantity-container">
             <QuantityController
