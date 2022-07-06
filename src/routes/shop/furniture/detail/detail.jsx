@@ -62,6 +62,8 @@ function Detail() {
   const [mainImage, setMainImage] = useState('');
   const [otherImages, setOtherImages] = useState([]);
   const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState('');
+  const [notes, setNotes] = useState('');
   const [addingToCart, setAddingToCart] = useState(false);
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [ratingsLoading, setRatingsLoading] = useState(false);
@@ -117,7 +119,7 @@ function Detail() {
   // Returns whether or not a product is already in the user's cart
   function isItemAlreadyInCart() {
     return (
-      cartProducts.filter((item) => item.productId === selectedProduct.id)
+      cartProducts.filter((item) => item.product === selectedProduct.id)
         .length === 1
     );
   }
@@ -141,6 +143,15 @@ function Detail() {
       toast({
         title: failedTitle,
         description: 'This item is currently out of stock.',
+        status: 'error',
+        duration: 6000,
+        isClosable: true
+      });
+      return true;
+    } else if (!color) {
+      toast({
+        title: failedTitle,
+        description: 'Please select a color for this item.',
         status: 'error',
         duration: 6000,
         isClosable: true
@@ -180,18 +191,24 @@ function Detail() {
 
     setAddingToCart(true);
 
-    await addProductToCart(selectedProduct.id, quantity, user.uid).then(
-      (res) => {
-        handleAddToCartSuccessOrError(res);
+    await addProductToCart(
+      color,
+      notes,
+      selectedProduct.id,
+      quantity,
+      user.uid
+    ).then((res) => {
+      handleAddToCartSuccessOrError(res);
 
-        if (res.added) {
-          dispatch(addToCart({ productId: selectedProduct.id, quantity }));
-          setQuantity(1);
-        }
-
-        setAddingToCart(false);
+      if (res.added) {
+        dispatch(
+          addToCart({ color, notes, product: selectedProduct.id, quantity })
+        );
+        setQuantity(1);
       }
-    );
+
+      setAddingToCart(false);
+    });
   }
 
   return (
@@ -224,6 +241,10 @@ function Detail() {
                   addingToCart={addingToCart}
                   handleAddToCart={handleAddToCart}
                   pageLoading={cartProductsLoading}
+                  color={color}
+                  setColor={setColor}
+                  notes={notes}
+                  setNotes={setNotes}
                 />
               </Col>
             </Row>

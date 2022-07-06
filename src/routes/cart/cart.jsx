@@ -35,8 +35,8 @@ function Cart() {
   return (
     <Container className="main-container cart-container">
       {cartProducts.length > 0 &&
-        cartProducts.map((product) => (
-          <h1 key={product.id}>{product.productId}</h1>
+        cartProducts.map((cartProduct, index) => (
+          <h1 key={index}>{cartProduct.product}</h1>
         ))}
     </Container>
   );

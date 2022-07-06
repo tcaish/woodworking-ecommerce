@@ -16,12 +16,12 @@ export const cartSlice = createSlice({
     },
     removeFromCart: (state, action) => {
       state.cartProducts = state.cartProducts.filter(
-        (product) => product.productId !== action.payload.productId
+        (cartProduct) => cartProduct.product !== action.payload.product
       );
     },
     updateQuantity: (state, action) => {
       const productToUpdateIndex = state.cartProducts.findIndex(
-        (product) => product.id === action.payload.id
+        (cartProduct) => cartProduct.id === action.payload.id
       );
       state.cartProducts[productToUpdateIndex].quantity =
         action.payload.quantity;

@@ -29,6 +29,7 @@ import {
 import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
 import { getFirebaseTimestampFromDate } from '../../exports/functions';
+import { cartProductConverter } from '../../classes/CartProduct';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -142,15 +143,18 @@ export async function getProducts() {
 
 // Returns the items in the user's cart
 export async function getCartProducts(userId) {
-  const products = [];
-  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const cartProducts = [];
+
+  const cartRef = collection(firestore, 'users', userId, 'cart').withConverter(
+    cartProductConverter
+  );
   const cartSnapshot = await getDocs(cartRef);
   cartSnapshot.forEach((doc) => {
     const data = doc.data();
     data.id = doc.id;
-    products.push(data);
+    cartProducts.push(data);
   });
-  return products;
+  return cartProducts;
 }
 
 // Returns the ratings from the database
@@ -168,17 +172,25 @@ export async function getRatings() {
 }
 
 // Adds a product to the user's cart
-export async function addProductToCart(productId, quantity, userId) {
+export async function addProductToCart(
+  color,
+  notes,
+  product,
+  quantity,
+  userId
+) {
   const cartRef = collection(firestore, 'users', userId, 'cart');
 
-  const q = query(cartRef, where('productId', '==', productId));
+  const q = query(cartRef, where('product', '==', product));
   const querySnapshot = await getDocs(q);
 
   // If the cart item already exists
   if (!querySnapshot.empty) return { added: false, error: 'already-exists' };
 
   return await addDoc(cartRef, {
-    productId,
+    color,
+    notes,
+    product,
     quantity
   })
     .then((res) => {

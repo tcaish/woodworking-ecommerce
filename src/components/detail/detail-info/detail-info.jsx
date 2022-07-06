@@ -2,7 +2,14 @@
 import { BsArrow90DegDown } from 'react-icons/bs';
 
 // Chakra
-import { Divider, Icon } from '@chakra-ui/react';
+import {
+  Divider,
+  FormControl,
+  FormLabel,
+  Icon,
+  Select,
+  Textarea
+} from '@chakra-ui/react';
 
 // Components
 import QuantityController from '../../quantity-controller/quantity-controller';
@@ -72,6 +79,32 @@ function DetailInfo(props) {
           <p className="detail-description-2">
             {props.selectedProduct.description2}
           </p>
+
+          <div className="detail-input-container">
+            <FormControl className="detail-input-color-container" isRequired>
+              <FormLabel htmlFor="color">Color</FormLabel>
+              <Select
+                id="color"
+                placeholder="Select color"
+                onChange={(e) => props.setColor(e.target.value)}
+                value={props.color}
+              >
+                <option value="Natural Wood">Natural Wood</option>
+                <option value="Black">Black</option>
+                <option value="Grey">Grey</option>
+                <option value="Other">Other - specified in notes</option>
+              </Select>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="notes">Notes</FormLabel>
+              <Textarea
+                placeholder="Specify any changes or modifications you would like to make to this order."
+                onChange={(e) => props.setNotes(e.target.value)}
+                value={props.notes}
+              />
+            </FormControl>
+          </div>
 
           <div className="detail-quantity-container">
             <QuantityController
