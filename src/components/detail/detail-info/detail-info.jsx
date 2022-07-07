@@ -68,12 +68,14 @@ function DetailInfo(props) {
                     </span>
                   </td>
                 </tr>
-                <tr>
-                  <td className="detail-specs-title">Color:</td>
-                  <td className="detail-specs-value">
-                    <span>{props.selectedProduct.specifications.color}</span>
-                  </td>
-                </tr>
+                {props.selectedProduct.specifications.color && (
+                  <tr>
+                    <td className="detail-specs-title">Color:</td>
+                    <td className="detail-specs-value">
+                      <span>{props.selectedProduct.specifications.color}</span>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td className="detail-specs-title">Size:</td>
                   <td className="detail-specs-value">
