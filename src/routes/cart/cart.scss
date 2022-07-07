@@ -1,4 +1,15 @@
+@import '../../exports/constants.scss';
+
 .cart-container {
-  .cart-items-container {
+  .cart-checkout-container {
+    .cart-checkout-button {
+      background-color: $brand-yellow;
+      margin-top: 30px;
+      width: 100%;
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
   }
 }

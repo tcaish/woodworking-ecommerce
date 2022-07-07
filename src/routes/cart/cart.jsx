@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 // Bootstrap
 import { Col, Container, Row } from 'react-bootstrap';
 
+// Chakra
+import { Button } from '@chakra-ui/react';
+
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 import {
@@ -20,6 +23,7 @@ import { getCartProducts, getProducts } from '../../utils/firebase/firebase';
 
 // Components
 import CartItem from '../../components/cart-item/cart-item';
+import CartTotals from '../../components/cart-totals/cart-totals';
 import { PlaceholderCartItem } from '../../components/placeholder/placeholder';
 
 // Styles
@@ -34,6 +38,9 @@ function Cart() {
 
   const [productsLoading, setProductsLoading] = useState(false);
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
+  const [materialsTotal, setMaterialsTotal] = useState(0);
+  const [laborTotal, setLaborTotal] = useState(0);
+  const [total, setTotal] = useState(0);
 
   // Fetches and stores the products if not already done
   useEffect(() => {
@@ -58,6 +65,25 @@ function Cart() {
       });
     }
   }, [cartProducts.length, user, dispatch]);
+
+  // Sets the materials, labor, and sub totals
+  useEffect(() => {
+    if (cartProducts.length > 0) {
+      const mTotal = cartProducts.reduce((prevValue, cartProd) => {
+        const product = getProduct(cartProd.product);
+        return prevValue + product.cost.materials;
+      }, 0);
+      const lTotal = cartProducts.reduce((prevValue, cartProd) => {
+        const product = getProduct(cartProd.product);
+        return prevValue + product.cost.labor;
+      }, 0);
+      const total = mTotal + lTotal;
+
+      setMaterialsTotal(mTotal.toFixed(2));
+      setLaborTotal(lTotal.toFixed(2));
+      setTotal(total.toFixed(2));
+    }
+  }, [cartProducts.length, cartProducts]);
 
   // Returns the product given a product ID
   function getProduct(productId) {
@@ -88,7 +114,21 @@ function Cart() {
 
         <Col>
           {!productsLoading && !cartProductsLoading ? (
-            <h1>Checkout details</h1>
+            <div className="cart-checkout-container">
+              <CartTotals
+                materialsTotal={materialsTotal}
+                laborTotal={laborTotal}
+                total={total}
+              />
+
+              <Button
+                className="cart-checkout-button"
+                variant="unstyled"
+                onClick={() => console.log('proceed to checkout')}
+              >
+                Proceed to Checkout
+              </Button>
+            </div>
           ) : (
             <h1>Loading</h1>
           )}
