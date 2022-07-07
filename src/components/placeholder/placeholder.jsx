@@ -152,3 +152,40 @@ export function PlaceholderSubmitRating() {
     </>
   );
 }
+
+export function PlaceholderCartItem() {
+  return (
+    <Row>
+      <Col>
+        <div className="cart-item-container">
+          <div
+            className="cart-item-image-container"
+            style={{
+              backgroundImage: `url(${placeholder_img})`,
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover'
+            }}
+          ></div>
+          <div className="cart-item-details-container">
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="lg" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={4} size="sm" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="sm" />
+            </Placeholder>
+
+            <div className="cart-item-quantity-cost-container">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={6} size="md" />
+              </Placeholder>
+            </div>
+          </div>
+        </div>
+      </Col>
+    </Row>
+  );
+}

@@ -18,9 +18,12 @@ import { selectUser } from '../../redux/slices/userSlice';
 // Firebase
 import { getCartProducts, getProducts } from '../../utils/firebase/firebase';
 
+// Components
+import CartItem from '../../components/cart-item/cart-item';
+import { PlaceholderCartItem } from '../../components/placeholder/placeholder';
+
 // Styles
 import './cart.scss';
-import { Button } from '@chakra-ui/react';
 
 function Cart() {
   const dispatch = useDispatch();
@@ -29,13 +32,16 @@ function Cart() {
   const cartProducts = useSelector(selectCartProducts);
   const products = useSelector(selectProducts);
 
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [cartProductsLoading, setCartProductsLoading] = useState(false);
+
   // Fetches and stores the products if not already done
   useEffect(() => {
-    // setPageLoading(true);
-
     if (products.length === 0) {
+      setProductsLoading(true);
+
       getProducts().then((res) => {
-        // setPageLoading(false);
+        setProductsLoading(false);
         dispatch(setProducts(res));
       });
     }
@@ -43,8 +49,14 @@ function Cart() {
 
   // Brings down the user's cart if it hasn't been loaded already
   useEffect(() => {
-    if (cartProducts.length === 0 && user)
-      getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
+    if (cartProducts.length === 0 && user) {
+      setCartProductsLoading(true);
+
+      getCartProducts(user.uid).then((res) => {
+        dispatch(setCartProducts(res));
+        setCartProductsLoading(false);
+      });
+    }
   }, [cartProducts.length, user, dispatch]);
 
   // Returns the product given a product ID
@@ -56,49 +68,29 @@ function Cart() {
     <Container className="main-container cart-container">
       <Row>
         <Col xs={12} md={7}>
-          <div className="cart-items-container">
-            {cartProducts.length > 0 &&
-              cartProducts.map((cartProduct, index) => (
-                <Row key={index}>
-                  <Col>
-                    <div className="cart-item-container">
-                      <div
-                        className="cart-item-image-container"
-                        style={{
-                          backgroundImage: `url(${
-                            getProduct(cartProduct.product).pictures[0]
-                          })`,
-                          backgroundPosition: 'center',
-                          backgroundRepeat: 'no-repeat',
-                          backgroundSize: 'cover'
-                        }}
-                      ></div>
-                      <div className="cart-item-details-container">
-                        <h1>{getProduct(cartProduct.product).title}</h1>
-                        <h3>{cartProduct.color}</h3>
-                        <p>{cartProduct.notes}</p>
-
-                        <div className="cart-item-quantity-cost-container">
-                          <p>{`Quantity: ${cartProduct.quantity}`}</p>
-                          <h2>{`$${getProduct(
-                            cartProduct.product
-                          ).totalCost()}`}</h2>
-                        </div>
-
-                        <div className="cart-item-actions-container">
-                          <Button variant="link">Edit</Button>
-                          <span>{'• '}</span>
-                          <Button variant="link">Remove</Button>
-                        </div>
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              ))}
-          </div>
+          {!productsLoading && !cartProductsLoading ? (
+            <div className="cart-items-container">
+              {cartProducts.length > 0 &&
+                cartProducts.map((cartProduct, index) => (
+                  <CartItem
+                    key={index}
+                    getProduct={getProduct}
+                    cartProduct={cartProduct}
+                  />
+                ))}
+            </div>
+          ) : (
+            <PlaceholderCartItem />
+          )}
         </Col>
 
-        <Col>Checkout details</Col>
+        <Col>
+          {!productsLoading && !cartProductsLoading ? (
+            <h1>Checkout details</h1>
+          ) : (
+            <h1>Loading</h1>
+          )}
+        </Col>
       </Row>
     </Container>
   );

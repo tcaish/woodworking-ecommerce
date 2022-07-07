@@ -1,0 +1,46 @@
+@import '../../exports/constants.scss';
+
+.cart-item-container {
+  border-radius: 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+
+  .cart-item-image-container {
+    border-radius: 10px 0 0 10px;
+  }
+
+  .cart-item-details-container {
+    padding: 10px 10px 10px 20px;
+
+    h1 {
+      font-size: large;
+      font-weight: 700;
+    }
+
+    h3,
+    p {
+      color: grey;
+    }
+
+    .cart-item-quantity-cost-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 15px;
+
+      h2 {
+        color: $brand-dark-yellow;
+        font-size: larger;
+        font-weight: 800;
+        padding-right: 10px;
+        text-align: right;
+      }
+    }
+
+    .cart-item-actions-container {
+      padding-right: 10px;
+      text-align: right;
+    }
+  }
+}
