@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 
 // React Router
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import {
 // Slices
 import { selectUser, setUser } from './redux/slices/userSlice';
 import { setScreenWidth } from './redux/slices/screenSlice';
+import { setCurrentPath } from './redux/slices/routingSlice';
 
 // Components
 import Home from './routes/home/home';
@@ -44,8 +45,11 @@ import './App.scss';
 
 function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const user = useSelector(selectUser);
 
+  // On window resize, set the screen width
   window.onresize = () => dispatch(setScreenWidth(window.innerWidth));
 
   // Listens for the user to sign in or out
@@ -62,13 +66,21 @@ function App() {
     });
   }, [dispatch]);
 
+  // Sets the current path the user is on
+  useEffect(() => {
+    setCurrentPath(location.pathname);
+  }, [location]);
+
   return (
     <Routes>
       <Route path={NAVIGATION_PATHS.home} element={<Navigation />}>
         <Route index element={<Home />} />
         <Route path={NAVIGATION_PATHS.shop} element={<Shop />}>
           <Route index element={<Furniture />} />
-          <Route path="product-details/:productId" element={<Detail />} />
+          <Route
+            path={`${NAVIGATION_PATHS.shop_product_details}/:productId`}
+            element={<Detail />}
+          />
           <Route path={NAVIGATION_PATHS.shop_custom} element={<Custom />} />
           <Route
             path={NAVIGATION_PATHS.shop_restoration}

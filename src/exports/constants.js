@@ -1,6 +1,7 @@
 export const NAVIGATION_PATHS = {
   home: '/',
   shop: 'shop',
+  shop_product_details: 'product-details',
   shop_custom: 'custom',
   shop_restoration: 'restoration',
   cart: 'cart',

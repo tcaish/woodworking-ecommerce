@@ -47,44 +47,46 @@ function DetailInfo(props) {
 
           <div className="detail-specs-container">
             <table>
-              <tr>
-                <td className="detail-specs-title">Availability:</td>
-                <td className="detail-specs-value">
-                  <span
-                    style={{
-                      color: props.selectedProduct.getAvailabilityColor()
-                    }}
-                  >
-                    {props.selectedProduct.getAvailabilityString()}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="detail-specs-title">Category:</td>
-                <td className="detail-specs-value">
-                  <span>
-                    {capitalizeFirstLetter(props.selectedProduct.category)}
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <td className="detail-specs-title">Color:</td>
-                <td className="detail-specs-value">
-                  <span>{props.selectedProduct.specifications.color}</span>
-                </td>
-              </tr>
-              <tr>
-                <td className="detail-specs-title">Size:</td>
-                <td className="detail-specs-value">
-                  <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
-                </td>
-              </tr>
-              <tr>
-                <td className="detail-specs-title">Weight (Est.):</td>
-                <td className="detail-specs-value">
-                  <span>{`${props.selectedProduct.specifications.weight} lbs.`}</span>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td className="detail-specs-title">Availability:</td>
+                  <td className="detail-specs-value">
+                    <span
+                      style={{
+                        color: props.selectedProduct.getAvailabilityColor()
+                      }}
+                    >
+                      {props.selectedProduct.getAvailabilityString()}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="detail-specs-title">Category:</td>
+                  <td className="detail-specs-value">
+                    <span>
+                      {capitalizeFirstLetter(props.selectedProduct.category)}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="detail-specs-title">Color:</td>
+                  <td className="detail-specs-value">
+                    <span>{props.selectedProduct.specifications.color}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="detail-specs-title">Size:</td>
+                  <td className="detail-specs-value">
+                    <span>{`${props.selectedProduct.specifications.width}" W x ${props.selectedProduct.specifications.length}" L x ${props.selectedProduct.specifications.height}" H`}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="detail-specs-title">Weight (Est.):</td>
+                  <td className="detail-specs-value">
+                    <span>{`${props.selectedProduct.specifications.weight} lbs.`}</span>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
 
