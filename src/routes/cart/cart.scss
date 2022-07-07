@@ -14,7 +14,7 @@
       }
 
       .cart-item-details-container {
-        padding: 5px 10px 10px 20px;
+        padding: 10px 10px 10px 20px;
 
         h1 {
           font-size: large;
@@ -29,7 +29,7 @@
         .cart-item-quantity-cost-container {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          // margin-top: 15px;
+          margin-top: 15px;
 
           h2 {
             color: $brand-dark-yellow;
