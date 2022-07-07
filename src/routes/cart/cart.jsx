@@ -74,8 +74,10 @@ function Cart() {
                 cartProducts.map((cartProduct, index) => (
                   <CartItem
                     key={index}
+                    index={index}
                     getProduct={getProduct}
                     cartProduct={cartProduct}
+                    cartProductsLength={cartProducts.length}
                   />
                 ))}
             </div>

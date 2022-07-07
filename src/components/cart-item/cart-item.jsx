@@ -8,10 +8,20 @@ import { Col, Row } from 'react-bootstrap';
 import './cart-item.scss';
 
 function CartItem(props) {
+  // Adds margin to the bottom of each cart item container if it's not
+  // the last one in the list.
+  function shouldAddMarginBottom() {
+    return props.index !== props.cartProductsLength - 1;
+  }
+
   return (
     <Row>
       <Col>
-        <div className="cart-item-container">
+        <div
+          className={`cart-item-container ${
+            shouldAddMarginBottom() && 'cart-item-margin-bottom'
+          }`}
+        >
           <div
             className="cart-item-image-container"
             style={{
