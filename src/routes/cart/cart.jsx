@@ -80,7 +80,6 @@ function Cart() {
           cartProds.push(data);
         });
 
-        console.log('here');
         setCartProductsLoading(false);
         dispatch(setCartProducts(cartProds));
       });
