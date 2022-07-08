@@ -74,11 +74,11 @@ function Cart() {
     if (cartProducts.length > 0) {
       const mTotal = cartProducts.reduce((prevValue, cartProd) => {
         const product = getProduct(cartProd.product);
-        return prevValue + product.cost.materials;
+        return prevValue + product.cost.materials * cartProd.quantity;
       }, 0);
       const lTotal = cartProducts.reduce((prevValue, cartProd) => {
         const product = getProduct(cartProd.product);
-        return prevValue + product.cost.labor;
+        return prevValue + product.cost.labor * cartProd.quantity;
       }, 0);
       const total = mTotal + lTotal;
 

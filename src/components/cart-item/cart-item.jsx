@@ -40,9 +40,10 @@ function CartItem(props) {
 
             <div className="cart-item-quantity-cost-container">
               <p>{`Quantity: ${props.cartProduct.quantity}`}</p>
-              <h2>{`$${props
-                .getProduct(props.cartProduct.product)
-                .totalCost()}`}</h2>
+              <h2>{`$${(
+                props.getProduct(props.cartProduct.product).totalCost() *
+                props.cartProduct.quantity
+              ).toFixed(2)}`}</h2>
             </div>
 
             <div className="cart-item-actions-container">
