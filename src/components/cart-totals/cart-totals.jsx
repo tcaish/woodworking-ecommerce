@@ -1,5 +1,6 @@
 // Styles
 import './cart-totals.scss';
+import './cart-totals.mobile.scss';
 
 function CartTotals({ materialsTotal, laborTotal, total }) {
   return (
