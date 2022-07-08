@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Chakra
 import { Button, useToast } from '@chakra-ui/react';
@@ -18,9 +18,11 @@ import { selectUser } from '../../redux/slices/userSlice';
 
 // Styles
 import './cart-item.scss';
+import { updateCartProduct } from '../../redux/slices/cartSlice';
 
 function CartItem(props) {
   const toast = useToast();
+  const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
 
@@ -30,6 +32,13 @@ function CartItem(props) {
   // the last one in the list.
   function shouldAddMarginBottom() {
     return props.index !== props.cartProductsLength - 1;
+  }
+
+  function test() {
+    let updatedProd = props.cartProduct;
+    updatedProd.quantity = 5;
+    updatedProd.notes = 'These are some new notes';
+    dispatch(updateCartProduct(updatedProd));
   }
 
   // Handles removing an item from the cart
@@ -101,7 +110,9 @@ function CartItem(props) {
             </div>
 
             <div className="cart-item-actions-container">
-              <Button variant="link">Edit</Button>
+              <Button variant="link" onClick={test}>
+                Edit
+              </Button>
               <span>{'• '}</span>
               <Button
                 variant="link"
