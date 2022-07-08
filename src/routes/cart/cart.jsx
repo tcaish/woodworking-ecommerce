@@ -24,7 +24,10 @@ import { getCartProducts, getProducts } from '../../utils/firebase/firebase';
 // Components
 import CartItem from '../../components/cart-item/cart-item';
 import CartTotals from '../../components/cart-totals/cart-totals';
-import { PlaceholderCartItem } from '../../components/placeholder/placeholder';
+import {
+  PlaceholderCartItem,
+  PlaceholderCartTotals
+} from '../../components/placeholder/placeholder';
 
 // Styles
 import './cart.scss';
@@ -130,7 +133,7 @@ function Cart() {
               </Button>
             </div>
           ) : (
-            <h1>Loading</h1>
+            <PlaceholderCartTotals />
           )}
         </Col>
       </Row>

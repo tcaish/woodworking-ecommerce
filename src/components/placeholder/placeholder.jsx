@@ -157,6 +157,64 @@ export function PlaceholderCartItem() {
   return (
     <Row>
       <Col>
+        <div className="cart-item-container cart-item-margin-bottom">
+          <div
+            className="cart-item-image-container"
+            style={{
+              backgroundImage: `url(${placeholder_img})`,
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover'
+            }}
+          ></div>
+          <div className="cart-item-details-container">
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="lg" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={4} size="sm" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="sm" />
+            </Placeholder>
+
+            <div className="cart-item-quantity-cost-container">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={6} size="md" />
+              </Placeholder>
+            </div>
+          </div>
+        </div>
+
+        <div className="cart-item-container cart-item-margin-bottom">
+          <div
+            className="cart-item-image-container"
+            style={{
+              backgroundImage: `url(${placeholder_img})`,
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover'
+            }}
+          ></div>
+          <div className="cart-item-details-container">
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="lg" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={4} size="sm" />
+            </Placeholder>
+            <Placeholder as="p" animation="wave">
+              <Placeholder xs={6} size="sm" />
+            </Placeholder>
+
+            <div className="cart-item-quantity-cost-container">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={6} size="md" />
+              </Placeholder>
+            </div>
+          </div>
+        </div>
+
         <div className="cart-item-container">
           <div
             className="cart-item-image-container"
@@ -187,5 +245,45 @@ export function PlaceholderCartItem() {
         </div>
       </Col>
     </Row>
+  );
+}
+
+export function PlaceholderCartTotals() {
+  return (
+    <div className="cart-checkout-container">
+      <div className="cart-checkout-totals-container">
+        <div className="cart-checkout-materials-container cart-checkout-grid">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+        </div>
+
+        <div className="cart-checkout-labor-container cart-checkout-grid">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+        </div>
+
+        <div className="cart-checkout-total-container cart-checkout-grid">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} size="sm" />
+          </Placeholder>
+        </div>
+      </div>
+
+      <Placeholder.Button
+        className="cart-checkout-button cart-checkout-button-placeholder"
+        xs={12}
+      />
+    </div>
   );
 }
