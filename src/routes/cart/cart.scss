@@ -1,6 +1,10 @@
 @import '../../exports/constants.scss';
 
 .cart-container {
+  .cart-heading {
+    margin-bottom: 20px;
+  }
+
   .cart-checkout-container {
     .cart-checkout-button {
       background-color: $brand-yellow;

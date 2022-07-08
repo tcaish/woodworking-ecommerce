@@ -8,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button } from '@chakra-ui/react';
+import { Button, Center, Heading } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 import {
   selectCartProducts,
+  selectCartQuantity,
   setCartProducts
 } from '../../redux/slices/cartSlice';
 import { selectUser } from '../../redux/slices/userSlice';
@@ -37,6 +38,7 @@ function Cart() {
 
   const user = useSelector(selectUser);
   const cartProducts = useSelector(selectCartProducts);
+  const cartQuantity = useSelector(selectCartQuantity);
   const products = useSelector(selectProducts);
 
   const [productsLoading, setProductsLoading] = useState(false);
@@ -96,6 +98,11 @@ function Cart() {
 
   return (
     <Container className="main-container cart-container">
+      <Center className="cart-heading">
+        <Heading fontSize="3xl">
+          Shopping Cart {cartQuantity > 0 && <span>({`${3} items`})</span>}
+        </Heading>
+      </Center>
       <Row>
         <Col xs={12} md={7}>
           {!productsLoading && !cartProductsLoading ? (
