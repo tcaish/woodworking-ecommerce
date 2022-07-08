@@ -34,12 +34,12 @@ function CartItem(props) {
     return props.index !== props.cartProductsLength - 1;
   }
 
-  function test() {
-    let updatedProd = props.cartProduct;
-    updatedProd.quantity = 5;
-    updatedProd.notes = 'These are some new notes';
-    dispatch(updateCartProduct(updatedProd));
-  }
+  // function test() {
+  //   let updatedProd = props.cartProduct;
+  //   updatedProd.quantity = 5;
+  //   updatedProd.notes = 'These are some new notes';
+  //   dispatch(updateCartProduct(updatedProd));
+  // }
 
   // Handles removing an item from the cart
   async function handleRemovingCartProduct() {
@@ -110,7 +110,7 @@ function CartItem(props) {
             </div>
 
             <div className="cart-item-actions-container">
-              <Button variant="link" onClick={test}>
+              <Button variant="link" onClick={() => console.log('edit')}>
                 Edit
               </Button>
               <span>{'• '}</span>
