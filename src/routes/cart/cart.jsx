@@ -93,18 +93,6 @@ function Cart() {
     }
   }, [user, dispatch, cartQuantity]);
 
-  // Brings down the user's cart if it hasn't been loaded already
-  // useEffect(() => {
-  //   if (cartQuantity === 0 && user) {
-  //     setCartProductsLoading(true);
-
-  //     getCartProducts(user.uid).then((res) => {
-  //       dispatch(setCartProducts(res));
-  //       setCartProductsLoading(false);
-  //     });
-  //   }
-  // }, [cartQuantity, user, dispatch]);
-
   // Sets the materials, labor, and sub totals
   useEffect(() => {
     if (cartProducts.length > 0) {
