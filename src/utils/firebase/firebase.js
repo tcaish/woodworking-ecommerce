@@ -24,7 +24,8 @@ import {
   query,
   where,
   addDoc,
-  updateDoc
+  updateDoc,
+  deleteDoc
 } from 'firebase/firestore';
 import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
@@ -256,4 +257,12 @@ export async function editUserRating(rating, ratingId, userId, productId) {
   } else {
     return null;
   }
+}
+
+// Removes an item from the user's cart
+export async function removeCartItem(userId, cartProductId) {
+  if (!cartProductId) return;
+
+  const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
+  return await deleteDoc(cartProductRef);
 }

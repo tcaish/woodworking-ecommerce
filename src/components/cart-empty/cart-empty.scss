@@ -1,0 +1,13 @@
+@import '../../exports/constants.scss';
+
+.cart-empty-container {
+  text-align: center;
+
+  a {
+    color: $brand-dark-yellow;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}

@@ -32,6 +32,7 @@ import {
 
 // Styles
 import './cart.scss';
+import CartEmpty from '../../components/cart-empty/cart-empty';
 
 function Cart() {
   const dispatch = useDispatch();
@@ -98,53 +99,60 @@ function Cart() {
 
   return (
     <Container className="main-container cart-container">
-      <Center className="cart-heading">
-        <Heading fontSize="3xl">
-          Shopping Cart {cartQuantity > 0 && <span>({`${3} items`})</span>}
-        </Heading>
-      </Center>
-      <Row>
-        <Col xs={12} md={7}>
-          {!productsLoading && !cartProductsLoading ? (
-            <div className="cart-items-container">
-              {cartProducts.length > 0 &&
-                cartProducts.map((cartProduct, index) => (
-                  <CartItem
-                    key={index}
-                    index={index}
-                    getProduct={getProduct}
-                    cartProduct={cartProduct}
-                    cartProductsLength={cartProducts.length}
+      {cartProducts.length === 0 ? (
+        <CartEmpty />
+      ) : (
+        <>
+          <Center className="cart-heading">
+            <Heading fontSize="3xl">
+              Shopping Cart{' '}
+              {cartQuantity > 0 && <span>({`${cartQuantity} items`})</span>}
+            </Heading>
+          </Center>
+          <Row>
+            <Col xs={12} md={7}>
+              {!productsLoading && !cartProductsLoading ? (
+                <div className="cart-items-container">
+                  {cartProducts.length > 0 &&
+                    cartProducts.map((cartProduct, index) => (
+                      <CartItem
+                        key={index}
+                        index={index}
+                        getProduct={getProduct}
+                        cartProduct={cartProduct}
+                        cartProductsLength={cartProducts.length}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <PlaceholderCartItem />
+              )}
+            </Col>
+
+            <Col>
+              {!productsLoading && !cartProductsLoading ? (
+                <div className="cart-checkout-container">
+                  <CartTotals
+                    materialsTotal={materialsTotal}
+                    laborTotal={laborTotal}
+                    total={total}
                   />
-                ))}
-            </div>
-          ) : (
-            <PlaceholderCartItem />
-          )}
-        </Col>
 
-        <Col>
-          {!productsLoading && !cartProductsLoading ? (
-            <div className="cart-checkout-container">
-              <CartTotals
-                materialsTotal={materialsTotal}
-                laborTotal={laborTotal}
-                total={total}
-              />
-
-              <Button
-                className="cart-checkout-button"
-                variant="unstyled"
-                onClick={() => console.log('proceed to checkout')}
-              >
-                Proceed to Checkout
-              </Button>
-            </div>
-          ) : (
-            <PlaceholderCartTotals />
-          )}
-        </Col>
-      </Row>
+                  <Button
+                    className="cart-checkout-button"
+                    variant="unstyled"
+                    onClick={() => console.log('proceed to checkout')}
+                  >
+                    Proceed to Checkout
+                  </Button>
+                </div>
+              ) : (
+                <PlaceholderCartTotals />
+              )}
+            </Col>
+          </Row>
+        </>
+      )}
     </Container>
   );
 }
