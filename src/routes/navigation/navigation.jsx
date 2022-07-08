@@ -29,6 +29,7 @@ import {
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import {
   selectCartProducts,
+  selectCartQuantity,
   setCartProducts
 } from '../../redux/slices/cartSlice';
 
@@ -53,6 +54,7 @@ function Navigation() {
   const photoURL = useSelector(selectPhotoURL);
   const screenWidth = useSelector(selectScreenWidth);
   const cartProducts = useSelector(selectCartProducts);
+  const cartQuantity = useSelector(selectCartQuantity);
 
   const [signingOut, setSigningOut] = useState(false);
 
@@ -193,7 +195,7 @@ function Navigation() {
                   />
                   {cartProducts.length > 0 && (
                     <Badge pill text="dark">
-                      {cartProducts.length}
+                      {cartQuantity}
                     </Badge>
                   )}
                 </div>

@@ -86,6 +86,7 @@ function Cart() {
       setLaborTotal(lTotal.toFixed(2));
       setTotal(total.toFixed(2));
     }
+    // eslint-disable-next-line
   }, [cartProducts.length, cartProducts]);
 
   // Returns the product given a product ID
