@@ -20,12 +20,12 @@ export const cartSlice = createSlice({
       state.cartProducts = [...state.cartProducts, action.payload];
       state.cartQuantity += action.payload.quantity;
     },
-    removeFromCart: (state, action) => {
-      state.cartProducts = state.cartProducts.filter(
-        (cartProduct) => cartProduct.product !== action.payload.product
-      );
-      state.cartQuantity -= action.payload.quantity;
-    },
+    // removeFromCart: (state, action) => {
+    //   state.cartProducts = state.cartProducts.filter(
+    //     (cartProduct) => cartProduct.id !== action.payload.id
+    //   );
+    //   state.cartQuantity -= action.payload.quantity;
+    // },
     updateQuantity: (state, action) => {
       const productToUpdateIndex = state.cartProducts.findIndex(
         (cartProduct) => cartProduct.id === action.payload.id
@@ -42,8 +42,7 @@ export const cartSlice = createSlice({
 });
 
 // Setters
-export const { setCartProducts, addToCart, removeFromCart, updateQuantity } =
-  cartSlice.actions;
+export const { setCartProducts, addToCart, updateQuantity } = cartSlice.actions;
 
 // Selectors
 export const selectCartProducts = (state) => state.cart.cartProducts;

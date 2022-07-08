@@ -20,7 +20,7 @@ import {
 import { selectUser } from '../../redux/slices/userSlice';
 
 // Firebase
-import { getCartProducts, getProducts } from '../../utils/firebase/firebase';
+import { firestore, getProducts } from '../../utils/firebase/firebase';
 
 // Components
 import CartItem from '../../components/cart-item/cart-item';
@@ -33,6 +33,8 @@ import {
 // Styles
 import './cart.scss';
 import CartEmpty from '../../components/cart-empty/cart-empty';
+import { collection, onSnapshot, query } from 'firebase/firestore';
+import { cartProductConverter } from '../../classes/CartProduct';
 
 function Cart() {
   const dispatch = useDispatch();
@@ -60,17 +62,48 @@ function Cart() {
     }
   }, [dispatch, products.length]);
 
-  // Brings down the user's cart if it hasn't been loaded already
+  // Listen to real-time updates on ratings table
   useEffect(() => {
-    if (cartProducts.length === 0 && user) {
-      setCartProductsLoading(true);
+    if (user) {
+      cartQuantity === 0 && setCartProductsLoading(true);
 
-      getCartProducts(user.uid).then((res) => {
-        dispatch(setCartProducts(res));
+      const q = query(
+        collection(firestore, 'users', user.uid, 'cart').withConverter(
+          cartProductConverter
+        )
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let cartProds = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          cartProds.push(data);
+        });
+
+        console.log('here');
         setCartProductsLoading(false);
+        dispatch(setCartProducts(cartProds));
       });
+
+      // This is what gets ran when the user leaves this page
+      return () => {
+        // Remove the listener for ratings
+        unsubscribe();
+      };
     }
-  }, [cartProducts.length, user, dispatch]);
+  }, [user, dispatch, cartQuantity]);
+
+  // Brings down the user's cart if it hasn't been loaded already
+  // useEffect(() => {
+  //   if (cartQuantity === 0 && user) {
+  //     setCartProductsLoading(true);
+
+  //     getCartProducts(user.uid).then((res) => {
+  //       dispatch(setCartProducts(res));
+  //       setCartProductsLoading(false);
+  //     });
+  //   }
+  // }, [cartQuantity, user, dispatch]);
 
   // Sets the materials, labor, and sub totals
   useEffect(() => {

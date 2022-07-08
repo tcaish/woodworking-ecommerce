@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 // React Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Chakra
 import { Button, useToast } from '@chakra-ui/react';
@@ -15,14 +15,12 @@ import { removeCartItem } from '../../utils/firebase/firebase';
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
-import { removeFromCart } from '../../redux/slices/cartSlice';
 
 // Styles
 import './cart-item.scss';
 
 function CartItem(props) {
   const toast = useToast();
-  const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
 
@@ -42,7 +40,6 @@ function CartItem(props) {
 
     await removeCartItem(user.uid, props.cartProduct.id)
       .then((res) => {
-        dispatch(removeFromCart(props.cartProduct));
         setRemovingItem(false);
 
         toast({
