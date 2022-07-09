@@ -12,6 +12,16 @@
     grid-template-columns: 1fr 1fr;
   }
 
+  .cart-checkout-promo-container {
+    margin-bottom: 20px;
+    text-align: right;
+
+    button {
+      background-color: $brand-yellow;
+      margin-top: 10px;
+    }
+  }
+
   .cart-checkout-value {
     font-weight: 500;
     text-align: right;

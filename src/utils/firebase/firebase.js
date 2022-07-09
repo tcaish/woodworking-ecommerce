@@ -31,6 +31,7 @@ import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
 import { getFirebaseTimestampFromDate } from '../../exports/functions';
 import { cartProductConverter } from '../../classes/CartProduct';
+import { promoCodeConverter } from '../../classes/PromoCode';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -170,6 +171,25 @@ export async function getRatings() {
     ratings.push(data);
   });
   return ratings;
+}
+
+// Returns the promo code that matches the given code
+export async function getPromoCode(code, userId) {
+  const promoRef = collection(firestore, 'promo_codes').withConverter(
+    promoCodeConverter
+  );
+  const q = query(promoRef, where('code', '==', code));
+  const querySnapshot = await getDocs(q);
+
+  // If the promo code doesn't exist
+  if (querySnapshot.empty) return { error: 'invalid' };
+
+  const promoCode = querySnapshot.docs[0].data();
+  if (promoCode.users.find((user) => user === userId)) {
+    return { error: 'applied' };
+  }
+
+  return promoCode;
 }
 
 // Adds a product to the user's cart
