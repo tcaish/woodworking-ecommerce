@@ -25,7 +25,8 @@ import {
   where,
   addDoc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  writeBatch
 } from 'firebase/firestore';
 import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
@@ -189,6 +190,7 @@ export async function getPromoCode(code, userId) {
     return { error: 'applied' };
   }
 
+  promoCode.id = querySnapshot.docs[0].id;
   return promoCode;
 }
 
@@ -220,6 +222,23 @@ export async function addProductToCart(
     .catch((err) => {
       return { added: false, error: err.code };
     });
+}
+
+// Adds the given promo code to each item in the user's cart
+export async function addPromoCodeToCartProducts(promoCodeId, userId) {
+  const batch = writeBatch(firestore);
+
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const querySnapshot = await getDocs(cartRef);
+  querySnapshot.forEach((document) => {
+    const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
+    batch.update(cartProductRef, { promoCode: promoCodeId });
+  });
+
+  return await batch
+    .commit()
+    .then((res) => true)
+    .catch((err) => false);
 }
 
 // Adds user to database if not already there

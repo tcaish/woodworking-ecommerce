@@ -14,7 +14,10 @@ import {
 } from '@chakra-ui/react';
 
 // Firebase
-import { getPromoCode } from '../../utils/firebase/firebase';
+import {
+  addPromoCodeToCartProducts,
+  getPromoCode
+} from '../../utils/firebase/firebase';
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
@@ -42,9 +45,21 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
     setSubmittingPromoCode(true);
 
     await getPromoCode(promoCode, user.uid)
-      .then((res) => {
-        setSubmittingPromoCode(false);
-        handlePromoCodeSuccessError(res);
+      .then((promoCode) => {
+        if (!promoCode.error) {
+          addPromoCodeToCartProducts(promoCode.id, user.uid)
+            .then((res) => {
+              handlePromoCodeSuccessError(promoCode);
+              setSubmittingPromoCode(false);
+            })
+            .catch((err) => {
+              handlePromoCodeSuccessError({ error: err });
+              setSubmittingPromoCode(false);
+            });
+        } else {
+          handlePromoCodeSuccessError(promoCode);
+          setSubmittingPromoCode(false);
+        }
       })
       .catch((err) => {
         setSubmittingPromoCode(false);
