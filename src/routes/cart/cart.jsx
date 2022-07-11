@@ -97,8 +97,8 @@ function Cart() {
         // If there are cart products and the first one has a promo code
         if (cartProds.length > 0 && cartProds[0].promoCode) {
           getPromoCodeById(cartProds[0].promoCode).then((res) => {
-            // If there is no error and promo code hasn't expired
-            if (!res.error && !res.expired()) {
+            // If there is no error
+            if (!res.error) {
               dispatch(setPromoCode(res));
 
               // Remove promo code when it expires
