@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Center, Heading, useToast } from '@chakra-ui/react';
+import { Button, Center, Heading } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
@@ -45,7 +45,6 @@ import { cartProductConverter } from '../../classes/CartProduct';
 import './cart.scss';
 
 function Cart() {
-  const toast = useToast();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -73,7 +72,7 @@ function Cart() {
     }
   }, [dispatch, products.length]);
 
-  // Listen to real-time updates on ratings table
+  // Listen to real-time updates on the user's cart table
   useEffect(() => {
     if (user) {
       cartQuantity === 0 && setCartProductsLoading(true);
@@ -116,7 +115,8 @@ function Cart() {
         unsubscribe();
       };
     }
-  }, [user, dispatch, cartQuantity, toast]);
+    // eslint-disable-next-line
+  }, [user, dispatch]);
 
   // Sets the materials, labor, and sub totals
   useEffect(() => {
