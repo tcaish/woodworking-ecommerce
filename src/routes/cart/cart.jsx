@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// React Icons
+import { IoMdLock } from 'react-icons/io';
+
 // Bootstrap
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Center, Heading } from '@chakra-ui/react';
+import { Button, Center, Heading, Icon } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
@@ -198,7 +201,8 @@ function Cart() {
 
                   <Button
                     className="cart-checkout-button"
-                    variant="unstyled"
+                    variant="solid"
+                    leftIcon={<Icon as={IoMdLock} w={5} h={5} />}
                     onClick={proceedToCheckout}
                   >
                     Proceed to Checkout
