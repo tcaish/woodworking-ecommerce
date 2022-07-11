@@ -12,12 +12,6 @@ export const cartSlice = createSlice({
   reducers: {
     setCartProducts: (state, action) => {
       state.cartProducts = action.payload;
-      console.log(
-        action.payload.reduce(
-          (prevValue, cartProd) => prevValue + cartProd.quantity,
-          0
-        )
-      );
       state.cartQuantity = action.payload.reduce(
         (prevValue, cartProd) => prevValue + cartProd.quantity,
         0
