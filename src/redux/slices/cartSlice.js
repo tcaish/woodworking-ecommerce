@@ -12,6 +12,12 @@ export const cartSlice = createSlice({
   reducers: {
     setCartProducts: (state, action) => {
       state.cartProducts = action.payload;
+      console.log(
+        action.payload.reduce(
+          (prevValue, cartProd) => prevValue + cartProd.quantity,
+          0
+        )
+      );
       state.cartQuantity = action.payload.reduce(
         (prevValue, cartProd) => prevValue + cartProd.quantity,
         0
@@ -20,21 +26,6 @@ export const cartSlice = createSlice({
     addToCart: (state, action) => {
       state.cartProducts = [...state.cartProducts, action.payload];
       state.cartQuantity += action.payload.quantity;
-    },
-    updateCartProduct: (state, action) => {
-      const index = state.cartProducts.findIndex(
-        (cartProd) => cartProd.id === action.payload.id
-      );
-      const prevCartProduct = state.cartProducts.filter(
-        (cartProduct) => cartProduct.id === action.payload.id
-      )[0];
-
-      const tempCartProducts = state.cartProducts.filter(
-        (cartProduct) => cartProduct.id !== prevCartProduct.id
-      );
-      state.cartProducts = tempCartProducts.splice(index, 0, action.payload);
-      state.cartQuantity =
-        state.cartQuantity - prevCartProduct.quantity + action.payload.quantity;
     },
     setPromoCode: (state, action) => {
       state.promoCode = action.payload;

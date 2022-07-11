@@ -108,10 +108,11 @@ function DetailInfo(props) {
                 onChange={(e) => props.setColor(e.target.value)}
                 value={props.color}
               >
-                <option value="Natural Wood">Natural Wood</option>
-                <option value="Black">Black</option>
-                <option value="Grey">Grey</option>
-                <option value="Other">Other - specified in notes</option>
+                {props.selectedProduct.colors.map((theColor, index) => (
+                  <option key={index} value={theColor}>
+                    {theColor}
+                  </option>
+                ))}
               </Select>
             </FormControl>
 

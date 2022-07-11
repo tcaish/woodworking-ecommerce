@@ -5,6 +5,7 @@ export class Product {
   constructor(
     availability,
     category,
+    colors,
     cost,
     created,
     description,
@@ -16,6 +17,7 @@ export class Product {
   ) {
     this.availability = availability;
     this.category = category;
+    this.colors = colors;
     this.cost = cost;
     this.created = created;
     this.description = description;
@@ -55,6 +57,7 @@ export const productConverter = {
     return {
       availability: product.availability,
       category: product.category,
+      colors: product.colors,
       cost: product.cost,
       created: product.created,
       description: product.description,
@@ -70,6 +73,7 @@ export const productConverter = {
     return new Product(
       data.availability,
       data.category,
+      data.colors,
       data.cost,
       data.created,
       data.description,

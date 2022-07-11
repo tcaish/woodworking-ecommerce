@@ -332,3 +332,10 @@ export async function removeCartItem(userId, cartProductId) {
   const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
   return await deleteDoc(cartProductRef);
 }
+
+export async function updateCartItem(userId, cartProductId, options) {
+  if (!userId || !cartProductId || !options) return;
+
+  const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
+  return await updateDoc(cartProductRef, options);
+}

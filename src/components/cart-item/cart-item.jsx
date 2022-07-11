@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 // React Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // Chakra
 import { Button, useDisclosure, useToast } from '@chakra-ui/react';
@@ -21,13 +21,10 @@ import EditCartItemModal from '../edit-cart-item-modal/edit-cart-item-modal';
 
 // Styles
 import './cart-item.scss';
-import { updateCartProduct } from '../../redux/slices/cartSlice';
 
 function CartItem(props) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
 
@@ -39,13 +36,6 @@ function CartItem(props) {
   function shouldAddMarginBottom() {
     return props.index !== props.cartProductsLength - 1;
   }
-
-  // function test() {
-  //   let updatedProd = props.cartProduct;
-  //   updatedProd.quantity = 5;
-  //   updatedProd.notes = 'These are some new notes';
-  //   dispatch(updateCartProduct(updatedProd));
-  // }
 
   // Handles removing an item from the cart
   async function handleRemovingCartProduct() {
@@ -142,6 +132,7 @@ function CartItem(props) {
 
       {showModal && (
         <EditCartItemModal
+          user={user}
           cartProduct={props.cartProduct}
           product={props.getProduct(props.cartProduct.product)}
           isOpen={isOpen}
