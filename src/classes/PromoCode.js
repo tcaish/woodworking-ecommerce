@@ -1,3 +1,5 @@
+import { howManyDaysFromToday } from '../exports/functions';
+
 export class PromoCode {
   constructor(code, discount, ends, id, users) {
     this.code = code;
@@ -5,6 +7,11 @@ export class PromoCode {
     this.ends = ends;
     this.id = id;
     this.users = users;
+  }
+
+  // Returns if the promo code has expired
+  expired() {
+    return howManyDaysFromToday(this.ends) > 0;
   }
 }
 

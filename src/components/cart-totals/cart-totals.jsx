@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Chakra
 import {
@@ -21,35 +21,38 @@ import {
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
+import { selectPromoCode, setPromoCode } from '../../redux/slices/cartSlice';
 
 // Styles
 import './cart-totals.scss';
 import './cart-totals.mobile.scss';
 
-function CartTotals({ materialsTotal, laborTotal, total }) {
+function CartTotals(props) {
   const toast = useToast();
+  const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
+  const promoCode = useSelector(selectPromoCode);
 
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCodeInput, setPromoCodeInput] = useState('');
   const [submittingPromoCode, setSubmittingPromoCode] = useState(false);
   const [promoCodeInvalid, setPromoCodeInvalid] = useState(false);
 
   // Submits promo code and applies discount if it exists
   async function submitPromoCode() {
-    if (promoCode === '') {
+    if (promoCodeInput === '') {
       setPromoCodeInvalid(true);
       return;
     }
 
     setSubmittingPromoCode(true);
 
-    await getPromoCode(promoCode, user.uid)
-      .then((promoCode) => {
-        if (!promoCode.error) {
-          addPromoCodeToCartProducts(promoCode.id, user.uid)
+    await getPromoCode(promoCodeInput, user.uid)
+      .then((code) => {
+        if (!code.error) {
+          addPromoCodeToCartProducts(code.id, user.uid)
             .then((res) => {
-              handlePromoCodeSuccessError(promoCode);
+              handlePromoCodeSuccessError(!res.error ? code : res);
               setSubmittingPromoCode(false);
             })
             .catch((err) => {
@@ -57,7 +60,7 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
               setSubmittingPromoCode(false);
             });
         } else {
-          handlePromoCodeSuccessError(promoCode);
+          handlePromoCodeSuccessError(code);
           setSubmittingPromoCode(false);
         }
       })
@@ -68,6 +71,8 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
       });
   }
 
+  // Handles showing success or error messages depending on the result of
+  // submitting the promo code.
   function handlePromoCodeSuccessError(res) {
     let title = 'Promo Code Accepted';
     let description = `A discount of ${
@@ -81,14 +86,18 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
       title = 'Promo Code Already Used';
       description =
         'This promo code has either already been applied to this order or a previous order.';
+    } else if (res.error && res.error === 'expired') {
+      title = 'Promo Code Expired';
+      description = 'This promo code has expired.';
     } else if (res.error) {
       title = 'Promo Code Error';
       description =
         'There was an issue submitting the promo code. Please try again later.';
     }
 
+    if (!res.error) dispatch(setPromoCode(res));
     setPromoCodeInvalid(res.error && true);
-    setPromoCode(!res.error ? '' : promoCode);
+    setPromoCodeInput(!res.error ? '' : promoCodeInput);
 
     toast({
       title: title,
@@ -108,8 +117,8 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
             id="promoCode"
             type="text"
             placeholder="Enter Promo Code"
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
+            value={promoCodeInput}
+            onChange={(e) => setPromoCodeInput(e.target.value)}
           />
         </FormControl>
 
@@ -120,17 +129,24 @@ function CartTotals({ materialsTotal, laborTotal, total }) {
 
       <div className="cart-checkout-materials-container cart-checkout-grid">
         <p className="cart-checkout-title">Materials</p>
-        <p className="cart-checkout-value">{`$${materialsTotal}`}</p>
+        <p className="cart-checkout-value">{`$${props.materialsTotal}`}</p>
       </div>
 
       <div className="cart-checkout-labor-container cart-checkout-grid">
         <p className="cart-checkout-title">Labor</p>
-        <p className="cart-checkout-value">{`$${laborTotal}`}</p>
+        <p className="cart-checkout-value">{`$${props.laborTotal}`}</p>
       </div>
+
+      {promoCode && (
+        <div className="cart-checkout-discount-container cart-checkout-grid">
+          <p className="cart-checkout-title">Discount</p>
+          <p className="cart-checkout-value">{`-$${props.discountTotal}`}</p>
+        </div>
+      )}
 
       <div className="cart-checkout-total-container cart-checkout-grid">
         <p className="cart-checkout-title">Total</p>
-        <p className="cart-checkout-value">{`$${total}`}</p>
+        <p className="cart-checkout-value">{`$${props.total}`}</p>
       </div>
     </div>
   );

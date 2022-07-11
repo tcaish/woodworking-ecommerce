@@ -15,12 +15,19 @@ import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 import {
   selectCartProducts,
   selectCartQuantity,
-  setCartProducts
+  selectPromoCode,
+  setCartProducts,
+  setPromoCode
 } from '../../redux/slices/cartSlice';
 import { selectUser } from '../../redux/slices/userSlice';
 
 // Firebase
-import { firestore, getProducts } from '../../utils/firebase/firebase';
+import {
+  firestore,
+  getProducts,
+  getPromoCodeById
+} from '../../utils/firebase/firebase';
+import { collection, onSnapshot, query } from 'firebase/firestore';
 
 // Components
 import CartItem from '../../components/cart-item/cart-item';
@@ -29,12 +36,13 @@ import {
   PlaceholderCartItem,
   PlaceholderCartTotals
 } from '../../components/placeholder/placeholder';
+import CartEmpty from '../../components/cart-empty/cart-empty';
+
+// Exports
+import { cartProductConverter } from '../../classes/CartProduct';
 
 // Styles
 import './cart.scss';
-import CartEmpty from '../../components/cart-empty/cart-empty';
-import { collection, onSnapshot, query } from 'firebase/firestore';
-import { cartProductConverter } from '../../classes/CartProduct';
 
 function Cart() {
   const dispatch = useDispatch();
@@ -42,6 +50,7 @@ function Cart() {
   const user = useSelector(selectUser);
   const cartProducts = useSelector(selectCartProducts);
   const cartQuantity = useSelector(selectCartQuantity);
+  const promoCode = useSelector(selectPromoCode);
   const products = useSelector(selectProducts);
 
   const [productsLoading, setProductsLoading] = useState(false);
@@ -49,6 +58,7 @@ function Cart() {
   const [materialsTotal, setMaterialsTotal] = useState(0);
   const [laborTotal, setLaborTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [discountTotal, setDiscountTotal] = useState(0);
 
   // Fetches and stores the products if not already done
   useEffect(() => {
@@ -82,6 +92,12 @@ function Cart() {
 
         setCartProductsLoading(false);
         dispatch(setCartProducts(cartProds));
+
+        if (cartProds.length > 0 && cartProds[0].promoCode) {
+          getPromoCodeById(cartProds[0].promoCode).then((res) =>
+            dispatch(setPromoCode(res))
+          );
+        }
       });
 
       // This is what gets ran when the user leaves this page
@@ -107,10 +123,17 @@ function Cart() {
 
       setMaterialsTotal(mTotal.toFixed(2));
       setLaborTotal(lTotal.toFixed(2));
-      setTotal(total.toFixed(2));
+
+      if (promoCode) {
+        const discount = (total * promoCode.discount).toFixed(2);
+        setDiscountTotal(discount);
+        setTotal((total - discount).toFixed(2));
+      } else {
+        setTotal(total.toFixed(2));
+      }
     }
     // eslint-disable-next-line
-  }, [cartProducts.length, cartProducts]);
+  }, [cartProducts.length, cartProducts, discountTotal, promoCode]);
 
   // Returns the product given a product ID
   function getProduct(productId) {
@@ -155,6 +178,7 @@ function Cart() {
                   <CartTotals
                     materialsTotal={materialsTotal}
                     laborTotal={laborTotal}
+                    discountTotal={discountTotal}
                     total={total}
                   />
 

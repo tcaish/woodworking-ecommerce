@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   cartProducts: [],
-  cartQuantity: 0
+  cartQuantity: 0,
+  promoCode: null
 };
 
 export const cartSlice = createSlice({
@@ -34,28 +35,20 @@ export const cartSlice = createSlice({
       state.cartProducts = tempCartProducts.splice(index, 0, action.payload);
       state.cartQuantity =
         state.cartQuantity - prevCartProduct.quantity + action.payload.quantity;
+    },
+    setPromoCode: (state, action) => {
+      state.promoCode = action.payload;
     }
-    // updateQuantity: (state, action) => {
-    //   const productToUpdateIndex = state.cartProducts.findIndex(
-    //     (cartProduct) => cartProduct.id === action.payload.id
-    //   );
-    //   state.cartProducts[productToUpdateIndex].quantity =
-    //     action.payload.quantity;
-
-    //   state.cartQuantity =
-    //     state.cartQuantity -
-    //     state.cartProducts[productToUpdateIndex].quantity +
-    //     action.payload.quantity;
-    // }
   }
 });
 
 // Setters
-export const { setCartProducts, addToCart, updateCartProduct } =
+export const { setCartProducts, addToCart, updateCartProduct, setPromoCode } =
   cartSlice.actions;
 
 // Selectors
 export const selectCartProducts = (state) => state.cart.cartProducts;
 export const selectCartQuantity = (state) => state.cart.cartQuantity;
+export const selectPromoCode = (state) => state.cart.promoCode;
 
 export default cartSlice.reducer;

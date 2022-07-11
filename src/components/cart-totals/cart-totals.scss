@@ -27,6 +27,13 @@
     text-align: right;
   }
 
+  .cart-checkout-discount-container {
+    .cart-checkout-title,
+    .cart-checkout-value {
+      color: rgb(214, 0, 0);
+    }
+  }
+
   .cart-checkout-total-container {
     margin-top: 20px;
 

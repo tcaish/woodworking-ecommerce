@@ -176,6 +176,8 @@ export async function getRatings() {
 
 // Returns the promo code that matches the given code
 export async function getPromoCode(code, userId) {
+  if (!code || !userId) return;
+
   const promoRef = collection(firestore, 'promo_codes').withConverter(
     promoCodeConverter
   );
@@ -186,12 +188,22 @@ export async function getPromoCode(code, userId) {
   if (querySnapshot.empty) return { error: 'invalid' };
 
   const promoCode = querySnapshot.docs[0].data();
-  if (promoCode.users.find((user) => user === userId)) {
-    return { error: 'applied' };
-  }
+  if (promoCode.expired()) return { error: 'expired' };
 
   promoCode.id = querySnapshot.docs[0].id;
   return promoCode;
+}
+
+// Returns the promo code by the given ID
+export async function getPromoCodeById(promoCodeId) {
+  if (!promoCodeId) return;
+
+  const promoRef = doc(firestore, 'promo_codes', promoCodeId).withConverter(
+    promoCodeConverter
+  );
+  const promoSnapshot = await getDoc(promoRef);
+
+  return promoSnapshot.exists() ? promoSnapshot.data() : null;
 }
 
 // Adds a product to the user's cart
@@ -202,6 +214,8 @@ export async function addProductToCart(
   quantity,
   userId
 ) {
+  if (!color || !product || !quantity || !userId) return;
+
   const cartRef = collection(firestore, 'users', userId, 'cart');
 
   const q = query(cartRef, where('product', '==', product));
@@ -226,10 +240,18 @@ export async function addProductToCart(
 
 // Adds the given promo code to each item in the user's cart
 export async function addPromoCodeToCartProducts(promoCodeId, userId) {
+  if (!promoCodeId || !userId) return;
+
   const batch = writeBatch(firestore);
 
   const cartRef = collection(firestore, 'users', userId, 'cart');
   const querySnapshot = await getDocs(cartRef);
+
+  const cartItem = querySnapshot.docs[0].data();
+  if (cartItem.promoCode === promoCodeId) {
+    return { error: 'applied' };
+  }
+
   querySnapshot.forEach((document) => {
     const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
     batch.update(cartProductRef, { promoCode: promoCodeId });
@@ -238,7 +260,7 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
   return await batch
     .commit()
     .then((res) => true)
-    .catch((err) => false);
+    .catch((err) => ({ error: err }));
 }
 
 // Adds user to database if not already there
