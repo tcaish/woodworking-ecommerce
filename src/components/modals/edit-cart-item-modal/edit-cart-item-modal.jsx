@@ -20,7 +20,7 @@ import {
 
 // Styles
 import './edit-cart-item-modal.scss';
-import { updateCartItem } from '../../utils/firebase/firebase';
+import { updateCartItem } from '../../../utils/firebase/firebase';
 
 function EditCartItemModal(props) {
   const initialRef = useRef(null);

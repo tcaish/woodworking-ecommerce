@@ -11,7 +11,7 @@ import { useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 
 // Chakra
-import { useToast, Divider } from '@chakra-ui/react';
+import { useToast, Divider, useDisclosure } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
@@ -37,6 +37,7 @@ import {
 import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
 import DetailInfo from '../../../../components/detail/detail-info/detail-info';
+import NotSignedInModal from '../../../../components/modals/not-signed-in-modal/not-signed-in-modal';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
@@ -51,6 +52,8 @@ import {
 
 function Detail() {
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -67,6 +70,7 @@ function Detail() {
   const [addingToCart, setAddingToCart] = useState(false);
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [ratingsLoading, setRatingsLoading] = useState(false);
+  const [showNotSignedInModal, setShowNotSignedInModal] = useState(false);
 
   const selectedProduct = products.filter(
     (product) => product.id === params.productId
@@ -129,8 +133,11 @@ function Detail() {
     const failedTitle = 'Failed to Add to Cart';
     const alreadyInCartDesc = 'This item is already in your cart.';
 
-    if (!user) return true;
-    else if (isItemAlreadyInCart()) {
+    if (!user) {
+      setShowNotSignedInModal(true);
+      onOpen();
+      return true;
+    } else if (isItemAlreadyInCart()) {
       toast({
         title: failedTitle,
         description: alreadyInCartDesc,
@@ -265,6 +272,14 @@ function Detail() {
                 />
               </Col>
             </Row>
+
+            {showNotSignedInModal && (
+              <NotSignedInModal
+                isOpen={isOpen}
+                onOpen={onOpen}
+                onClose={onClose}
+              />
+            )}
           </>
         )}
       </div>

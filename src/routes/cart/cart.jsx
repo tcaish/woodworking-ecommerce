@@ -155,6 +155,8 @@ function Cart() {
 
   function proceedToCheckout() {
     if (!cartProducts) return;
+
+    console.log('proceed');
   }
 
   return (

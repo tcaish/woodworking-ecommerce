@@ -1,0 +1,10 @@
+@import '../../../exports/constants.scss';
+
+.sign-in-modal-button {
+  background-color: $brand-yellow;
+
+  &:hover {
+    background-color: $brand-yellow;
+    opacity: 0.75;
+  }
+}

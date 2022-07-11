@@ -17,7 +17,7 @@ import { removeCartItem } from '../../utils/firebase/firebase';
 import { selectUser } from '../../redux/slices/userSlice';
 
 // Components
-import EditCartItemModal from '../edit-cart-item-modal/edit-cart-item-modal';
+import EditCartItemModal from '../modals/edit-cart-item-modal/edit-cart-item-modal';
 
 // Styles
 import './cart-item.scss';
