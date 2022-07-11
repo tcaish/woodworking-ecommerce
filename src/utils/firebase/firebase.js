@@ -203,7 +203,12 @@ export async function getPromoCodeById(promoCodeId) {
   );
   const promoSnapshot = await getDoc(promoRef);
 
-  return promoSnapshot.exists() ? promoSnapshot.data() : null;
+  if (promoSnapshot.exists()) {
+    const promoCode = promoSnapshot.data();
+    return promoCode.expired() ? { error: 'expired' } : promoCode;
+  }
+
+  return { error: 'doesnt-exist' };
 }
 
 // Adds a product to the user's cart

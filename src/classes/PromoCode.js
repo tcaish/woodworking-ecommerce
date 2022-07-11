@@ -11,7 +11,7 @@ export class PromoCode {
 
   // Returns if the promo code has expired
   expired() {
-    return howManyDaysFromToday(this.ends) > 0;
+    return howManyDaysFromToday(this.ends) >= 0;
   }
 }
 

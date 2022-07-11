@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Center, Heading } from '@chakra-ui/react';
+import { Button, Center, Heading, useToast } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
@@ -45,6 +45,7 @@ import { cartProductConverter } from '../../classes/CartProduct';
 import './cart.scss';
 
 function Cart() {
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -93,10 +94,19 @@ function Cart() {
         setCartProductsLoading(false);
         dispatch(setCartProducts(cartProds));
 
+        // If there are cart products and the first one has a promo code
         if (cartProds.length > 0 && cartProds[0].promoCode) {
-          getPromoCodeById(cartProds[0].promoCode).then((res) =>
-            dispatch(setPromoCode(res))
-          );
+          getPromoCodeById(cartProds[0].promoCode).then((res) => {
+            // If there is no error and promo code hasn't expired
+            if (!res.error && !res.expired()) {
+              dispatch(setPromoCode(res));
+
+              // Remove promo code when it expires
+              setTimeout(() => {
+                dispatch(setPromoCode(null));
+              }, res.ends.toDate().getTime() - Date.now());
+            }
+          });
         }
       });
 
@@ -106,7 +116,7 @@ function Cart() {
         unsubscribe();
       };
     }
-  }, [user, dispatch, cartQuantity]);
+  }, [user, dispatch, cartQuantity, toast]);
 
   // Sets the materials, labor, and sub totals
   useEffect(() => {
@@ -138,6 +148,10 @@ function Cart() {
   // Returns the product given a product ID
   function getProduct(productId) {
     return products.filter((product) => product.id === productId)[0];
+  }
+
+  function proceedToCheckout() {
+    if (!cartProducts) return;
   }
 
   return (
@@ -185,7 +199,7 @@ function Cart() {
                   <Button
                     className="cart-checkout-button"
                     variant="unstyled"
-                    onClick={() => console.log('proceed to checkout')}
+                    onClick={proceedToCheckout}
                   >
                     Proceed to Checkout
                   </Button>

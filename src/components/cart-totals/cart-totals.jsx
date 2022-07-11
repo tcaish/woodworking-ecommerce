@@ -85,7 +85,7 @@ function CartTotals(props) {
     } else if (res.error && res.error === 'applied') {
       title = 'Promo Code Already Used';
       description =
-        'This promo code has either already been applied to this order or a previous order.';
+        'This promo code has either already been applied to this order or a previous order. Please try a different code!';
     } else if (res.error && res.error === 'expired') {
       title = 'Promo Code Expired';
       description = 'This promo code has expired.';
