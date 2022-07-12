@@ -131,11 +131,11 @@ function Checkout() {
     // Everything is valid so reset all invalid states to defaults
     resetInvalidStatesToDefaults();
 
+    setPlacingOrder(true);
+
     await updateUser(user.uid, { phoneNumber: phone })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
-
-    setPlacingOrder(true);
 
     try {
       const totalWithoutDecimal = `${total}`.replace('.', '');
