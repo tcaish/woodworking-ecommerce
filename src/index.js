@@ -12,6 +12,10 @@ import { BrowserRouter } from 'react-router-dom';
 // Chakra
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
+// Stripe
+import { Elements } from '@stripe/react-stripe-js';
+import { stripePromise } from './utils/stripe/stripe';
+
 // Components
 import App from './App';
 
@@ -71,7 +75,9 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
         <ChakraProvider theme={theme}>
-          <App />
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
         </ChakraProvider>
       </BrowserRouter>
     </Provider>
