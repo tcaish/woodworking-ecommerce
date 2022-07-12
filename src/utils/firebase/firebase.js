@@ -12,7 +12,8 @@ import {
   updateProfile,
   sendPasswordResetEmail,
   updateEmail,
-  sendEmailVerification
+  sendEmailVerification,
+  updatePhoneNumber
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -98,6 +99,9 @@ export const sendUserVerificationEmail = () =>
 
 export const updateUserEmail = (email) => updateEmail(auth.currentUser, email);
 
+export const updateUserPhoneNumber = (phoneNumber) =>
+  updatePhoneNumber(auth.currentUser, phoneNumber);
+
 // Firestore
 export const firestore = getFirestore();
 
@@ -123,12 +127,14 @@ export async function createUserDocumentFromAuth(
         createdAt,
         ...additionalInfo
       });
+      return { type: 'set' };
     } catch (error) {
-      console.log('error creating user', error.message);
+      return { error };
     }
   }
 
-  return userDocRef;
+  const userData = await getDoc(userDocRef);
+  return { type: 'get', data: userData.data() };
 }
 
 // Returns the products from the database
@@ -333,6 +339,15 @@ export async function removeCartItem(userId, cartProductId) {
   return await deleteDoc(cartProductRef);
 }
 
+// Updates the user with the given options
+export async function updateUser(userId, options) {
+  if (!userId || !options) return;
+
+  const userRef = doc(firestore, 'users', userId);
+  return await updateDoc(userRef, options);
+}
+
+// Updates a cart item with the given options
 export async function updateCartItem(userId, cartProductId, options) {
   if (!userId || !cartProductId || !options) return;
 

@@ -14,6 +14,7 @@ import { IoMdLock } from 'react-icons/io';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Heading,
   Icon,
@@ -23,6 +24,9 @@ import {
 // Bootstrap
 import { Col, Row } from 'react-bootstrap';
 
+// Firebase
+import { updateUser } from '../../utils/firebase/firebase';
+
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -30,7 +34,7 @@ import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import PhoneNumberInput from 'react-phone-number-input/input';
 
 // Slices
-import { selectUser } from '../../redux/slices/userSlice';
+import { selectPhoneNumber, selectUser } from '../../redux/slices/userSlice';
 import { selectCartTotal } from '../../redux/slices/cartSlice';
 
 // Exports
@@ -47,15 +51,18 @@ function Checkout() {
   const elements = useElements();
 
   const user = useSelector(selectUser);
+  const phoneNumber = useSelector(selectPhoneNumber);
   const total = useSelector(selectCartTotal);
 
   const [name, setName] = useState(user && user.displayName);
   const [nameInvalid, setNameInvalid] = useState(false);
   const [email, setEmail] = useState(user && user.email);
   const [emailInvalid, setEmailInvalid] = useState(false);
-  const [phone, setPhone] = useState(user && user.phoneNumber);
+  const [phone, setPhone] = useState(phoneNumber ? phoneNumber : '');
   const [phoneInvalid, setPhoneInvalid] = useState(false);
   const [cardError, setCardError] = useState('');
+  const [cardEmpty, setCardEmpty] = useState(true);
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const card_options = {
     iconStyle: 'solid',
@@ -77,6 +84,14 @@ function Checkout() {
     if (total <= 0) navigate(`/${NAVIGATION_PATHS.cart}`);
   }, [total, navigate]);
 
+  // Reset all invalid states to defaults
+  function resetInvalidStatesToDefaults() {
+    setNameInvalid(false);
+    setEmailInvalid(false);
+    setPhoneInvalid(false);
+    setCardError('');
+  }
+
   // Returns whether or not the inputs are invalid in order to submit form
   function isFormValid() {
     let formValid = true;
@@ -97,7 +112,8 @@ function Checkout() {
       setPhoneInvalid(true);
       formValid = false;
     }
-    if (cardError) {
+    if (cardError || cardEmpty) {
+      !cardError && setCardError('Please enter your credit card information.');
       formValid = false;
     }
 
@@ -107,33 +123,52 @@ function Checkout() {
   async function paymentHandler() {
     if (!isFormValid()) return;
 
-    const response = await fetch('/.netlify/functions/create-payment-intent', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ amount: 1500 })
-    });
-    const content = await response.json();
+    // Everything is valid so reset all invalid states to defaults
+    resetInvalidStatesToDefaults();
 
-    const client_secret = `${content.paymentIntent.client_secret}`;
-    const paymentResult = await stripe.confirmCardPayment(client_secret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name,
-          email,
-          phone
+    await updateUser(user.uid, { phoneNumber: phone })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
+    setPlacingOrder(true);
+
+    try {
+      const response = await fetch(
+        '/.netlify/functions/create-payment-intent',
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ amount: total })
+        }
+      );
+      const content = await response.json();
+
+      const client_secret = `${content.paymentIntent.client_secret}`;
+      const paymentResult = await stripe.confirmCardPayment(client_secret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name,
+            email,
+            phone
+          }
+        }
+      });
+
+      if (paymentResult.error) {
+        alert(paymentResult.error.message);
+      } else {
+        if (paymentResult.paymentIntent.status === 'succeeded') {
+          alert('payment successful');
         }
       }
-    });
 
-    if (paymentResult.error) {
-      alert(paymentResult.error.message);
-    } else {
-      if (paymentResult.paymentIntent.status === 'succeeded') {
-        alert('payment successful');
-      }
+      setPlacingOrder(false);
+    } catch (err) {
+      console.log(err);
+      setPlacingOrder(false);
     }
   }
 
@@ -196,8 +231,14 @@ function Checkout() {
               <FormLabel>Credit Card</FormLabel>
               <CardElement
                 options={card_options}
-                onChange={(e) => setCardError(e.error ? e.error.message : '')}
+                onChange={(e) => {
+                  setCardError(e.error ? e.error.message : '');
+                  setCardEmpty(e.empty);
+                }}
               />
+              <FormHelperText className="checkout-card-error-text">
+                {cardError}
+              </FormHelperText>
             </FormControl>
 
             <div className="checkout-total-pay-container">
@@ -206,6 +247,7 @@ function Checkout() {
               </Heading>
               <Button
                 leftIcon={<Icon as={IoMdLock} w={5} h={5} />}
+                isLoading={placingOrder}
                 onClick={paymentHandler}
               >
                 Place Your Order

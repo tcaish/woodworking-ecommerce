@@ -4,7 +4,8 @@ const initialState = {
   currentUser: null,
   displayName: '',
   email: '',
-  photoURL: ''
+  photoURL: '',
+  phoneNumber: ''
 };
 
 export const userSlice = createSlice({
@@ -25,18 +26,27 @@ export const userSlice = createSlice({
     },
     setPhotoURL: (state, action) => {
       state.photoURL = action.payload;
+    },
+    setPhoneNumber: (state, action) => {
+      state.phoneNumber = action.payload;
     }
   }
 });
 
 // Setters
-export const { setUser, setDisplayName, setEmail, setPhotoURL } =
-  userSlice.actions;
+export const {
+  setUser,
+  setDisplayName,
+  setEmail,
+  setPhotoURL,
+  setPhoneNumber
+} = userSlice.actions;
 
 // Selectors
 export const selectUser = (state) => state.user.currentUser;
 export const selectDisplayName = (state) => state.user.displayName;
 export const selectEmail = (state) => state.user.email;
 export const selectPhotoURL = (state) => state.user.photoURL;
+export const selectPhoneNumber = (state) => state.user.phoneNumber;
 
 export default userSlice.reducer;
