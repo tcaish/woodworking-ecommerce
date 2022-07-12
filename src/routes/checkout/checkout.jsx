@@ -24,18 +24,26 @@ function Checkout() {
     });
     const content = await response.json();
 
-    // const {
-    //   paymentIntent: { client_secret }
-    // } = response;
+    const {
+      paymentIntent: { client_secret }
+    } = content;
 
-    // const paymentResult = await stripe.confirmCardPayment(client_secret, {
-    //   payment_method: {
-    //     card: elements.getElement(CardElement),
-    //     billing_details: {
-    //       name: 'Tim Caish'
-    //     }
-    //   }
-    // });
+    const paymentResult = await stripe.confirmCardPayment(client_secret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: 'Tim Caish'
+        }
+      }
+    });
+
+    if (paymentResult.error) {
+      alert(paymentResult.error);
+    } else {
+      if (paymentResult.paymentIntent.status === 'succeeded') {
+        alert('payment successful');
+      }
+    }
   }
 
   return (
