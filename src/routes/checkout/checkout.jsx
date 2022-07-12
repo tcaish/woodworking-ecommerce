@@ -38,6 +38,7 @@ function Checkout() {
     });
 
     if (paymentResult.error) {
+      console.log(JSON.stringify(paymentResult));
       alert(paymentResult.error);
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
