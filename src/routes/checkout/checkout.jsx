@@ -14,7 +14,7 @@ function Checkout() {
 
   async function paymentHandler() {
     if (!stripe || !elements) return;
-    console.log('here 1', JSON.stringify({ amount: 1500 }));
+
     const response = await fetch('/.netlify/functions/create-payment-intent', {
       method: 'post',
       headers: {
@@ -23,8 +23,6 @@ function Checkout() {
       body: JSON.stringify({ amount: 1500 })
     });
     const content = await response.json();
-
-    console.log('here', content);
 
     // const {
     //   paymentIntent: { client_secret }
