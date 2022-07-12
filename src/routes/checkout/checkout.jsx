@@ -24,9 +24,8 @@ function Checkout() {
     });
     const content = await response.json();
 
-    const {
-      paymentIntent: { client_secret }
-    } = content;
+    const client_secret = content.paymentIntent.client_secret;
+    console.log(client_secret);
 
     const paymentResult = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
@@ -38,8 +37,7 @@ function Checkout() {
     });
 
     if (paymentResult.error) {
-      console.log(JSON.stringify(paymentResult));
-      alert(paymentResult.error);
+      alert(paymentResult.error.message);
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
         alert('payment successful');
