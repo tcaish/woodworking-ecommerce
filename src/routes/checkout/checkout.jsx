@@ -138,7 +138,8 @@ function Checkout() {
     setPlacingOrder(true);
 
     try {
-      console.log(total);
+      const totalWithoutDecimal = `${total}`.replace('.', '');
+      console.log(totalWithoutDecimal);
       const response = await fetch(
         '/.netlify/functions/create-payment-intent',
         {
@@ -146,7 +147,7 @@ function Checkout() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ amount: total })
+          body: JSON.stringify({ amount: totalWithoutDecimal })
         }
       );
       const content = await response.json();
