@@ -24,9 +24,7 @@ function Checkout() {
     });
     const content = await response.json();
 
-    const client_secret = content.paymentIntent.client_secret;
-    console.log(client_secret);
-
+    const client_secret = `${content.paymentIntent.client_secret}`;
     const paymentResult = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
         card: elements.getElement(CardElement),
