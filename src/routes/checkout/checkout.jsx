@@ -161,6 +161,7 @@ function Checkout() {
         alert(paymentResult.error.message);
       } else {
         if (paymentResult.paymentIntent.status === 'succeeded') {
+          console.log(paymentResult.paymentIntent);
           alert('payment successful');
         }
       }
