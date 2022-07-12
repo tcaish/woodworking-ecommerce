@@ -138,6 +138,7 @@ function Checkout() {
     setPlacingOrder(true);
 
     try {
+      console.log(total);
       const response = await fetch(
         '/.netlify/functions/create-payment-intent',
         {
@@ -149,6 +150,7 @@ function Checkout() {
         }
       );
       const content = await response.json();
+      console.log(content);
 
       const client_secret = `${content.paymentIntent.client_secret}`;
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
