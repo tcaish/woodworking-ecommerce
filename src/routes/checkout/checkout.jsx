@@ -14,6 +14,7 @@ function Checkout() {
 
   async function paymentHandler() {
     if (!stripe || !elements) return;
+    console.log('here', stripe);
 
     const response = await fetch('/.netlify/functions/create-payment-intent', {
       method: 'post',
