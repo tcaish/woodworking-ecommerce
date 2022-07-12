@@ -21,7 +21,11 @@ import {
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
-import { selectPromoCode, setPromoCode } from '../../redux/slices/cartSlice';
+import {
+  selectCartTotal,
+  selectPromoCode,
+  setPromoCode
+} from '../../redux/slices/cartSlice';
 
 // Styles
 import './cart-totals.scss';
@@ -33,6 +37,7 @@ function CartTotals(props) {
 
   const user = useSelector(selectUser);
   const promoCode = useSelector(selectPromoCode);
+  const total = useSelector(selectCartTotal);
 
   const [promoCodeInput, setPromoCodeInput] = useState('');
   const [submittingPromoCode, setSubmittingPromoCode] = useState(false);
@@ -146,7 +151,7 @@ function CartTotals(props) {
 
       <div className="cart-checkout-total-container cart-checkout-grid">
         <p className="cart-checkout-title">Total</p>
-        <p className="cart-checkout-value">{`$${props.total}`}</p>
+        <p className="cart-checkout-value">{`$${total}`}</p>
       </div>
     </div>
   );

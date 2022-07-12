@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   cartProducts: [],
   cartQuantity: 0,
-  promoCode: null
+  promoCode: null,
+  total: 0
 };
 
 export const cartSlice = createSlice({
@@ -23,17 +24,26 @@ export const cartSlice = createSlice({
     },
     setPromoCode: (state, action) => {
       state.promoCode = action.payload;
+    },
+    setCartTotal: (state, action) => {
+      state.total = action.payload;
     }
   }
 });
 
 // Setters
-export const { setCartProducts, addToCart, updateCartProduct, setPromoCode } =
-  cartSlice.actions;
+export const {
+  setCartProducts,
+  addToCart,
+  updateCartProduct,
+  setPromoCode,
+  setCartTotal
+} = cartSlice.actions;
 
 // Selectors
 export const selectCartProducts = (state) => state.cart.cartProducts;
 export const selectCartQuantity = (state) => state.cart.cartQuantity;
 export const selectPromoCode = (state) => state.cart.promoCode;
+export const selectCartTotal = (state) => state.cart.total;
 
 export default cartSlice.reducer;

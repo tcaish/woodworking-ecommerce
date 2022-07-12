@@ -20,6 +20,7 @@ import {
   selectCartQuantity,
   selectPromoCode,
   setCartProducts,
+  setCartTotal,
   setPromoCode
 } from '../../redux/slices/cartSlice';
 import { selectUser } from '../../redux/slices/userSlice';
@@ -60,7 +61,6 @@ function Cart() {
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [materialsTotal, setMaterialsTotal] = useState(0);
   const [laborTotal, setLaborTotal] = useState(0);
-  const [total, setTotal] = useState(0);
   const [discountTotal, setDiscountTotal] = useState(0);
 
   // Fetches and stores the products if not already done
@@ -132,17 +132,17 @@ function Cart() {
         const product = getProduct(cartProd.product);
         return prevValue + product.cost.labor * cartProd.quantity;
       }, 0);
-      const total = mTotal + lTotal;
+      const subtotal = mTotal + lTotal;
 
       setMaterialsTotal(mTotal.toFixed(2));
       setLaborTotal(lTotal.toFixed(2));
 
       if (promoCode) {
-        const discount = (total * promoCode.discount).toFixed(2);
+        const discount = (subtotal * promoCode.discount).toFixed(2);
         setDiscountTotal(discount);
-        setTotal((total - discount).toFixed(2));
+        dispatch(setCartTotal((subtotal - discount).toFixed(2)));
       } else {
-        setTotal(total.toFixed(2));
+        dispatch(setCartTotal(subtotal.toFixed(2)));
       }
     }
     // eslint-disable-next-line
@@ -198,7 +198,6 @@ function Cart() {
                     materialsTotal={materialsTotal}
                     laborTotal={laborTotal}
                     discountTotal={discountTotal}
-                    total={total}
                   />
 
                   <Button
