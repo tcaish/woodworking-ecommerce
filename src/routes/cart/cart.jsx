@@ -1,6 +1,9 @@
 // React
 import { useEffect, useState } from 'react';
 
+// React Router
+import { useNavigate } from 'react-router-dom';
+
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,11 +47,13 @@ import CartEmpty from '../../components/cart-empty/cart-empty';
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
+import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './cart.scss';
 
 function Cart() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -126,11 +131,13 @@ function Cart() {
     if (cartProducts.length > 0) {
       const mTotal = cartProducts.reduce((prevValue, cartProd) => {
         const product = getProduct(cartProd.product);
-        return prevValue + product.cost.materials * cartProd.quantity;
+        return product
+          ? prevValue + product.cost.materials * cartProd.quantity
+          : 0;
       }, 0);
       const lTotal = cartProducts.reduce((prevValue, cartProd) => {
         const product = getProduct(cartProd.product);
-        return prevValue + product.cost.labor * cartProd.quantity;
+        return product ? prevValue + product.cost.labor * cartProd.quantity : 0;
       }, 0);
       const subtotal = mTotal + lTotal;
 
@@ -148,15 +155,15 @@ function Cart() {
     // eslint-disable-next-line
   }, [cartProducts.length, cartProducts, discountTotal, promoCode]);
 
-  // Returns the product given a product ID
-  function getProduct(productId) {
-    return products.filter((product) => product.id === productId)[0];
-  }
-
   function proceedToCheckout() {
     if (!cartProducts) return;
 
-    console.log('proceed');
+    navigate(`/${NAVIGATION_PATHS.checkout}`);
+  }
+
+  // Returns the product given a product ID
+  function getProduct(productId) {
+    return products.filter((product) => product.id === productId)[0];
   }
 
   return (

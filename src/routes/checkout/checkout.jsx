@@ -1,22 +1,61 @@
+// React
+import { useEffect, useState } from 'react';
+
+// React Router
+import { useNavigate } from 'react-router-dom';
+
+// React Redux
+import { useSelector } from 'react-redux';
+
+// React Icons
+import { IoMdLock } from 'react-icons/io';
+
 // Chakra
 import {
   Button,
   FormControl,
   FormLabel,
   Heading,
+  Icon,
   Input
 } from '@chakra-ui/react';
 
+// Bootstrap
+import { Col, Row } from 'react-bootstrap';
+
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { Col, Row } from 'react-bootstrap';
+
+// Third party
+import PhoneNumberInput from 'react-phone-number-input/input';
+
+// Slices
+import { selectUser } from '../../redux/slices/userSlice';
+import { selectCartTotal } from '../../redux/slices/cartSlice';
+
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+import { validateEmail, validatePhoneNumber } from '../../exports/functions';
 
 // Styles
 import './checkout.scss';
 
 function Checkout() {
+  const navigate = useNavigate();
+
   const stripe = useStripe();
   const elements = useElements();
+
+  const user = useSelector(selectUser);
+  const total = useSelector(selectCartTotal);
+
+  const [name, setName] = useState(user && user.displayName);
+  const [nameInvalid, setNameInvalid] = useState(false);
+  const [email, setEmail] = useState(user && user.email);
+  const [emailInvalid, setEmailInvalid] = useState(false);
+  const [phone, setPhone] = useState(user && user.phoneNumber);
+  const [phoneInvalid, setPhoneInvalid] = useState(false);
+  const [cardError, setCardError] = useState('');
 
   const card_options = {
     iconStyle: 'solid',
@@ -34,8 +73,39 @@ function Checkout() {
     }
   };
 
+  useEffect(() => {
+    if (total <= 0) navigate(`/${NAVIGATION_PATHS.cart}`);
+  }, [total, navigate]);
+
+  // Returns whether or not the inputs are invalid in order to submit form
+  function isFormValid() {
+    let formValid = true;
+
+    if (!stripe || !elements) {
+      formValid = false;
+    }
+
+    if (!name || name === '') {
+      setNameInvalid(true);
+      formValid = false;
+    }
+    if (!email || email === '' || !validateEmail(email)) {
+      setEmailInvalid(true);
+      formValid = false;
+    }
+    if (!phone || phone === '' || !validatePhoneNumber(phone)) {
+      setPhoneInvalid(true);
+      formValid = false;
+    }
+    if (cardError) {
+      formValid = false;
+    }
+
+    return formValid;
+  }
+
   async function paymentHandler() {
-    if (!stripe || !elements) return;
+    if (!isFormValid()) return;
 
     const response = await fetch('/.netlify/functions/create-payment-intent', {
       method: 'post',
@@ -51,7 +121,9 @@ function Checkout() {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: 'Tim Caish'
+          name,
+          email,
+          phone
         }
       }
     });
@@ -74,26 +146,71 @@ function Checkout() {
               Payment Info
             </Heading>
 
-            <FormControl className="checkout-margin-bottom">
+            <FormControl
+              className="checkout-margin-bottom"
+              isRequired
+              isInvalid={nameInvalid}
+            >
               <FormLabel>Full Name</FormLabel>
-              <Input type="text" placeholder="John Doe" />
+              <Input
+                type="text"
+                placeholder="John Doe"
+                value={name ? name : ''}
+                onFocus={() => setNameInvalid(false)}
+                onChange={(e) => setName(e.target.value)}
+              />
             </FormControl>
 
-            <FormControl className="checkout-margin-bottom">
+            <FormControl
+              className="checkout-margin-bottom"
+              isRequired
+              isInvalid={emailInvalid}
+            >
               <FormLabel>Email</FormLabel>
-              <Input type="email" placeholder="john.doe@gmail.com" />
+              <Input
+                type="email"
+                placeholder="john.doe@gmail.com"
+                value={email ? email : ''}
+                onFocus={() => setEmailInvalid(false)}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </FormControl>
 
-            <FormControl className="checkout-margin-bottom">
+            <FormControl
+              className="checkout-margin-bottom"
+              isRequired
+              isInvalid={phoneInvalid}
+            >
               <FormLabel>Phone Number</FormLabel>
-              <Input type="phone" placeholder="(555) 555-5555" />
+              <PhoneNumberInput
+                country="US"
+                placeholder="(555) 555-5555"
+                inputComponent={Input}
+                value={phone ? phone : ''}
+                onFocus={() => setPhoneInvalid(false)}
+                onChange={(value) => setPhone(value)}
+              />
             </FormControl>
 
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Credit Card</FormLabel>
-              <CardElement options={card_options} />
+              <CardElement
+                options={card_options}
+                onChange={(e) => setCardError(e.error ? e.error.message : '')}
+              />
             </FormControl>
-            <Button onClick={paymentHandler}>Pay Now</Button>
+
+            <div className="checkout-total-pay-container">
+              <Heading>
+                Total: <span>${total}</span>
+              </Heading>
+              <Button
+                leftIcon={<Icon as={IoMdLock} w={5} h={5} />}
+                onClick={paymentHandler}
+              >
+                Place Your Order
+              </Button>
+            </div>
           </div>
         </Col>
         <Col>Test</Col>

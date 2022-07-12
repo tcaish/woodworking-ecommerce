@@ -1,6 +1,26 @@
+@import '../../exports/constants.scss';
+
 .checkout-margin-bottom {
   margin-bottom: 15px;
 }
 
 .checkout-payment-container {
+  .checkout-total-pay-container {
+    margin-top: 40px;
+    text-align: center;
+
+    h2 > span {
+      color: $brand-dark-yellow;
+    }
+
+    button {
+      background-color: $brand-yellow;
+      margin-top: 10px;
+      width: 40%;
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+  }
 }

@@ -102,3 +102,21 @@ export function getAverageRatingForProduct(productRatings) {
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+// Validates a string is an email
+export const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
+
+// Validates that a phone number is in the correct format and length
+export const validatePhoneNumber = (phoneNumber) => {
+  // +12345678901 is a valid phone number (length == 12)
+  if (phoneNumber.length !== 12) return false;
+  return String(phoneNumber)
+    .toLowerCase()
+    .match(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im);
+};
