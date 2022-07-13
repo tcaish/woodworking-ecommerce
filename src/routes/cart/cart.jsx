@@ -165,19 +165,22 @@ function Cart() {
       .join(', ');
 
     const titles = cartProducts.map((item) => getProduct(item.product).title);
-    const costs = cartProducts.map((item) =>
-      (getProduct(item.product).totalCost() * item.quantity).toFixed(2)
+    const costs = cartProducts.map(
+      (item) =>
+        `$${(getProduct(item.product).totalCost() * item.quantity).toFixed(2)}`
     );
     const quantities = cartProducts.map((item) => item.quantity);
     const colors = cartProducts.map((item) => item.color);
-    const notes = cartProducts.map((item) => item.notes);
+    const notes = cartProducts.map((item) => (item.notes ? item.notes : 'n/a'));
 
     const metaData = {
-      titles: titles.join(' || '),
-      costs: costs.join(' || '),
-      quantities: quantities.join(' || '),
       colors: colors.join(' || '),
-      notes: notes.join(' || ')
+      costs: costs.join(' || '),
+      discount: `-$${discountTotal} (${promoCode.discount * 100}%)`,
+      notes: notes.join(' || '),
+      promo_code: promoCode.code,
+      quantities: quantities.join(' || '),
+      titles: titles.join(' || ')
     };
 
     dispatch(setOrderDescription(description));
