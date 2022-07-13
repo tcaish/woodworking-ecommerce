@@ -28,12 +28,7 @@ import { Col, Row } from 'react-bootstrap';
 import { updateUser } from '../../utils/firebase/firebase';
 
 // Stripe
-import {
-  CardElement,
-  useStripe,
-  useElements,
-  PaymentElement
-} from '@stripe/react-stripe-js';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
 // Third party
 import PhoneNumberInput from 'react-phone-number-input/input';

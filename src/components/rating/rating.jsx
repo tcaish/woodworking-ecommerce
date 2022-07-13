@@ -260,7 +260,7 @@ export function SubmitRating({ productId, ratingsLoading }) {
           {!userHasRated || editingRating ? (
             <Tooltip
               hasArrow
-              label="Create an account to submit a review"
+              label="Create an account to submit a review."
               shouldWrapChildren
               mt="4"
               isDisabled={user}
