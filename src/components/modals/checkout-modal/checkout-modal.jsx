@@ -4,17 +4,12 @@ import { useState } from 'react';
 // React Redux
 import { useSelector } from 'react-redux';
 
-// React Router
-import { useNavigate } from 'react-router-dom';
-
 // Chakra
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay
 } from '@chakra-ui/react';
@@ -26,15 +21,10 @@ import CheckoutSuccess from '../../checkout-success/checkout-success';
 // Slices
 import { selectEmail } from '../../../redux/slices/userSlice';
 
-// Exports
-import { NAVIGATION_PATHS } from '../../../exports/constants';
-
 // Styles
 import './checkout-modal.scss';
 
 function CheckoutModal(props) {
-  const navigate = useNavigate();
-
   const userEmail = useSelector(selectEmail);
 
   const [email, setEmail] = useState(userEmail ? userEmail : '');
