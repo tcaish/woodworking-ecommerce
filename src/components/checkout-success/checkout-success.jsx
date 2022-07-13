@@ -12,7 +12,7 @@ function CheckoutSuccess(props) {
     <div className="checkout-success-container">
       <SuccessAnimation />
 
-      <Heading className="checkout-success-heading-hooray">Horray! 🎉</Heading>
+      <Heading className="checkout-success-heading-hooray">Hooray! 🎉</Heading>
       <Heading fontSize="3xl">Your order was placed.</Heading>
       <Text
         className="checkout-success-text-order-id checkout-success-text-bold"
