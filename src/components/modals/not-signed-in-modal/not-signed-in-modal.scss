@@ -1,7 +1,7 @@
 @import '../../../exports/constants.scss';
 
 .sign-in-modal-button {
-  background-color: $brand-yellow;
+  background-color: $brand-yellow !important;
 
   &:hover {
     background-color: $brand-yellow;
