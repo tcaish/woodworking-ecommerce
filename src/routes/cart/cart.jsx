@@ -31,7 +31,8 @@ import { selectUser } from '../../redux/slices/userSlice';
 import {
   firestore,
   getProducts,
-  getPromoCodeById
+  getPromoCodeById,
+  removeAllCartItems
 } from '../../utils/firebase/firebase';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 
@@ -191,6 +192,16 @@ function Cart() {
     onOpen();
   }
 
+  // Handles what happens when the checkout modal closes
+  async function handleCheckoutModalClose() {
+    onClose();
+
+    if (orderSucceeded) {
+      setOrderSucceeded(false);
+      await removeAllCartItems(user.uid);
+    }
+  }
+
   // Returns the product given a product ID
   function getProduct(productId) {
     return products.filter((product) => product.id === productId)[0];
@@ -256,7 +267,7 @@ function Cart() {
             <CheckoutModal
               isOpen={isOpen}
               onOpen={onOpen}
-              onClose={onClose}
+              handleCheckoutModalClose={handleCheckoutModalClose}
               setShowCheckoutModal={setShowCheckoutModal}
               orderSucceeded={orderSucceeded}
               setOrderSucceeded={setOrderSucceeded}

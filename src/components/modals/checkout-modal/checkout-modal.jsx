@@ -34,10 +34,7 @@ function CheckoutModal(props) {
     <>
       <Modal
         isOpen={props.isOpen}
-        onClose={() => {
-          props.orderSucceeded && props.setOrderSucceeded(false);
-          props.onClose();
-        }}
+        onClose={props.handleCheckoutModalClose}
         closeOnOverlayClick={false}
         motionPreset="slideInBottom"
       >
