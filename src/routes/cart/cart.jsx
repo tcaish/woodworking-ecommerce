@@ -182,9 +182,6 @@ function Cart() {
 
     dispatch(setOrderDescription(description));
     dispatch(setOrderMetaData(metaData));
-
-    console.log(description);
-    console.log(metaData);
   }
 
   // Proceed to checkout

@@ -206,8 +206,8 @@ function Checkout(props) {
             phone
           }
         },
-        description: orderDescription,
-        metadata: orderMetaData,
+        // description: orderDescription,
+        // metadata: orderMetaData,
         receipt_email: props.email
       });
       console.log(paymentResult);
