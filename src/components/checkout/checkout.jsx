@@ -216,7 +216,7 @@ function Checkout(props) {
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
-      console.log(err);
+      handlePaymentResult({ error: 'failed' });
       setPlacingOrder(false);
     }
   }

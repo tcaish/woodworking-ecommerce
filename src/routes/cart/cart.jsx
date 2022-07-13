@@ -160,9 +160,9 @@ function Cart() {
 
   // Creates a description of all products being ordered for placing the order
   function createOrderDescriptionAndMetaData() {
-    const description = `${cartQuantity} ${
-      cartQuantity > 1 ? 'items' : 'item'
-    }`;
+    const description = cartProducts
+      .map((item) => `${getProduct(item.product).title} (${item.quantity})`)
+      .join(', ');
 
     const titles = cartProducts.map((item) => getProduct(item.product).title);
     const costs = cartProducts.map((item) =>
