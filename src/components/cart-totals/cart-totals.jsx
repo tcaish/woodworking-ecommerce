@@ -144,7 +144,9 @@ function CartTotals(props) {
 
       {promoCode && (
         <div className="cart-checkout-discount-container cart-checkout-grid">
-          <p className="cart-checkout-title">Discount</p>
+          <p className="cart-checkout-title">
+            Discount ({promoCode.discount * 100}%)
+          </p>
           <p className="cart-checkout-value">{`-$${props.discountTotal}`}</p>
         </div>
       )}
