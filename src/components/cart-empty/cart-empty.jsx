@@ -26,7 +26,7 @@ function CartEmpty() {
             <Text fontSize="xl">
               Fill your cart up with some goodies.{' '}
               <Link to={`/${NAVIGATION_PATHS.shop}`}>
-                Browser our furniture.
+                Browse our furniture.
               </Link>
             </Text>
           </Stack>

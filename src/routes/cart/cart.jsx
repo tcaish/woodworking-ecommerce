@@ -185,15 +185,30 @@ function Cart() {
     const colors = cartProducts.map((item) => item.color);
     const notes = cartProducts.map((item) => (item.notes ? item.notes : 'n/a'));
 
-    const metaData = {
-      colors: colors.join(' || '),
-      costs: costs.join(' || '),
-      discount: `$${discountTotal} (${promoCode.discount * 100}%)`,
-      notes: notes.join(' || '),
-      promo_code: promoCode.code,
-      quantities: quantities.join(' || '),
-      titles: titles.join(' || ')
-    };
+    const metaData =
+      cartQuantity > 1
+        ? {
+            colors: colors.join(' || '),
+            costs: costs.join(' || '),
+            discount: promoCode
+              ? `$${discountTotal} (${promoCode.discount * 100}%)`
+              : '',
+            notes: notes.join(' || '),
+            promo_code: promoCode.code,
+            quantities: quantities.join(' || '),
+            titles: titles.join(' || ')
+          }
+        : {
+            colors: colors.join(' || '),
+            costs: costs.join(' || '),
+            discount: promoCode
+              ? `$${discountTotal} (${promoCode.discount * 100}%)`
+              : '',
+            notes: notes.join(' || '),
+            promo_code: promoCode.code,
+            quantities: quantities.join(' || '),
+            titles: titles.join(' || ')
+          };
 
     dispatch(setOrderDescription(description));
     dispatch(setOrderMetaData(metaData));
