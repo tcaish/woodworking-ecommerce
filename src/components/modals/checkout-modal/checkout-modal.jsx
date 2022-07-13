@@ -28,6 +28,7 @@ function CheckoutModal(props) {
   const userEmail = useSelector(selectEmail);
 
   const [email, setEmail] = useState(userEmail ? userEmail : '');
+  const [orderId, setOrderId] = useState('');
 
   return (
     <>
@@ -44,7 +45,7 @@ function CheckoutModal(props) {
 
           <ModalBody pb={6}>
             {props.orderSucceeded ? (
-              <CheckoutSuccess email={email} orderId={'12345'} />
+              <CheckoutSuccess email={email} orderId={orderId} />
             ) : (
               <>
                 <p className="checkout-margin-bottom">
@@ -56,6 +57,7 @@ function CheckoutModal(props) {
                   email={email}
                   setEmail={setEmail}
                   setOrderSucceeded={props.setOrderSucceeded}
+                  setOrderId={setOrderId}
                 />
               </>
             )}

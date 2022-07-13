@@ -145,6 +145,7 @@ function Checkout(props) {
       }
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
+        props.setOrderId(paymentResult.paymentIntent.id);
         props.setOrderSucceeded(true);
         return;
       } else {
@@ -164,6 +165,7 @@ function Checkout(props) {
     });
   }
 
+  // Handles submitting the payment
   async function paymentHandler() {
     if (!isFormValid()) return;
 

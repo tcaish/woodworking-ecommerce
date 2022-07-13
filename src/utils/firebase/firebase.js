@@ -333,10 +333,26 @@ export async function editUserRating(rating, ratingId, userId, productId) {
 
 // Removes an item from the user's cart
 export async function removeCartItem(userId, cartProductId) {
-  if (!cartProductId) return;
+  if (!userId || !cartProductId) return;
 
   const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
   return await deleteDoc(cartProductRef);
+}
+
+// Removes all items from the user's cart
+export async function removeAllCartItems(userId) {
+  if (!userId) return;
+
+  const batch = writeBatch(firestore);
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const querySnapshot = await getDocs(cartRef);
+
+  querySnapshot.forEach((document) => {
+    const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
+    batch.delete(cartProductRef);
+  });
+
+  return await batch.commit();
 }
 
 // Updates the user with the given options

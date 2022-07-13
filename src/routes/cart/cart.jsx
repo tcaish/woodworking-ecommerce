@@ -29,7 +29,8 @@ import { selectUser } from '../../redux/slices/userSlice';
 import {
   firestore,
   getProducts,
-  getPromoCodeById
+  getPromoCodeById,
+  removeAllCartItems
 } from '../../utils/firebase/firebase';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 
@@ -41,13 +42,13 @@ import {
   PlaceholderCartTotals
 } from '../../components/placeholder/placeholder';
 import CartEmpty from '../../components/cart-empty/cart-empty';
+import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal';
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
 
 // Styles
 import './cart.scss';
-import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal';
 
 function Cart() {
   const dispatch = useDispatch();
@@ -163,13 +164,13 @@ function Cart() {
   }
 
   // Handles what happens when the checkout modal closes
-  function handleCheckoutModalClose() {
+  async function handleCheckoutModalClose() {
     onClose();
 
     if (orderSucceeded) {
       setOrderSucceeded(false);
 
-      // Remvoe all cart items from firebase
+      await removeAllCartItems(user.uid);
     }
   }
 
