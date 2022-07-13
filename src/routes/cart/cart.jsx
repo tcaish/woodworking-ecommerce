@@ -11,7 +11,15 @@ import { IoMdLock } from 'react-icons/io';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Center, Heading, Icon, useDisclosure } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  useDisclosure
+} from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
@@ -48,6 +56,10 @@ import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
+
+// Images
+import CustSatisfactionImg from '../../assets/images/cust_satisfaction_guaranteed.png';
+import MoneyBackImg from '../../assets/images/money_back_guaranteed.png';
 
 // Styles
 import './cart.scss';
@@ -176,7 +188,7 @@ function Cart() {
     const metaData = {
       colors: colors.join(' || '),
       costs: costs.join(' || '),
-      discount: `-$${discountTotal} (${promoCode.discount * 100}%)`,
+      discount: `$${discountTotal} (${promoCode.discount * 100}%)`,
       notes: notes.join(' || '),
       promo_code: promoCode.code,
       quantities: quantities.join(' || '),
@@ -259,6 +271,23 @@ function Cart() {
                   >
                     Proceed to Checkout
                   </Button>
+
+                  <Center>
+                    <HStack className="cart-satisfaction-images-container">
+                      <Image
+                        boxSize="70px"
+                        objectFit="cover"
+                        src={CustSatisfactionImg}
+                        alt="100% Customer Satisfaction"
+                      />
+                      <Image
+                        boxSize="70px"
+                        objectFit="cover"
+                        src={MoneyBackImg}
+                        alt="100% Money Back"
+                      />
+                    </HStack>
+                  </Center>
                 </div>
               ) : (
                 <PlaceholderCartTotals />
