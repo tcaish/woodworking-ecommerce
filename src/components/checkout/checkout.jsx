@@ -191,7 +191,11 @@ function Checkout(props) {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ amount: totalWithoutDecimal })
+          body: JSON.stringify({
+            amount: totalWithoutDecimal,
+            description: orderDescription,
+            metadata: orderMetaData
+          })
         }
       );
       const content = await response.json();
@@ -206,11 +210,9 @@ function Checkout(props) {
             phone
           }
         },
-        // description: orderDescription,
-        // metadata: orderMetaData,
         receipt_email: props.email
       });
-      console.log(paymentResult);
+
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
