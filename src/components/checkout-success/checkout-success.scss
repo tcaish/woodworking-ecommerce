@@ -1,0 +1,15 @@
+.checkout-success-container {
+  text-align: center;
+
+  .checkout-success-heading-hooray {
+    margin-top: 20px;
+  }
+
+  .checkout-success-text-order-id {
+    margin: 20px 0;
+
+    span {
+      font-weight: 500;
+    }
+  }
+}

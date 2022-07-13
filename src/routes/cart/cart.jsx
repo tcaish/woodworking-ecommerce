@@ -14,7 +14,7 @@ import { IoMdLock } from 'react-icons/io';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Chakra
-import { Button, Center, Heading, Icon } from '@chakra-ui/react';
+import { Button, Center, Heading, Icon, useDisclosure } from '@chakra-ui/react';
 
 // Slices
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
@@ -51,10 +51,13 @@ import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './cart.scss';
+import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal';
 
 function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const user = useSelector(selectUser);
   const cartProducts = useSelector(selectCartProducts);
@@ -67,6 +70,8 @@ function Cart() {
   const [materialsTotal, setMaterialsTotal] = useState(0);
   const [laborTotal, setLaborTotal] = useState(0);
   const [discountTotal, setDiscountTotal] = useState(0);
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [orderSucceeded, setOrderSucceeded] = useState(false);
 
   // Fetches and stores the products if not already done
   useEffect(() => {
@@ -155,10 +160,23 @@ function Cart() {
     // eslint-disable-next-line
   }, [cartProducts.length, cartProducts, discountTotal, promoCode]);
 
+  // Proceed to checkout
   function proceedToCheckout() {
     if (!cartProducts) return;
+    setShowCheckoutModal(true);
+    onOpen();
+  }
 
-    navigate(`/${NAVIGATION_PATHS.checkout}`);
+  // Handles what happens when the checkout modal closes
+  function handleCheckoutModalClose() {
+    onClose();
+
+    if (orderSucceeded) {
+      console.log('order succeeded');
+      setOrderSucceeded(false);
+
+      // Remvoe all cart items from firebase
+    }
   }
 
   // Returns the product given a product ID
@@ -221,6 +239,17 @@ function Cart() {
               )}
             </Col>
           </Row>
+
+          {showCheckoutModal && (
+            <CheckoutModal
+              isOpen={isOpen}
+              onOpen={onOpen}
+              handleCheckoutModalClose={handleCheckoutModalClose}
+              setShowCheckoutModal={setShowCheckoutModal}
+              orderSucceeded={orderSucceeded}
+              setOrderSucceeded={setOrderSucceeded}
+            />
+          )}
         </>
       )}
     </Container>

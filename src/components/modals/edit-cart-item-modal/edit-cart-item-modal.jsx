@@ -72,7 +72,7 @@ function EditCartItemModal(props) {
                 placeholder="e.g. 2"
                 type="number"
                 onChange={(e) => {
-                  setQuantity(Number(e.target.value));
+                  setQuantity(e.target.value > 0 ? Number(e.target.value) : '');
                   setQuantityInvalid(!e.target.value || e.target.value < 1);
                 }}
                 value={quantity}

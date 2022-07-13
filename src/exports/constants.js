@@ -5,7 +5,6 @@ export const NAVIGATION_PATHS = {
   shop_custom: 'custom',
   shop_restoration: 'restoration',
   cart: 'cart',
-  checkout: 'checkout',
   profile: 'profile',
   sign_in: 'sign-in',
   sign_up: 'sign-up',

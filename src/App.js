@@ -36,7 +36,6 @@ import {
 } from './routes/protected/protected';
 import Detail from './routes/shop/furniture/detail/detail';
 import Return from './routes/return/return';
-import Checkout from './routes/checkout/checkout';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -94,7 +93,6 @@ function App() {
           />
         </Route>
         <Route path={NAVIGATION_PATHS.cart} element={<Cart />} />
-        <Route path={NAVIGATION_PATHS.checkout} element={<Checkout />} />
         <Route
           path={NAVIGATION_PATHS.profile}
           element={

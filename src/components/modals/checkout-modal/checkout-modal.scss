@@ -1,0 +1,14 @@
+@import '../../../exports/constants.scss';
+
+.checkout-margin-bottom {
+  margin-bottom: 15px;
+}
+
+.sign-in-modal-button {
+  background-color: $brand-yellow !important;
+
+  &:hover {
+    background-color: $brand-yellow;
+    opacity: 0.75;
+  }
+}

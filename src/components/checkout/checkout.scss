@@ -1,9 +1,5 @@
 @import '../../exports/constants.scss';
 
-.checkout-margin-bottom {
-  margin-bottom: 15px;
-}
-
 .checkout-payment-container {
   .checkout-card-error-text {
     color: rgb(207, 0, 0);
@@ -20,7 +16,7 @@
     button {
       background-color: $brand-yellow;
       margin-top: 10px;
-      width: 40%;
+      width: 60%;
 
       &:hover {
         opacity: 0.75;
