@@ -146,6 +146,7 @@ function Checkout(props) {
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
         props.setOrderSucceeded(true);
+        return;
       } else {
         title = 'Payment Processing';
         description =
@@ -171,13 +172,10 @@ function Checkout(props) {
 
     setPlacingOrder(true);
 
-    await updateUser(user.uid, { phoneNumber: phone })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    await updateUser(user.uid, { phoneNumber: phone });
 
     try {
       const totalWithoutDecimal = `${total}`.replace('.', '');
-      console.log(totalWithoutDecimal);
       const response = await fetch(
         '/.netlify/functions/create-payment-intent',
         {

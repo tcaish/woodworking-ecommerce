@@ -1,9 +1,6 @@
 // React
 import { useEffect, useState } from 'react';
 
-// React Router
-import { useNavigate } from 'react-router-dom';
-
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,14 +44,12 @@ import CartEmpty from '../../components/cart-empty/cart-empty';
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
-import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './cart.scss';
 import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal';
 
 function Cart() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -172,7 +167,6 @@ function Cart() {
     onClose();
 
     if (orderSucceeded) {
-      console.log('order succeeded');
       setOrderSucceeded(false);
 
       // Remvoe all cart items from firebase
