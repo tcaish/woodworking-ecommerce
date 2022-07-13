@@ -37,7 +37,11 @@ import {
   selectPhoneNumber,
   selectUser
 } from '../../redux/slices/userSlice';
-import { selectCartTotal } from '../../redux/slices/cartSlice';
+import {
+  selectCartTotal,
+  selectOrderDescription,
+  selectOrderMetaData
+} from '../../redux/slices/cartSlice';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
@@ -58,6 +62,8 @@ function Checkout(props) {
   const userDisplayName = useSelector(selectDisplayName);
   const userPhoneNumber = useSelector(selectPhoneNumber);
   const total = useSelector(selectCartTotal);
+  const orderDescription = useSelector(selectOrderDescription);
+  const orderMetaData = useSelector(selectOrderMetaData);
 
   const [name, setName] = useState(userDisplayName ? userDisplayName : '');
   const [nameInvalid, setNameInvalid] = useState(false);
@@ -200,9 +206,11 @@ function Checkout(props) {
             phone
           }
         },
+        description: orderDescription,
+        metadata: orderMetaData,
         receipt_email: props.email
       });
-
+      console.log(paymentResult);
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {

@@ -44,7 +44,7 @@ function CheckoutModal(props) {
           <ModalCloseButton />
 
           <ModalBody pb={6}>
-            {props.orderSucceeded ? (
+            {true ? (
               <CheckoutSuccess email={email} orderId={orderId} />
             ) : (
               <>

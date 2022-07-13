@@ -21,6 +21,8 @@ import {
   selectPromoCode,
   setCartProducts,
   setCartTotal,
+  setOrderDescription,
+  setOrderMetaData,
   setPromoCode
 } from '../../redux/slices/cartSlice';
 import { selectUser } from '../../redux/slices/userSlice';
@@ -156,9 +158,39 @@ function Cart() {
     // eslint-disable-next-line
   }, [cartProducts.length, cartProducts, discountTotal, promoCode]);
 
+  // Creates a description of all products being ordered for placing the order
+  function createOrderDescriptionAndMetaData() {
+    const description = `${cartQuantity} ${
+      cartQuantity > 1 ? 'items' : 'item'
+    }`;
+
+    const titles = cartProducts.map((item) => getProduct(item.product).title);
+    const costs = cartProducts.map((item) =>
+      (getProduct(item.product).totalCost() * item.quantity).toFixed(2)
+    );
+    const quantities = cartProducts.map((item) => item.quantity);
+    const colors = cartProducts.map((item) => item.color);
+    const notes = cartProducts.map((item) => item.notes);
+
+    const metaData = {
+      titles: titles.join(' || '),
+      costs: costs.join(' || '),
+      quantities: quantities.join(' || '),
+      colors: colors.join(' || '),
+      notes: notes.join(' || ')
+    };
+
+    dispatch(setOrderDescription(description));
+    dispatch(setOrderMetaData(metaData));
+
+    console.log(description);
+    console.log(metaData);
+  }
+
   // Proceed to checkout
   function proceedToCheckout() {
     if (!cartProducts) return;
+    createOrderDescriptionAndMetaData();
     setShowCheckoutModal(true);
     onOpen();
   }
@@ -169,7 +201,6 @@ function Cart() {
 
     if (orderSucceeded) {
       setOrderSucceeded(false);
-
       await removeAllCartItems(user.uid);
     }
   }

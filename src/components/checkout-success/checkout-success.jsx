@@ -14,11 +14,14 @@ function CheckoutSuccess(props) {
 
       <Heading className="checkout-success-heading-hooray">Horray! 🎉</Heading>
       <Heading fontSize="3xl">Your order was placed.</Heading>
-      <Text className="checkout-success-text-order-id" fontSize="2xl">
+      <Text
+        className="checkout-success-text-order-id checkout-success-text-bold"
+        fontSize="2xl"
+      >
         <span>Order ID</span>: {props.orderId}
       </Text>
-      <Text fontSize="2xl">
-        We have sent an order confirmation to {props.email}.
+      <Text className="checkout-success-text-bold" fontSize="2xl">
+        We have sent an order confirmation to <span>{props.email}</span>.
       </Text>
     </div>
   );
