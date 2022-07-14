@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // React Icons
 import { IoMdLock } from 'react-icons/io';
@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 
 // Firebase
-import { updateUser } from '../../utils/firebase/firebase';
+import { addUserToPromoCode, updateUser } from '../../utils/firebase/firebase';
 
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -40,7 +40,9 @@ import {
 import {
   selectCartTotal,
   selectOrderDescription,
-  selectOrderMetaData
+  selectOrderMetaData,
+  selectPromoCode,
+  setPromoCode
 } from '../../redux/slices/cartSlice';
 
 // Exports
@@ -51,6 +53,7 @@ import { validateEmail, validatePhoneNumber } from '../../exports/functions';
 import './checkout.scss';
 
 function Checkout(props) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const toast = useToast();
@@ -62,6 +65,7 @@ function Checkout(props) {
   const userDisplayName = useSelector(selectDisplayName);
   const userPhoneNumber = useSelector(selectPhoneNumber);
   const total = useSelector(selectCartTotal);
+  const promoCode = useSelector(selectPromoCode);
   const orderDescription = useSelector(selectOrderDescription);
   const orderMetaData = useSelector(selectOrderMetaData);
 
@@ -133,7 +137,7 @@ function Checkout(props) {
 
   // Handles showing messages to the user or doing other things depending
   // on if the payment succeeds or fails.
-  function handlePaymentResult(paymentResult) {
+  async function handlePaymentResult(paymentResult) {
     let title = '';
     let description = '';
     let status = 'error';
@@ -151,8 +155,7 @@ function Checkout(props) {
       }
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
-        props.setOrderId(paymentResult.paymentIntent.id);
-        props.setOrderSucceeded(true);
+        handlePaymentSuccess(paymentResult.paymentIntent);
         return;
       } else {
         title = 'Payment Processing';
@@ -171,8 +174,20 @@ function Checkout(props) {
     });
   }
 
+  // Handles what happens when the payment was successful
+  async function handlePaymentSuccess(paymentIntent) {
+    if (user && promoCode) {
+      await addUserToPromoCode(user.uid, promoCode.id).then((res) =>
+        dispatch(setPromoCode(null))
+      );
+    }
+
+    props.setOrderId(paymentIntent.id);
+    props.setOrderSucceeded(true);
+  }
+
   // Handles submitting the payment
-  async function paymentHandler() {
+  async function submitPayment() {
     if (!isFormValid()) return;
 
     // Everything is valid so reset all invalid states to defaults
@@ -295,7 +310,7 @@ function Checkout(props) {
           spinnerPlacement="end"
           loadingText="Processing payment..."
           isLoading={placingOrder}
-          onClick={paymentHandler}
+          onClick={submitPayment}
         >
           Submit Order
         </Button>

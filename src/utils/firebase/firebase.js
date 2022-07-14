@@ -1,3 +1,4 @@
+// Firebase
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import {
@@ -12,8 +13,7 @@ import {
   updateProfile,
   sendPasswordResetEmail,
   updateEmail,
-  sendEmailVerification,
-  updatePhoneNumber
+  sendEmailVerification
 } from 'firebase/auth';
 import {
   getFirestore,
@@ -27,13 +27,18 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  writeBatch
+  writeBatch,
+  arrayUnion
 } from 'firebase/firestore';
+
+// Classes
 import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
-import { getFirebaseTimestampFromDate } from '../../exports/functions';
 import { cartProductConverter } from '../../classes/CartProduct';
 import { promoCodeConverter } from '../../classes/PromoCode';
+
+// Exports
+import { getFirebaseTimestampFromDate } from '../../exports/functions';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -73,34 +78,37 @@ export const signInWithFacebookPopup = () =>
 // Auth - email and password
 export async function createAuthUserWithEmailAndPassword(email, password) {
   if (!email || !password) return;
-
   return await createUserWithEmailAndPassword(auth, email, password);
 }
 
+// Sign in with an email and password
 export const signInWithEmailPassword = (email, password) =>
   signInWithEmailAndPassword(auth, email, password);
 
+// Sign out user
 export const signOutUser = async () => {
   await signOut(auth);
 };
 
+// Listen to changes in authentication
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
 
 // Auth - profile
+// Update a user's profile with given options
 export const updateUserProfile = (additionalInfo) =>
   updateProfile(auth.currentUser, additionalInfo);
 
+// Send a reset password email
 export const sendResetPasswordEmail = (email) =>
   sendPasswordResetEmail(auth, email);
 
+// Send a verification email to the user to verify their email
 export const sendUserVerificationEmail = () =>
   sendEmailVerification(auth.currentUser);
 
+// Update the user's email with a new one
 export const updateUserEmail = (email) => updateEmail(auth.currentUser, email);
-
-export const updateUserPhoneNumber = (phoneNumber) =>
-  updatePhoneNumber(auth.currentUser, phoneNumber);
 
 // Firestore
 export const firestore = getFirestore();
@@ -272,6 +280,16 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
     .commit()
     .then((res) => true)
     .catch((err) => ({ error: err }));
+}
+
+// Adds a user to the users array within the promo code object
+export async function addUserToPromoCode(userId, promoCodeId) {
+  if (!userId || !promoCodeId) return;
+
+  const promoCodeUsersRef = doc(firestore, 'promo_codes', promoCodeId);
+  return await updateDoc(promoCodeUsersRef, {
+    users: arrayUnion(userId)
+  });
 }
 
 // Adds user to database if not already there
