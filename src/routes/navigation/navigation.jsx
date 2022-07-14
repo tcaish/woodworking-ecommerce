@@ -56,6 +56,7 @@ function Navigation() {
   const cartProducts = useSelector(selectCartProducts);
   const cartQuantity = useSelector(selectCartQuantity);
 
+  const [expanded, setExpanded] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
   // Brings down the user's cart if it hasn't been loaded already
@@ -63,27 +64,6 @@ function Navigation() {
     if (cartProducts.length === 0 && user)
       getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
   }, [cartProducts.length, user, dispatch]);
-
-  // Hides the dropdown menu when clicking a menu item button
-  function hideDropdown() {
-    const dropdownDiv = document.getElementsByClassName('dropdown')[0];
-    const dropdownMenu = document.getElementsByClassName('dropdown-menu')[0];
-    dropdownDiv.classList.remove('show');
-    dropdownMenu.classList.remove('show');
-  }
-
-  // Collapses the navbar when on mobile if it is not collapsed
-  function collapseNavbar() {
-    const navbarToggler = document.getElementsByClassName('navbar-toggler')[0];
-    const navbarCollapse =
-      document.getElementsByClassName('navbar-collapse')[0];
-
-    // If navbar is not collapsed
-    if (navbarToggler.classList.length === 1) {
-      navbarToggler.classList.add('collapsed');
-      navbarCollapse.classList.remove('show');
-    }
-  }
 
   // Handles signing the user out
   async function handleSigningOut() {
@@ -93,7 +73,7 @@ function Navigation() {
 
     await signOutUser()
       .then((res) => {
-        collapseNavbar();
+        setExpanded(false);
 
         dispatch(setCartProducts([]));
         dispatch(setUser(null));
@@ -107,9 +87,13 @@ function Navigation() {
 
   return (
     <Container fluid={screenWidth <= 767 ? 'true' : 'sm'}>
-      <Navbar expand="lg">
+      <Navbar expand="lg" sticky="top" expanded={expanded}>
         <Container>
-          <Link className="navbar-link" to="/" onClick={collapseNavbar}>
+          <Link
+            className="navbar-link"
+            to="/"
+            onClick={() => setExpanded(false)}
+          >
             <Navbar.Brand>
               <img
                 className="navbar-logo d-inline-block align-top"
@@ -118,27 +102,30 @@ function Navigation() {
               />
             </Navbar.Brand>
           </Link>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            onClick={() => setExpanded(expanded ? false : 'expanded')}
+          />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Link
                 className="nav-link"
                 to={NAVIGATION_PATHS.shop}
-                onClick={collapseNavbar}
+                onClick={() => setExpanded(false)}
               >
                 Furniture
               </Link>
               <Link
                 className="nav-link"
                 to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_custom}`}
-                onClick={collapseNavbar}
+                onClick={() => setExpanded(false)}
               >
                 Custom Builds
               </Link>
               <Link
                 className="nav-link"
                 to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_restoration}`}
-                onClick={collapseNavbar}
+                onClick={() => setExpanded(false)}
               >
                 Restoration
               </Link>
@@ -161,10 +148,7 @@ function Navigation() {
                   to={
                     user ? NAVIGATION_PATHS.profile : NAVIGATION_PATHS.sign_in
                   }
-                  onClick={() => {
-                    hideDropdown();
-                    collapseNavbar();
-                  }}
+                  onClick={() => setExpanded(false)}
                 >
                   {user ? 'Profile' : 'Sign In'}
                 </Link>
@@ -182,7 +166,7 @@ function Navigation() {
               <Link
                 className="navbar-right-link nav-link"
                 to={NAVIGATION_PATHS.cart}
-                onClick={collapseNavbar}
+                onClick={() => setExpanded(false)}
               >
                 <div className="cart-container">
                   <IconButton
