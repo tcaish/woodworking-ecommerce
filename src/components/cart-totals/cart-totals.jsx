@@ -87,10 +87,13 @@ function CartTotals(props) {
     if (res.error && res.error === 'invalid') {
       title = 'Invalid Promo Code';
       description = 'You entered an invalid promo code. Please try again!';
-    } else if (res.error && res.error === 'applied') {
+    } else if (res.error && res.error === 'in_use') {
+      title = 'Promo Code Currently Applied';
+      description = 'This promo code has already been applied to this order.';
+    } else if (res.error && res.error === 'used') {
       title = 'Promo Code Already Used';
       description =
-        'This promo code has either already been applied to this order or a previous order. Please try a different code!';
+        'This promo code has already been used in a previous order.';
     } else if (res.error && res.error === 'expired') {
       title = 'Promo Code Expired';
       description = 'This promo code has expired.';
@@ -108,7 +111,7 @@ function CartTotals(props) {
       title: title,
       description: description,
       status: res.error ? 'error' : 'success',
-      duration: 6000,
+      duration: 7000,
       isClosable: true
     });
   }

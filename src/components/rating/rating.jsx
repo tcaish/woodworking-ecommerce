@@ -178,7 +178,7 @@ export function SubmitRating({ productId, ratingsLoading }) {
       title: title,
       description: description,
       status: err ? 'error' : 'success',
-      duration: 6000,
+      duration: 7000,
       isClosable: true
     });
   }

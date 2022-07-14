@@ -76,7 +76,7 @@ function SignUp() {
       title: title,
       description: description,
       status: 'error',
-      duration: 6000,
+      duration: 7000,
       isClosable: true
     });
   }
@@ -149,7 +149,7 @@ function SignUp() {
         title: 'Password Error',
         description: 'Your passwords do not match.',
         status: 'error',
-        duration: 6000,
+        duration: 7000,
         isClosable: true
       });
       return;
@@ -177,7 +177,7 @@ function SignUp() {
                 title: 'Profile Error',
                 description: 'We were not able to update your display name.',
                 status: 'error',
-                duration: 6000,
+                duration: 7000,
                 isClosable: true
               });
             });

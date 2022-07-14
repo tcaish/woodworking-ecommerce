@@ -142,7 +142,7 @@ function Detail() {
         title: failedTitle,
         description: alreadyInCartDesc,
         status: 'error',
-        duration: 6000,
+        duration: 7000,
         isClosable: true
       });
       return true;
@@ -151,7 +151,7 @@ function Detail() {
         title: failedTitle,
         description: 'This item is currently out of stock.',
         status: 'error',
-        duration: 6000,
+        duration: 7000,
         isClosable: true
       });
       return true;
@@ -160,7 +160,7 @@ function Detail() {
         title: failedTitle,
         description: 'Please select a color for this item.',
         status: 'error',
-        duration: 6000,
+        duration: 7000,
         isClosable: true
       });
       return true;
@@ -185,7 +185,7 @@ function Detail() {
         title: res.added ? 'Added to Cart' : failedTitle,
         description: description(),
         status: res.added ? 'success' : 'error',
-        duration: 6000,
+        duration: 7000,
         isClosable: true
       });
     }

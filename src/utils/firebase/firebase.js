@@ -201,8 +201,13 @@ export async function getPromoCode(code, userId) {
   // If the promo code doesn't exist
   if (querySnapshot.empty) return { error: 'invalid' };
 
+  // If the promo code expired
   const promoCode = querySnapshot.docs[0].data();
   if (promoCode.expired()) return { error: 'expired' };
+
+  // If the promo code has already been used on a previous order
+  if (promoCode.users && promoCode.users.includes(userId))
+    return { error: 'used' };
 
   promoCode.id = querySnapshot.docs[0].id;
   return promoCode;
@@ -268,7 +273,7 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
 
   const cartItem = querySnapshot.docs[0].data();
   if (cartItem.promoCode === promoCodeId) {
-    return { error: 'applied' };
+    return { error: 'in_use' };
   }
 
   querySnapshot.forEach((document) => {

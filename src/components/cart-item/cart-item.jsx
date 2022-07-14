@@ -72,7 +72,7 @@ function CartItem(props) {
             props.getProduct(props.cartProduct.product).title
           } were removed from your cart.`,
           status: 'success',
-          duration: 6000,
+          duration: 7000,
           isClosable: true
         });
       })
@@ -84,7 +84,7 @@ function CartItem(props) {
           description:
             'There was an error removing your item from your cart. Please try again later.',
           status: 'error',
-          duration: 6000,
+          duration: 7000,
           isClosable: true
         });
       });

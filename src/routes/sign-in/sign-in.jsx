@@ -58,7 +58,7 @@ function SignIn() {
       title: title,
       description: description,
       status: 'error',
-      duration: 6000,
+      duration: 7000,
       isClosable: true
     });
   }
