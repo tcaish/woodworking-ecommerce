@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // React Redux
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // Chakra
 import { Button, useDisclosure, useToast } from '@chakra-ui/react';
@@ -15,6 +15,7 @@ import { removeCartItem } from '../../utils/firebase/firebase';
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
+import { selectCartQuantity, setPromoCode } from '../../redux/slices/cartSlice';
 
 // Components
 import EditCartItemModal from '../modals/edit-cart-item-modal/edit-cart-item-modal';
@@ -23,10 +24,13 @@ import EditCartItemModal from '../modals/edit-cart-item-modal/edit-cart-item-mod
 import './cart-item.scss';
 
 function CartItem(props) {
+  const dispatch = useDispatch();
+
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const user = useSelector(selectUser);
+  const cartQuantity = useSelector(selectCartQuantity);
 
   const [product, setProduct] = useState(null);
   const [removingItem, setRemovingItem] = useState(false);
@@ -53,6 +57,12 @@ function CartItem(props) {
     await removeCartItem(user.uid, props.cartProduct.id)
       .then((res) => {
         setRemovingItem(false);
+
+        // If there is 1 cart product, then we're removing the last cart item.
+        // Remove promo code since there are no more cart products.
+        if (cartQuantity <= 1) {
+          dispatch(setPromoCode(null));
+        }
 
         toast({
           title: 'Successfully Removed from Cart',
