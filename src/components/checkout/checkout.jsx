@@ -178,8 +178,6 @@ function Checkout(props) {
   async function handlePaymentSuccess(paymentIntent) {
     if (user && promoCode) {
       await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
-        console.log('added user to promo code');
-        console.log(user.uid, promoCode.id);
         dispatch(setPromoCode(null));
       });
     }
