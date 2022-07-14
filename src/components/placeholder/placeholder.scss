@@ -1,3 +1,5 @@
+@import '../../exports/constants.scss';
+
 .placeholder-shop-page {
   .placeholder-card {
     height: 400px;
@@ -10,9 +12,19 @@
   }
 }
 
-// .cart-item-container-placeholder {
-//   margin-bottom: 10px;
-// }
+.profile-button-placeholder:disabled {
+  background-color: $brand-yellow !important;
+  border-color: $brand-yellow !important;
+}
+
+.profile-info-container {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.update-profile-container-mobile {
+  margin-top: 30px;
+}
 
 .cart-checkout-button-placeholder {
   border: unset !important;

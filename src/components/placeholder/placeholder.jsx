@@ -2,7 +2,7 @@
 import { Card, Col, Container, Placeholder, Row } from 'react-bootstrap';
 
 // Chakra
-import { Divider } from '@chakra-ui/react';
+import { Avatar, Center, Divider, Grid, GridItem } from '@chakra-ui/react';
 
 // Images
 import placeholder_img from '../../assets/images/placeholder_img.gif';
@@ -10,6 +10,188 @@ import placeholder_img from '../../assets/images/placeholder_img.gif';
 // Styles
 import './placeholder.scss';
 import './placeholder.mobile.scss';
+
+export function PlaceholderProfileDesktop() {
+  return (
+    <Grid templateRows="repeat(4, 1fr)" templateColumns="repeat(2, 1fr)">
+      <GridItem rowSpan={2} colSpan={1}>
+        <Center h="100%">
+          <Avatar
+            className="profile-avatar"
+            size="2xl"
+            bg="none"
+            src={placeholder_img}
+          />
+        </Center>
+      </GridItem>
+
+      <GridItem className="update-profile-container" rowSpan={4}>
+        <h1 className="profile-update-header">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={4} />
+          </Placeholder>
+        </h1>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={2} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={2} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={2} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={2} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={6} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+        </div>
+      </GridItem>
+
+      <GridItem rowSpan={1} colSpan={1}>
+        <div className="profile-info-container">
+          <div className="profile-name-container">
+            <h1 className="profile-name">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={6} />
+              </Placeholder>
+            </h1>
+          </div>
+
+          <div className="profile-email-container">
+            <h1 className="profile-email">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={4} />
+              </Placeholder>
+            </h1>
+          </div>
+
+          <div className="profile-phone-container">
+            <h1 className="profile-phone">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={3} />
+              </Placeholder>
+            </h1>
+          </div>
+        </div>
+      </GridItem>
+    </Grid>
+  );
+}
+
+export function PlaceholderProfileMobile() {
+  return (
+    <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(1, 1fr)">
+      <GridItem rowSpan={1} colSpan={1}>
+        <Center>
+          <Avatar
+            className="profile-avatar"
+            size="2xl"
+            bg="none"
+            src={placeholder_img}
+          />
+        </Center>
+
+        <div className="profile-info-container">
+          <div className="profile-name-container">
+            <h1 className="profile-name">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={8} />
+              </Placeholder>
+            </h1>
+          </div>
+
+          <div className="profile-email-container">
+            <h1 className="profile-email">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={6} />
+              </Placeholder>
+            </h1>
+          </div>
+
+          <div className="profile-phone-container">
+            <h1 className="profile-phone">
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={4} />
+              </Placeholder>
+            </h1>
+          </div>
+        </div>
+      </GridItem>
+
+      <GridItem
+        className="update-profile-container update-profile-container-mobile"
+        rowSpan={2}
+        colSpan={1}
+      >
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={4} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={8} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={4} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={8} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={4} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={8} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+        </div>
+
+        <div className="profile-form-control">
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={4} />
+          </Placeholder>
+          <Placeholder as="p" animation="wave">
+            <Placeholder xs={8} />
+          </Placeholder>
+          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+        </div>
+      </GridItem>
+    </Grid>
+  );
+}
 
 export function PlaceholderDetailInfo() {
   return (

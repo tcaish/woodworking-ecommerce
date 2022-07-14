@@ -290,6 +290,7 @@ function Profile() {
     <Container className="main-container profile-container">
       {screenWidth > 991 ? (
         <ProfileDesktop
+          profileLoading={profileLoading}
           user={user}
           displayName={displayName}
           email={email}
@@ -311,6 +312,7 @@ function Profile() {
         />
       ) : (
         <ProfileMobile
+          profileLoading={profileLoading}
           user={user}
           displayName={displayName}
           email={email}

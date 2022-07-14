@@ -19,6 +19,9 @@ import {
 // Third party
 import PhoneNumberInput from 'react-phone-number-input/input';
 
+// Components
+import { PlaceholderProfileMobile } from '../../components/placeholder/placeholder';
+
 // Exports
 import { formatPhoneNumber } from '../../exports/functions';
 
@@ -26,7 +29,9 @@ import { formatPhoneNumber } from '../../exports/functions';
 import './profile.mobile.scss';
 
 function ProfileMobile(props) {
-  return (
+  return props.profileLoading ? (
+    <PlaceholderProfileMobile />
+  ) : (
     <Grid templateRows="repeat(3, 1fr)" templateColumns="repeat(1, 1fr)">
       <GridItem rowSpan={1} colSpan={1}>
         <Center>

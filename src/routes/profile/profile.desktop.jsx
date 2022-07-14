@@ -19,6 +19,9 @@ import {
 // Third party
 import PhoneNumberInput from 'react-phone-number-input/input';
 
+// Components
+import { PlaceholderProfileDesktop } from '../../components/placeholder/placeholder';
+
 // Exports
 import { formatPhoneNumber } from '../../exports/functions';
 
@@ -26,7 +29,9 @@ import { formatPhoneNumber } from '../../exports/functions';
 import './profile.desktop.scss';
 
 function ProfileDesktop(props) {
-  return (
+  return props.profileLoading ? (
+    <PlaceholderProfileDesktop />
+  ) : (
     <Grid templateRows="repeat(4, 1fr)" templateColumns="repeat(2, 1fr)">
       <GridItem rowSpan={2} colSpan={1}>
         <Center h="100%">
@@ -79,7 +84,10 @@ function ProfileDesktop(props) {
             focusBorderColor="#f7d794"
             value={props.formInput.email ? props.formInput.email : ''}
             onChange={(e) =>
-              props.setFormInput({ ...props.formInput, email: e.target.value })
+              props.setFormInput({
+                ...props.formInput,
+                email: e.target.value
+              })
             }
             isDisabled={props.isInputDisabled('email')}
             isInvalid={props.formInput.email === ''}
