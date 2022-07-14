@@ -183,7 +183,7 @@ function Cart() {
     );
     const quantities = cartProducts.map((item) => item.quantity);
     const colors = cartProducts.map((item) => item.color);
-    const notes = cartProducts.map((item) => (item.notes ? item.notes : 'n/a'));
+    const notes = cartProducts.map((item) => (item.notes ? item.notes : '-'));
 
     const metaData =
       cartQuantity > 1
@@ -192,22 +192,22 @@ function Cart() {
             costs: costs.join(' || '),
             discount: promoCode
               ? `$${discountTotal} (${promoCode.discount * 100}%)`
-              : '',
+              : '-',
             notes: notes.join(' || '),
-            promo_code: promoCode.code,
+            promo_code: promoCode ? promoCode.code : '-',
             quantities: quantities.join(' || '),
             titles: titles.join(' || ')
           }
         : {
-            colors: colors.join(' || '),
-            costs: costs.join(' || '),
+            color: colors.join(' || '),
+            cost: costs.join(' || '),
             discount: promoCode
               ? `$${discountTotal} (${promoCode.discount * 100}%)`
-              : '',
+              : '-',
             notes: notes.join(' || '),
-            promo_code: promoCode.code,
-            quantities: quantities.join(' || '),
-            titles: titles.join(' || ')
+            promo_code: promoCode ? promoCode.code : '-',
+            quantity: quantities.join(' || '),
+            title: titles.join(' || ')
           };
 
     dispatch(setOrderDescription(description));
