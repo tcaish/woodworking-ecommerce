@@ -37,7 +37,7 @@ import {
 import Footer from '../../components/footer/footer';
 
 // Images
-import Logo from '../../assets/images/logo/logo-horiz-yellow.png';
+import Logo from '../../assets/images/logo/logo_yellow_symbol.png';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
