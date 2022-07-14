@@ -120,3 +120,19 @@ export const validatePhoneNumber = (phoneNumber) => {
     .toLowerCase()
     .match(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im);
 };
+
+// Formats a phone number to look like this: (555) 555-5555
+export function formatPhoneNumber(phoneNumber) {
+  let tempNum = phoneNumber;
+
+  // Remove +1
+  tempNum = tempNum.replace('+1', '');
+
+  // Add parenthesis to area code
+  tempNum = '(' + tempNum.slice(0, 3) + ') ' + tempNum.slice(3);
+
+  // Add hyphen
+  tempNum = tempNum.slice(0, 9) + '-' + tempNum.slice(9);
+
+  return tempNum;
+}

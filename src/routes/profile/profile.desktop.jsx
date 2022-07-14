@@ -16,6 +16,12 @@ import {
   Input
 } from '@chakra-ui/react';
 
+// Third party
+import PhoneNumberInput from 'react-phone-number-input/input';
+
+// Exports
+import { formatPhoneNumber } from '../../exports/functions';
+
 // Styles
 import './profile.desktop.scss';
 
@@ -124,6 +130,29 @@ function ProfileDesktop(props) {
         </FormControl>
 
         <FormControl className="profile-form-control">
+          <FormLabel>Phone Number</FormLabel>
+          <PhoneNumberInput
+            country="US"
+            placeholder="(555) 555-5555"
+            inputComponent={Input}
+            focusBorderColor="#f7d794"
+            value={props.phoneNumber ? props.phoneNumber : ''}
+            onChange={(value) =>
+              props.setFormInput({ ...props.formInput, phoneNumber: value })
+            }
+            isInvalid={props.formInput.phoneNumber === ''}
+          />
+          <Button
+            className="profile-form-update-button"
+            size="sm"
+            isLoading={props.updatePhoneLoading}
+            onClick={props.handlePhoneNumberUpdate}
+          >
+            Update Phone Number
+          </Button>
+        </FormControl>
+
+        <FormControl className="profile-form-control">
           <FormLabel>Password</FormLabel>
           <Button
             variant="link"
@@ -143,7 +172,7 @@ function ProfileDesktop(props) {
       </GridItem>
 
       <GridItem rowSpan={1} colSpan={1}>
-        {props.user && (
+        {props.displayName && (
           <Center>
             <div className="profile-name-container">
               <h1 className="profile-name">
@@ -154,11 +183,22 @@ function ProfileDesktop(props) {
             </div>
           </Center>
         )}
-        <Center>
-          <div className="profile-email-container">
-            <h1 className="profile-email">{props.email}</h1>
-          </div>
-        </Center>
+        {props.email && (
+          <Center>
+            <div className="profile-email-container">
+              <h1 className="profile-email">{props.email}</h1>
+            </div>
+          </Center>
+        )}
+        {props.phoneNumber && (
+          <Center>
+            <div className="profile-phone-container">
+              <h1 className="profile-phone">
+                {formatPhoneNumber(props.phoneNumber)}
+              </h1>
+            </div>
+          </Center>
+        )}
       </GridItem>
     </Grid>
   );

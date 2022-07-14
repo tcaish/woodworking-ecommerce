@@ -15,7 +15,8 @@ import {
   updateUserProfile,
   sendResetPasswordEmail,
   updateUserEmail,
-  sendUserVerificationEmail
+  sendUserVerificationEmail,
+  updateUser
 } from '../../utils/firebase/firebase';
 
 // Slices
@@ -26,18 +27,22 @@ import {
   selectPhotoURL,
   setDisplayName,
   setEmail,
-  setPhotoURL
+  setPhotoURL,
+  selectPhoneNumber,
+  setPhoneNumber
 } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 
 // Components
 import ProfileDesktop from './profile.desktop';
 import ProfileMobile from './profile.mobile';
+import { validatePhoneNumber } from '../../exports/functions';
 
 const defaultFormInput = {
   displayName: '',
   photoURL: '',
-  email: ''
+  email: '',
+  phoneNumber: ''
 };
 
 function Profile() {
@@ -48,18 +53,31 @@ function Profile() {
   const displayName = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
   const photoURL = useSelector(selectPhotoURL);
+  const phoneNumber = useSelector(selectPhoneNumber);
   const screenWidth = useSelector(selectScreenWidth);
 
-  const [formInput, setFormInput] = useState(user ? user : defaultFormInput);
+  const [formInput, setFormInput] = useState(defaultFormInput);
+  const [profileLoading, setProfileLoading] = useState(false);
   const [updateNameLoading, setUpdateNameLoading] = useState(false);
   const [updateEmailLoading, setUpdateEmailLoading] = useState(false);
+  const [updatePhoneLoading, setUpdatePhoneLoading] = useState(false);
   const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
   const [verifyEmailLoading, setVerifyEmailLoading] = useState(false);
 
   // Sets the form input to user data when user is available
   useEffect(() => {
-    if (user) setFormInput(user);
-  }, [user]);
+    setProfileLoading(true);
+
+    if (displayName) {
+      setFormInput({
+        displayName,
+        photoURL,
+        email,
+        phoneNumber
+      });
+      setProfileLoading(false);
+    }
+  }, [displayName, photoURL, email, phoneNumber]);
 
   // Handles the updating of the user's display name and picture
   async function handleNameUpdate() {
@@ -146,6 +164,42 @@ function Profile() {
           err
         );
         setUpdateEmailLoading(false);
+      });
+  }
+
+  // Handles updating the user's phone number
+  async function handlePhoneNumberUpdate() {
+    if (formInput.phoneNumber === '' || phoneNumber === formInput.phoneNumber)
+      return;
+
+    if (!validatePhoneNumber(formInput.phoneNumber)) {
+      handleProfileUpdateOrError(
+        'Phone Number Invalid',
+        'Please enter a valid phone number (e.g. (555) 555-5555).',
+        { code: '' }
+      );
+      return;
+    }
+
+    setUpdatePhoneLoading(true);
+
+    await updateUser(user.uid, { phoneNumber: formInput.phoneNumber })
+      .then((res) => {
+        handleProfileUpdateOrError(
+          'Phone Number Updated',
+          'Your phone number was updated successfully!',
+          null
+        );
+        dispatch(setPhoneNumber(formInput.phoneNumber));
+        setUpdatePhoneLoading(false);
+      })
+      .catch((err) => {
+        handleProfileUpdateOrError(
+          'Phone Number Update Failed',
+          'There was an error updating your phone number. Please try again later!',
+          err
+        );
+        setUpdatePhoneLoading(false);
       });
   }
 
@@ -240,6 +294,7 @@ function Profile() {
           displayName={displayName}
           email={email}
           photoURL={photoURL}
+          phoneNumber={phoneNumber}
           formInput={formInput}
           setFormInput={setFormInput}
           isInputDisabled={isInputDisabled}
@@ -251,6 +306,8 @@ function Profile() {
           handleEmailUpdate={handleEmailUpdate}
           resetPasswordLoading={resetPasswordLoading}
           handlePasswordResetEmail={handlePasswordResetEmail}
+          handlePhoneNumberUpdate={handlePhoneNumberUpdate}
+          updatePhoneLoading={updatePhoneLoading}
         />
       ) : (
         <ProfileMobile
@@ -258,6 +315,7 @@ function Profile() {
           displayName={displayName}
           email={email}
           photoURL={photoURL}
+          phoneNumber={phoneNumber}
           formInput={formInput}
           setFormInput={setFormInput}
           isInputDisabled={isInputDisabled}
@@ -269,6 +327,8 @@ function Profile() {
           handleEmailUpdate={handleEmailUpdate}
           resetPasswordLoading={resetPasswordLoading}
           handlePasswordResetEmail={handlePasswordResetEmail}
+          handlePhoneNumberUpdate={handlePhoneNumberUpdate}
+          updatePhoneLoading={updatePhoneLoading}
         />
       )}
     </Container>

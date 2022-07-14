@@ -2,7 +2,7 @@
 
 .profile-container {
   .profile-avatar {
-    margin-top: 100px;
+    margin-top: 150px;
   }
 
   .profile-name-container {
@@ -14,6 +14,14 @@
 
   .profile-email-container {
     .profile-email {
+      font-size: 1.5rem;
+    }
+  }
+
+  .profile-phone-container {
+    margin-top: 5px;
+
+    .profile-phone {
       font-size: 1.5rem;
     }
   }
