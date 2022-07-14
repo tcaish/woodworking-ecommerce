@@ -177,10 +177,11 @@ function Checkout(props) {
   // Handles what happens when the payment was successful
   async function handlePaymentSuccess(paymentIntent) {
     if (user && promoCode) {
-      console.log('here');
-      await addUserToPromoCode(user.uid, promoCode.id).then((res) =>
-        dispatch(setPromoCode(null))
-      );
+      await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
+        console.log('added user to promo code');
+        console.log(user.uid, promoCode.id);
+        dispatch(setPromoCode(null));
+      });
     }
 
     props.setOrderId(paymentIntent.id);

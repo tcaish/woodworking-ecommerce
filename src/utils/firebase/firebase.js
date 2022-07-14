@@ -290,7 +290,7 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
 // Adds a user to the users array within the promo code object
 export async function addUserToPromoCode(userId, promoCodeId) {
   if (!userId || !promoCodeId) return;
-  console.log(userId, promoCodeId);
+
   const promoCodeUsersRef = doc(firestore, 'promo_codes', promoCodeId);
   return await updateDoc(promoCodeUsersRef, {
     users: arrayUnion(userId)
