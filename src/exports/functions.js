@@ -136,3 +136,15 @@ export function formatPhoneNumber(phoneNumber) {
 
   return tempNum;
 }
+
+// Loads an image and returns when it finishes.
+// This is only used for setting images via the background-image property
+// in CSS.
+export function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener('load', resolve);
+    image.addEventListener('error', reject);
+    image.src = src;
+  });
+}

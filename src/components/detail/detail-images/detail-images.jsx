@@ -1,3 +1,6 @@
+// React
+import { useEffect, useState } from 'react';
+
 // React Redux
 import { useSelector } from 'react-redux';
 
@@ -17,6 +20,19 @@ import './detail-images.mobile.scss';
 function DetailImages(props) {
   const screenWidth = useSelector(selectScreenWidth);
 
+  const [mainImage, setMainImage] = useState('');
+
+  // Sets the main image when it finishes loading
+  useEffect(() => {
+    const img = document.getElementById('detail-main-image');
+
+    if (img.complete) {
+      setMainImage(props.mainImage);
+    } else {
+      img.addEventListener('load', () => setMainImage(props.mainImage));
+    }
+  }, [props.mainImage]);
+
   return (
     <>
       <Box
@@ -24,9 +40,10 @@ function DetailImages(props) {
         boxSize={screenWidth <= 575 ? 'xs' : 'md'}
       >
         <Image
+          id="detail-main-image"
           boxSize={screenWidth <= 575 ? 'xs' : 'md'}
           alt="Main Picture"
-          src={!props.pageLoading ? props.mainImage : placeholder_img}
+          src={mainImage ? mainImage : placeholder_img}
         />
       </Box>
 

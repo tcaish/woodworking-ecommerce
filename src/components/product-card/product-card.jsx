@@ -21,6 +21,9 @@ import {
   getRatingsForProduct
 } from '../../exports/functions';
 
+// Images
+import placeholder_img from '../../assets/images/placeholder_img.gif';
+
 // Styles
 import './product-card.scss';
 import './product-card.mobile.scss';
@@ -33,11 +36,23 @@ function ProductCard({ product }) {
   const ratings = useSelector(selectRatings);
 
   const [productRatings, setProductRatings] = useState([]);
+  const [bgImg, setBgImg] = useState('');
 
   // Sets the ratings for the given product
   useEffect(() => {
     setProductRatings(getRatingsForProduct(ratings, product.id));
   }, [ratings, product.id]);
+
+  // Sets the image when it finishes loading
+  useEffect(() => {
+    const img = document.getElementById(product.id);
+
+    if (img.complete) {
+      setBgImg(product.pictures[0]);
+    } else {
+      img.addEventListener('load', () => setBgImg(product.pictures[0]));
+    }
+  }, [product.pictures, product.id]);
 
   // Handles showing the correct product detail page
   function showProductDetailsPage() {
@@ -54,7 +69,12 @@ function ProductCard({ product }) {
         overflow="hidden"
         onClick={showProductDetailsPage}
       >
-        <Image src={product.pictures[0]} alt={product.title} h="auto" />
+        <Image
+          id={product.id}
+          src={bgImg ? bgImg : placeholder_img}
+          alt={product.title}
+          h="auto"
+        />
         <Box p="6">
           <Box display="flex" alignItems="baseline">
             {product.isNew() && (

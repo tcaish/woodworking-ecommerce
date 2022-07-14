@@ -1,3 +1,6 @@
+// React
+import { useEffect, useState } from 'react';
+
 // React Redux
 import { useSelector } from 'react-redux';
 
@@ -9,6 +12,12 @@ import { Button, Center, GridItem, VStack } from '@chakra-ui/react';
 
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
+
+// Exports
+import { loadImage } from '../../exports/functions';
+
+// Images
+import placeholder_img from '../../assets/images/placeholder_img.gif';
 
 // Styles
 import './home-grid-item.scss';
@@ -25,18 +34,27 @@ function HomeGridItem({
 }) {
   const screenWidth = useSelector(selectScreenWidth);
 
+  const [bgImg, setBgImg] = useState('');
+
   const buttonSize = () => {
     if (screenWidth <= 515) return 'xs';
     else if (screenWidth <= 1199) return 'sm';
     else return 'md';
   };
 
+  // Sets the image when it is loaded
+  useEffect(() => {
+    loadImage(image).then(() => {
+      setBgImg(image);
+    });
+  }, [image]);
+
   return (
     <GridItem
       className="home-grid-item hvr-grow"
       rowSpan={rowSpan}
       colSpan={colSpan}
-      style={{ backgroundImage: `url(${image})` }}
+      style={{ backgroundImage: `url(${bgImg ? bgImg : placeholder_img})` }}
     >
       <Center className="home-grid-item-container">
         <VStack spacing={4} direction="row">
