@@ -20,16 +20,16 @@ import './detail-images.mobile.scss';
 function DetailImages(props) {
   const screenWidth = useSelector(selectScreenWidth);
 
-  const [mainImage, setMainImage] = useState('');
+  const [mainImg, setMainImg] = useState('');
 
   // Sets the main image when it finishes loading
   useEffect(() => {
     const img = document.getElementById('detail-main-image');
 
     if (img.complete) {
-      setMainImage(props.mainImage);
+      setMainImg(props.mainImage);
     } else {
-      img.addEventListener('load', () => setMainImage(props.mainImage));
+      img.addEventListener('load', () => setMainImg(props.mainImage));
     }
   }, [props.mainImage]);
 
@@ -43,7 +43,7 @@ function DetailImages(props) {
           id="detail-main-image"
           boxSize={screenWidth <= 575 ? 'xs' : 'md'}
           alt="Main Picture"
-          src={mainImage ? mainImage : placeholder_img}
+          src={mainImg ? mainImg : placeholder_img}
         />
       </Box>
 
