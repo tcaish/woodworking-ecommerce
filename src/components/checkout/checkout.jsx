@@ -188,9 +188,9 @@ function Checkout(props) {
       const orderId = await addOrder(
         user.uid,
         cartProducts.map((c) => c.id),
-        discountTotal,
+        Number(discountTotal),
         paymentIntent.id,
-        total
+        Number(total)
       );
 
       if (promoCode) {

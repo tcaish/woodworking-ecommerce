@@ -82,7 +82,7 @@ function Orders() {
               orders.map((order, index) => (
                 <Tr key={index}>
                   <Td>{order.id}</Td>
-                  <Td>{order.cartProducts}</Td>
+                  <Td>{order.cartProducts.join(', ')}</Td>
                   <Td>{`$${order.total.toFixed(2)}`}</Td>
                   <Td>
                     <a href="#">Invoice</a> &bull;{' '}
