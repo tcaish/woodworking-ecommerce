@@ -5,7 +5,8 @@ const initialState = {
   displayName: '',
   email: '',
   photoURL: '',
-  phoneNumber: ''
+  phoneNumber: '',
+  stripeCustomerId: ''
 };
 
 export const userSlice = createSlice({
@@ -29,6 +30,9 @@ export const userSlice = createSlice({
     },
     setPhoneNumber: (state, action) => {
       state.phoneNumber = action.payload;
+    },
+    setStripeCustomerId: (state, action) => {
+      state.stripeCustomerId = action.payload;
     }
   }
 });
@@ -39,7 +43,8 @@ export const {
   setDisplayName,
   setEmail,
   setPhotoURL,
-  setPhoneNumber
+  setPhoneNumber,
+  setStripeCustomerId
 } = userSlice.actions;
 
 // Selectors
@@ -48,5 +53,6 @@ export const selectDisplayName = (state) => state.user.displayName;
 export const selectEmail = (state) => state.user.email;
 export const selectPhotoURL = (state) => state.user.photoURL;
 export const selectPhoneNumber = (state) => state.user.phoneNumber;
+export const selectStripeCustomerId = (state) => state.user.stripeCustomerId;
 
 export default userSlice.reducer;

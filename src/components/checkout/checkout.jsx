@@ -39,6 +39,7 @@ import PhoneNumberInput from 'react-phone-number-input/input';
 import {
   selectDisplayName,
   selectPhoneNumber,
+  selectStripeCustomerId,
   selectUser
 } from '../../redux/slices/userSlice';
 import {
@@ -68,6 +69,7 @@ function Checkout(props) {
   const elements = useElements();
 
   const user = useSelector(selectUser);
+  const stripeCustomerId = useSelector(selectStripeCustomerId);
   const cartProducts = useSelector(selectCartProducts);
   const userDisplayName = useSelector(selectDisplayName);
   const userPhoneNumber = useSelector(selectPhoneNumber);
@@ -163,7 +165,6 @@ function Checkout(props) {
       }
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
-        console.log(paymentResult);
         handlePaymentSuccess(paymentResult.paymentIntent);
         return;
       } else {
@@ -216,6 +217,25 @@ function Checkout(props) {
 
     await updateUser(user.uid, { phoneNumber: phone });
 
+    let customerId = stripeCustomerId;
+    if (!customerId) {
+      console.log('creating customer');
+      const response = await fetch('/.netlify/functions/create-customer', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email: props.email,
+          phone
+        })
+      });
+      const customer = await response.json();
+      console.log(customer);
+      customerId = customer.id;
+    }
+
     try {
       const totalWithoutDecimal = `${total}`.replace('.', '');
       const response = await fetch(
@@ -227,6 +247,7 @@ function Checkout(props) {
           },
           body: JSON.stringify({
             amount: totalWithoutDecimal,
+            customer: customerId,
             description: orderDescription,
             metadata: orderMetaData
           })
