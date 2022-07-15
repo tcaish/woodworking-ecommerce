@@ -185,23 +185,23 @@ function Checkout(props) {
   // Handles what happens when the payment was successful
   async function handlePaymentSuccess(paymentIntent) {
     if (user) {
-      await addOrder(
+      const orderId = await addOrder(
         user.uid,
         cartProducts.map((c) => c.id),
         discountTotal,
         paymentIntent.id,
         total
       );
-    }
 
-    if (user && promoCode) {
-      await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
-        dispatch(setPromoCode(null));
-      });
-    }
+      if (promoCode) {
+        await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
+          dispatch(setPromoCode(null));
+        });
+      }
 
-    props.setOrderId(paymentIntent.id);
-    props.setOrderSucceeded(true);
+      props.setOrderId(orderId);
+      props.setOrderSucceeded(true);
+    }
   }
 
   // Handles submitting the payment

@@ -362,15 +362,19 @@ export async function addOrder(
   const ordered = getFirebaseTimestampFromDate(new Date());
 
   const ordersRef = collection(firestore, 'users', userId, 'orders');
-  return await addDoc(ordersRef, {
-    cartProducts,
-    discountTotal,
-    ordered,
-    stripeOrderId,
-    total
-  })
-    .then((res) => true)
-    .catch((err) => false);
+
+  try {
+    const doc = await addDoc(ordersRef, {
+      cartProducts,
+      discountTotal,
+      ordered,
+      stripeOrderId,
+      total
+    });
+    return doc.id;
+  } catch (err) {
+    return null;
+  }
 }
 
 export async function editUserRating(rating, ratingId, userId, productId) {
