@@ -163,6 +163,7 @@ function Checkout(props) {
       }
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
+        console.log(paymentResult);
         handlePaymentSuccess(paymentResult.paymentIntent);
         return;
       } else {
@@ -198,8 +199,6 @@ function Checkout(props) {
           dispatch(setPromoCode(null));
         });
       }
-
-      console.log(paymentIntent);
 
       props.setOrderId(orderId);
       props.setOrderSucceeded(true);
