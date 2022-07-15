@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // React Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // React Icons
 import { BsCheck2 } from 'react-icons/bs';
@@ -33,11 +33,7 @@ import StarRating from '../star-rating/star-rating';
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
-import {
-  addRating,
-  selectRatings,
-  updateRating
-} from '../../redux/slices/ratingSlice';
+import { selectRatings } from '../../redux/slices/ratingSlice';
 
 // Firebase
 import { addUserRating, editUserRating } from '../../utils/firebase/firebase';
@@ -45,7 +41,6 @@ import { addUserRating, editUserRating } from '../../utils/firebase/firebase';
 // Exports
 import {
   getAverageRatingForProduct,
-  getFirebaseTimestampFromDate,
   getRatingsForProduct
 } from '../../exports/functions';
 
@@ -123,7 +118,6 @@ export function OverallRating({ productId, ratingsLoading }) {
 }
 
 export function SubmitRating({ productId, ratingsLoading }) {
-  const dispatch = useDispatch();
   const toast = useToast();
 
   const user = useSelector(selectUser);
@@ -149,6 +143,7 @@ export function SubmitRating({ productId, ratingsLoading }) {
     const userRatings = productRatings.filter(
       (rating) => rating.user === user.uid
     );
+
     setUserRating(userRatings.length === 1 ? userRatings[0] : {});
     setSelectedRating(userRatings.length === 1 ? userRatings[0].rating : 0);
     setUserHasRated(userRatings.length === 1);
@@ -192,16 +187,6 @@ export function SubmitRating({ productId, ratingsLoading }) {
     if (!editingRating) {
       await addUserRating(selectedRating, user.uid, productId)
         .then((docId) => {
-          dispatch(
-            addRating({
-              id: docId,
-              product: productId,
-              rating: selectedRating,
-              submitted: getFirebaseTimestampFromDate(new Date()),
-              user: user.uid
-            })
-          );
-
           setSubmittingRating(false);
           handleSuccessError(true, false);
         })
@@ -212,16 +197,6 @@ export function SubmitRating({ productId, ratingsLoading }) {
     } else {
       await editUserRating(selectedRating, userRating.id, user.uid, productId)
         .then((res) => {
-          dispatch(
-            updateRating({
-              id: userRating.id,
-              product: productId,
-              rating: selectedRating,
-              submitted: getFirebaseTimestampFromDate(new Date()),
-              user: user.uid
-            })
-          );
-
           setSubmittingRating(false);
           setEditingRating(false);
           handleSuccessError(false, false);
@@ -242,12 +217,17 @@ export function SubmitRating({ productId, ratingsLoading }) {
         <>
           <div className="review-submit-rating-container">
             <Ratings
-              rating={selectedRating}
               widgetDimensions={screenWidth > 575 ? '40px' : '25px'}
               widgetSpacings={screenWidth > 575 ? '7px' : '4px'}
               widgetRatedColors="gold"
               widgetHoverColors="gold"
-              changeRating={(rating) => user && setSelectedRating(rating)}
+              rating={selectedRating}
+              changeRating={(rating) => {
+                if (!user) return;
+                if (userHasRated && !editingRating) return;
+
+                setSelectedRating(rating);
+              }}
             >
               <Ratings.Widget />
               <Ratings.Widget />
