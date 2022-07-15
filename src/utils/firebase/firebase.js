@@ -36,6 +36,7 @@ import { productConverter } from '../../classes/Product';
 import { ratingConverter } from '../../classes/Rating';
 import { cartProductConverter } from '../../classes/CartProduct';
 import { promoCodeConverter } from '../../classes/PromoCode';
+import { orderConverter } from '../../classes/Order';
 
 // Exports
 import { getFirebaseTimestampFromDate } from '../../exports/functions';
@@ -230,6 +231,25 @@ export async function getPromoCodeById(promoCodeId) {
   return { error: 'doesnt-exist' };
 }
 
+// Returns the orders for a user
+export async function getOrders(userId) {
+  const orders = [];
+
+  const ordersRef = collection(
+    firestore,
+    'users',
+    userId,
+    'orders'
+  ).withConverter(orderConverter);
+  const ordersSnapshot = await getDocs(ordersRef);
+  ordersSnapshot.forEach((doc) => {
+    const data = doc.data();
+    data.id = doc.id;
+    orders.push(data);
+  });
+  return orders;
+}
+
 // Adds a product to the user's cart
 export async function addProductToCart(
   color,
@@ -329,6 +349,27 @@ export async function addUserRating(rating, userId, productId) {
   }
 }
 
+// Adds an order to the user's orders
+export async function addOrder(
+  userId,
+  cartProductId,
+  discountTotal = 0,
+  stripeOrderId,
+  total
+) {
+  if (!userId || !cartProductId || !stripeOrderId || !total) return;
+
+  const ordersRef = collection(firestore, 'users', userId, 'orders');
+  return await addDoc(ordersRef, {
+    cartProduct: cartProductId,
+    discountTotal,
+    stripeOrderId,
+    total
+  })
+    .then((res) => true)
+    .catch((err) => false);
+}
+
 export async function editUserRating(rating, ratingId, userId, productId) {
   if (!rating || !ratingId || !userId || !productId) return;
 
@@ -392,4 +433,12 @@ export async function updateCartItem(userId, cartProductId, options) {
 
   const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
   return await updateDoc(cartProductRef, options);
+}
+
+// Updates an order for a user with the given options
+export async function updateOrder(userId, orderId, options) {
+  if (!userId || !orderId || !options) return;
+
+  const orderRef = doc(firestore, 'users', userId, 'orders', orderId);
+  return await updateDoc(orderRef, options);
 }
