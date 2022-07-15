@@ -35,7 +35,6 @@ function DetailImages(props) {
 
   return (
     <>
-      {mainImg}
       <Box
         className="detail-main-image-container"
         boxSize={screenWidth <= 575 ? 'xs' : 'md'}
