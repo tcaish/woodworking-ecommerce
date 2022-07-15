@@ -14,7 +14,12 @@ import {
 } from './utils/firebase/firebase';
 
 // Slices
-import { selectUser, setPhoneNumber, setUser } from './redux/slices/userSlice';
+import {
+  selectUser,
+  setPhoneNumber,
+  setStripeCustomerId,
+  setUser
+} from './redux/slices/userSlice';
 import { setScreenWidth } from './redux/slices/screenSlice';
 import { setCurrentPath } from './redux/slices/routingSlice';
 
@@ -60,6 +65,7 @@ function App() {
         createUserDocumentFromAuth(user).then((res) => {
           if (!res.error && res.type === 'get' && res.data.phoneNumber) {
             dispatch(setPhoneNumber(res.data.phoneNumber));
+            dispatch(setStripeCustomerId(res.data.stripeCustomerId));
           }
         });
 

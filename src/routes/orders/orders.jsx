@@ -37,14 +37,14 @@ function Orders() {
   const orders = useSelector(selectOrders);
 
   // Listen to real-time updates on orders table
-  useEffect(() => {
+  const unsubscribe = () => {
     if (user) {
       const q = query(
         collection(firestore, 'users', user.uid, 'orders').withConverter(
           orderConverter
         )
       );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      return onSnapshot(q, (querySnapshot) => {
         let orders = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
@@ -54,14 +54,17 @@ function Orders() {
 
         dispatch(setOrders(orders));
       });
-
-      // This is what gets ran when the user leaves this page
-      return () => {
-        // Remove the listener for orders
-        unsubscribe();
-      };
     }
-  }, [dispatch, orders, user]);
+  };
+
+  // Remove the listener for orders
+  useEffect(() => {
+    // This is what gets ran when the user leaves this page
+    return () => {
+      unsubscribe();
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="main-container">

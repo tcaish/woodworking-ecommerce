@@ -85,20 +85,8 @@ function Cart() {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [orderSucceeded, setOrderSucceeded] = useState(false);
 
-  // Fetches and stores the products if not already done
-  useEffect(() => {
-    if (products.length === 0) {
-      setProductsLoading(true);
-
-      getProducts().then((res) => {
-        setProductsLoading(false);
-        dispatch(setProducts(res));
-      });
-    }
-  }, [dispatch, products.length]);
-
   // Listen to real-time updates on the user's cart table
-  useEffect(() => {
+  const unsubscribe = () => {
     if (user) {
       cartQuantity === 0 && setCartProductsLoading(true);
 
@@ -107,7 +95,7 @@ function Cart() {
           cartProductConverter
         )
       );
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      return onSnapshot(q, (querySnapshot) => {
         let cartProds = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
@@ -133,15 +121,29 @@ function Cart() {
           });
         }
       });
-
-      // This is what gets ran when the user leaves this page
-      return () => {
-        // Remove the listener for ratings
-        unsubscribe();
-      };
     }
+  };
+
+  // Remove the listener for ratings
+  useEffect(() => {
+    // This is what gets ran when the user leaves this page
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line
-  }, [user, dispatch]);
+  }, []);
+
+  // Fetches and stores the products if not already done
+  useEffect(() => {
+    if (products.length === 0) {
+      setProductsLoading(true);
+
+      getProducts().then((res) => {
+        setProductsLoading(false);
+        dispatch(setProducts(res));
+      });
+    }
+  }, [dispatch, products.length]);
 
   // Sets the materials, labor, and sub totals
   useEffect(() => {

@@ -34,11 +34,11 @@ function Shop() {
   const [pageLoading, setPageLoading] = useState(false);
 
   // Listen to real-time updates on ratings table
-  useEffect(() => {
+  const unsubscribe = () => {
     const q = query(
       collection(firestore, 'ratings').withConverter(ratingConverter)
     );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    return onSnapshot(q, (querySnapshot) => {
       let ratings = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -48,7 +48,10 @@ function Shop() {
 
       dispatch(setRatings(ratings));
     });
+  };
 
+  // Remove the listener for ratings
+  useEffect(() => {
     // This is what gets ran when the user leaves this page
     return () => {
       // If current path is '/shop' or contains '/shop/product-details'
@@ -58,11 +61,11 @@ function Shop() {
           `/${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_product_details}`
         )
       ) {
-        // Remove the listener for ratings
         unsubscribe();
       }
     };
-  }, [currentPath, dispatch]);
+    // eslint-disable-next-line
+  }, [currentPath]);
 
   // Fetches and stores the products if not already done
   useEffect(() => {
