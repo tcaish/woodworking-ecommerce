@@ -78,7 +78,7 @@ function Orders() {
             </Tr>
           </Thead>
           <Tbody>
-            {orders &&
+            {orders.length > 0 &&
               orders.map((order, index) => (
                 <Tr key={index}>
                   <Td>{order.id}</Td>

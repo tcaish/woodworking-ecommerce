@@ -199,6 +199,8 @@ function Checkout(props) {
         });
       }
 
+      console.log(paymentIntent);
+
       props.setOrderId(orderId);
       props.setOrderSucceeded(true);
     }
