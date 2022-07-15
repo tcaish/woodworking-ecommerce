@@ -26,9 +26,11 @@ import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 import {
   selectCartProducts,
   selectCartQuantity,
+  selectDiscountTotal,
   selectPromoCode,
   setCartProducts,
   setCartTotal,
+  setDiscountTotal,
   setOrderDescription,
   setOrderMetaData,
   setPromoCode
@@ -74,12 +76,12 @@ function Cart() {
   const cartQuantity = useSelector(selectCartQuantity);
   const promoCode = useSelector(selectPromoCode);
   const products = useSelector(selectProducts);
+  const discountTotal = useSelector(selectDiscountTotal);
 
   const [productsLoading, setProductsLoading] = useState(false);
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [materialsTotal, setMaterialsTotal] = useState(0);
   const [laborTotal, setLaborTotal] = useState(0);
-  const [discountTotal, setDiscountTotal] = useState(0);
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [orderSucceeded, setOrderSucceeded] = useState(false);
 
@@ -161,7 +163,7 @@ function Cart() {
 
       if (promoCode) {
         const discount = (subtotal * promoCode.discount).toFixed(2);
-        setDiscountTotal(discount);
+        dispatch(setDiscountTotal(discount));
         dispatch(setCartTotal((subtotal - discount).toFixed(2)));
       } else {
         dispatch(setCartTotal(subtotal.toFixed(2)));

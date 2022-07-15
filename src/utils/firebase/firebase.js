@@ -352,17 +352,20 @@ export async function addUserRating(rating, userId, productId) {
 // Adds an order to the user's orders
 export async function addOrder(
   userId,
-  cartProductId,
+  cartProducts,
   discountTotal = 0,
   stripeOrderId,
   total
 ) {
-  if (!userId || !cartProductId || !stripeOrderId || !total) return;
+  if (!userId || !cartProducts || !stripeOrderId || !total) return;
+
+  const ordered = getFirebaseTimestampFromDate(new Date());
 
   const ordersRef = collection(firestore, 'users', userId, 'orders');
   return await addDoc(ordersRef, {
-    cartProduct: cartProductId,
+    cartProducts,
     discountTotal,
+    ordered,
     stripeOrderId,
     total
   })

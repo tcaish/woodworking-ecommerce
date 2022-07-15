@@ -1,16 +1,18 @@
 export class Order {
   constructor(
-    cartProduct,
+    cartProducts,
     discountTotal,
     id,
+    ordered,
     refunded,
     refundStatus,
     stripeOrderId,
     total
   ) {
-    this.cartProduct = cartProduct;
+    this.cartProducts = cartProducts;
     this.discountTotal = discountTotal;
     this.id = id;
+    this.ordered = ordered;
     this.refunded = refunded;
     this.refundStatus = refundStatus;
     this.stripeOrderId = stripeOrderId;
@@ -23,9 +25,10 @@ export class Order {
 export const orderConverter = {
   toFirestore: (order) => {
     return {
-      cartProduct: order.cartProduct,
+      cartProducts: order.cartProducts,
       discountTotal: order.discountTotal,
       id: order.id,
+      ordered: order.ordered,
       refunded: order.refunded,
       refundStatus: order.refundStatus,
       stripeOrderId: order.stripeOrderId,
@@ -35,9 +38,10 @@ export const orderConverter = {
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     return new Order(
-      data.cartProduct,
+      data.cartProducts,
       data.discountTotal,
       data.id,
+      data.ordered,
       data.refunded,
       data.refundStatus,
       data.stripeOrderId,

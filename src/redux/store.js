@@ -8,6 +8,7 @@ import inventoryReducer from './slices/inventorySlice';
 import cartReducer from './slices/cartSlice';
 import ratingsReducer from './slices/ratingSlice';
 import routingSlice from './slices/routingSlice';
+import ordersSlice from './slices/ordersSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,7 +17,8 @@ export const store = configureStore({
     inventory: inventoryReducer,
     cart: cartReducer,
     ratings: ratingsReducer,
-    routing: routingSlice
+    routing: routingSlice,
+    orders: ordersSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false })

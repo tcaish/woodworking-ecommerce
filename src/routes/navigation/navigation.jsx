@@ -154,6 +154,12 @@ function Navigation() {
                 </Link>
 
                 {user && (
+                  <Link className="dropdown-item" to={NAVIGATION_PATHS.orders}>
+                    Orders
+                  </Link>
+                )}
+
+                {user && (
                   <Link
                     className="dropdown-item"
                     to={NAVIGATION_PATHS.home}

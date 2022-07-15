@@ -5,6 +5,7 @@ const initialState = {
   cartQuantity: 0,
   promoCode: null,
   total: 0,
+  discountTotal: 0,
   orderDescription: '',
   orderMetaData: {}
 };
@@ -30,6 +31,9 @@ export const cartSlice = createSlice({
     setCartTotal: (state, action) => {
       state.total = action.payload;
     },
+    setDiscountTotal: (state, action) => {
+      state.discountTotal = action.payload;
+    },
     setOrderDescription: (state, action) => {
       state.orderDescription = action.payload;
     },
@@ -46,6 +50,7 @@ export const {
   updateCartProduct,
   setPromoCode,
   setCartTotal,
+  setDiscountTotal,
   setOrderDescription,
   setOrderMetaData
 } = cartSlice.actions;
@@ -55,6 +60,7 @@ export const selectCartProducts = (state) => state.cart.cartProducts;
 export const selectCartQuantity = (state) => state.cart.cartQuantity;
 export const selectPromoCode = (state) => state.cart.promoCode;
 export const selectCartTotal = (state) => state.cart.total;
+export const selectDiscountTotal = (state) => state.cart.discountTotal;
 export const selectOrderDescription = (state) => state.cart.orderDescription;
 export const selectOrderMetaData = (state) => state.cart.orderMetaData;
 

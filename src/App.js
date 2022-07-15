@@ -36,6 +36,7 @@ import {
 } from './routes/protected/protected';
 import Detail from './routes/shop/furniture/detail/detail';
 import Return from './routes/return/return';
+import Orders from './routes/orders/orders';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -93,6 +94,17 @@ function App() {
           />
         </Route>
         <Route path={NAVIGATION_PATHS.cart} element={<Cart />} />
+        <Route
+          path={NAVIGATION_PATHS.orders}
+          element={
+            <ProtectedUserRoute
+              user={user}
+              redirectPath={NAVIGATION_PATHS.sign_in}
+            >
+              <Orders />
+            </ProtectedUserRoute>
+          }
+        />
         <Route
           path={NAVIGATION_PATHS.profile}
           element={

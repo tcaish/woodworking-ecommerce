@@ -9,7 +9,8 @@ export const NAVIGATION_PATHS = {
   sign_in: 'sign-in',
   sign_up: 'sign-up',
   support: 'support',
-  return: 'return'
+  return: 'return',
+  orders: 'orders'
 };
 
 export const SOCIAL_TYPES = {

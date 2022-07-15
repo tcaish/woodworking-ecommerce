@@ -23,7 +23,11 @@ import {
 } from '@chakra-ui/react';
 
 // Firebase
-import { addUserToPromoCode, updateUser } from '../../utils/firebase/firebase';
+import {
+  addOrder,
+  addUserToPromoCode,
+  updateUser
+} from '../../utils/firebase/firebase';
 
 // Stripe
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -38,7 +42,9 @@ import {
   selectUser
 } from '../../redux/slices/userSlice';
 import {
+  selectCartProducts,
   selectCartTotal,
+  selectDiscountTotal,
   selectOrderDescription,
   selectOrderMetaData,
   selectPromoCode,
@@ -62,9 +68,11 @@ function Checkout(props) {
   const elements = useElements();
 
   const user = useSelector(selectUser);
+  const cartProducts = useSelector(selectCartProducts);
   const userDisplayName = useSelector(selectDisplayName);
   const userPhoneNumber = useSelector(selectPhoneNumber);
   const total = useSelector(selectCartTotal);
+  const discountTotal = useSelector(selectDiscountTotal);
   const promoCode = useSelector(selectPromoCode);
   const orderDescription = useSelector(selectOrderDescription);
   const orderMetaData = useSelector(selectOrderMetaData);
@@ -176,6 +184,16 @@ function Checkout(props) {
 
   // Handles what happens when the payment was successful
   async function handlePaymentSuccess(paymentIntent) {
+    if (user) {
+      await addOrder(
+        user.uid,
+        cartProducts.map((c) => c.id),
+        discountTotal,
+        paymentIntent.id,
+        total
+      );
+    }
+
     if (user && promoCode) {
       await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
         dispatch(setPromoCode(null));
