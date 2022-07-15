@@ -40,7 +40,8 @@ import {
   selectDisplayName,
   selectPhoneNumber,
   selectStripeCustomerId,
-  selectUser
+  selectUser,
+  setStripeCustomerId
 } from '../../redux/slices/userSlice';
 import {
   selectCartProducts,
@@ -234,6 +235,8 @@ function Checkout(props) {
       const customer = await response.json();
       console.log(customer);
       customerId = customer.id;
+
+      dispatch(setStripeCustomerId(customerId));
     }
 
     try {
