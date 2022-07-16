@@ -363,8 +363,6 @@ export async function addOrder(
 
   const ordersRef = collection(firestore, 'users', userId, 'orders');
 
-  console.log(cartProducts, discountTotal, ordered, stripeOrderId, total);
-
   try {
     const doc = await addDoc(ordersRef, {
       cartProducts,

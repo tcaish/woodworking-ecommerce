@@ -187,6 +187,7 @@ function Checkout(props) {
 
   // Handles what happens when the payment was successful
   async function handlePaymentSuccess(paymentIntent) {
+    console.log(cartProducts);
     if (user) {
       const orderId = await addOrder(
         user.uid,
