@@ -1,10 +1,11 @@
 export class CartProduct {
-  constructor(color, id, notes, product, promoCode, quantity) {
+  constructor(color, id, notes, product, promoCode, purchased, quantity) {
     this.color = color;
     this.id = id;
     this.notes = notes;
     this.product = product;
     this.promoCode = promoCode;
+    this.purchased = purchased;
     this.quantity = quantity;
   }
 }
@@ -19,6 +20,7 @@ export const cartProductConverter = {
       notes: cartProduct.notes,
       product: cartProduct.product,
       promoCode: cartProduct.promoCode,
+      purchased: cartProduct.purchased,
       quantity: cartProduct.quantity
     };
   },
@@ -30,6 +32,7 @@ export const cartProductConverter = {
       data.notes,
       data.product,
       data.promoCode,
+      data.purchased,
       data.quantity
     );
   }

@@ -166,7 +166,8 @@ export async function getCartProducts(userId) {
   const cartRef = collection(firestore, 'users', userId, 'cart').withConverter(
     cartProductConverter
   );
-  const cartSnapshot = await getDocs(cartRef);
+  const q = query(cartRef, where('purchased', '==', false));
+  const cartSnapshot = await getDocs(q);
   cartSnapshot.forEach((doc) => {
     const data = doc.data();
     data.id = doc.id;
@@ -272,7 +273,8 @@ export async function addProductToCart(
     color,
     notes,
     product,
-    quantity
+    quantity,
+    purchased: false
   })
     .then((res) => {
       return { added: true, error: '' };
@@ -371,7 +373,6 @@ export async function addOrder(
       stripeOrderId,
       total
     });
-    console.log('doc id:', doc.id);
     return doc.id;
   } catch (err) {
     console.log(err);
@@ -442,6 +443,23 @@ export async function updateCartItem(userId, cartProductId, options) {
 
   const cartProductRef = doc(firestore, 'users', userId, 'cart', cartProductId);
   return await updateDoc(cartProductRef, options);
+}
+
+// Removes all items from the user's cart
+export async function updateAllCartItemsToPurchased(userId) {
+  if (!userId) return;
+
+  const batch = writeBatch(firestore);
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const q = query(cartRef, where('purchased', '==', false));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((document) => {
+    const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
+    batch.update(cartProductRef, { purchased: true });
+  });
+
+  return await batch.commit();
 }
 
 // Updates an order for a user with the given options

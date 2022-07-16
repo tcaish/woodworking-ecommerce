@@ -187,7 +187,6 @@ function Checkout(props) {
 
   // Handles what happens when the payment was successful
   async function handlePaymentSuccess(paymentIntent) {
-    console.log(cartProducts);
     if (user) {
       const orderId = await addOrder(
         user.uid,
@@ -196,7 +195,6 @@ function Checkout(props) {
         paymentIntent.id,
         Number(total)
       );
-      console.log('orderId:', orderId);
 
       if (promoCode) {
         await addUserToPromoCode(user.uid, promoCode.id).then((res) => {

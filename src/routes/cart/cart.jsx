@@ -42,9 +42,10 @@ import {
   firestore,
   getProducts,
   getPromoCodeById,
-  removeAllCartItems
+  removeAllCartItems,
+  updateAllCartItemsToPurchased
 } from '../../utils/firebase/firebase';
-import { collection, onSnapshot, query } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 
 // Components
 import CartItem from '../../components/cart-item/cart-item';
@@ -94,7 +95,8 @@ function Cart() {
       const q = query(
         collection(firestore, 'users', user.uid, 'cart').withConverter(
           cartProductConverter
-        )
+        ),
+        where('purchased', '==', false)
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let cartProds = [];
@@ -103,7 +105,7 @@ function Cart() {
           data.id = doc.id;
           cartProds.push(data);
         });
-        console.log(cartProds);
+
         setCartProductsLoading(false);
         dispatch(setCartProducts(cartProds));
 
@@ -129,7 +131,7 @@ function Cart() {
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   // Fetches and stores the products if not already done
   useEffect(() => {
@@ -230,7 +232,7 @@ function Cart() {
 
     if (orderSucceeded) {
       setOrderSucceeded(false);
-      await removeAllCartItems(user.uid);
+      await updateAllCartItemsToPurchased(user.uid);
     }
   }
 
