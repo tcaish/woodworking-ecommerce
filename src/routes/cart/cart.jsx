@@ -85,47 +85,46 @@ function Cart() {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [orderSucceeded, setOrderSucceeded] = useState(false);
 
-  // Listen to real-time updates on the user's cart table
-  const unsubscribe = () => {
-    if (user) {
-      cartQuantity === 0 && setCartProductsLoading(true);
-
-      const q = query(
-        collection(firestore, 'users', user.uid, 'cart').withConverter(
-          cartProductConverter
-        )
-      );
-      return onSnapshot(q, (querySnapshot) => {
-        let cartProds = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          cartProds.push(data);
-        });
-
-        setCartProductsLoading(false);
-        dispatch(setCartProducts(cartProds));
-
-        // If there are cart products and the first one has a promo code
-        if (cartProds.length > 0 && cartProds[0].promoCode) {
-          getPromoCodeById(cartProds[0].promoCode).then((res) => {
-            // If there is no error
-            if (!res.error) {
-              dispatch(setPromoCode(res));
-
-              // Remove promo code when it expires
-              setTimeout(() => {
-                dispatch(setPromoCode(null));
-              }, res.ends.toDate().getTime() - Date.now());
-            }
-          });
-        }
-      });
-    }
-  };
-
   // Remove the listener for ratings
   useEffect(() => {
+    // Listen to real-time updates on the user's cart table
+    const unsubscribe = () => {
+      if (user) {
+        cartQuantity === 0 && setCartProductsLoading(true);
+
+        const q = query(
+          collection(firestore, 'users', user.uid, 'cart').withConverter(
+            cartProductConverter
+          )
+        );
+        return onSnapshot(q, (querySnapshot) => {
+          let cartProds = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            data.id = doc.id;
+            cartProds.push(data);
+          });
+
+          setCartProductsLoading(false);
+          dispatch(setCartProducts(cartProds));
+
+          // If there are cart products and the first one has a promo code
+          if (cartProds.length > 0 && cartProds[0].promoCode) {
+            getPromoCodeById(cartProds[0].promoCode).then((res) => {
+              // If there is no error
+              if (!res.error) {
+                dispatch(setPromoCode(res));
+
+                // Remove promo code when it expires
+                setTimeout(() => {
+                  dispatch(setPromoCode(null));
+                }, res.ends.toDate().getTime() - Date.now());
+              }
+            });
+          }
+        });
+      }
+    };
     // This is what gets ran when the user leaves this page
     return () => {
       unsubscribe();

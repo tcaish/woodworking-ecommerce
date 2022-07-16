@@ -33,25 +33,24 @@ function Shop() {
 
   const [pageLoading, setPageLoading] = useState(false);
 
-  // Listen to real-time updates on ratings table
-  const unsubscribe = () => {
-    const q = query(
-      collection(firestore, 'ratings').withConverter(ratingConverter)
-    );
-    return onSnapshot(q, (querySnapshot) => {
-      let ratings = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        ratings.push(data);
-      });
-
-      dispatch(setRatings(ratings));
-    });
-  };
-
   // Remove the listener for ratings
   useEffect(() => {
+    // Listen to real-time updates on ratings table
+    const unsubscribe = () => {
+      const q = query(
+        collection(firestore, 'ratings').withConverter(ratingConverter)
+      );
+      return onSnapshot(q, (querySnapshot) => {
+        let ratings = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          ratings.push(data);
+        });
+
+        dispatch(setRatings(ratings));
+      });
+    };
     // This is what gets ran when the user leaves this page
     return () => {
       // If current path is '/shop' or contains '/shop/product-details'

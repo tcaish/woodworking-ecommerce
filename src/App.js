@@ -69,12 +69,11 @@ function App() {
           }
         });
 
+        dispatch(setUser(user));
         sessionStorage.setItem('Auth Token', user.refreshToken);
       } else {
         sessionStorage.removeItem('Auth Token');
       }
-
-      dispatch(setUser(user));
     });
   }, [dispatch]);
 
