@@ -194,7 +194,7 @@ function Checkout(props) {
         Number(discountTotal),
         paymentIntent.id,
         Number(total)
-      ).then((res) => res);
+      );
       console.log('orderId:', orderId);
 
       if (promoCode) {

@@ -371,8 +371,10 @@ export async function addOrder(
       stripeOrderId,
       total
     });
+    console.log('doc id:', doc.id);
     return doc.id;
   } catch (err) {
+    console.log(err);
     return null;
   }
 }
