@@ -194,7 +194,8 @@ function Checkout(props) {
         Number(discountTotal),
         paymentIntent.id,
         Number(total)
-      );
+      ).then((res) => res);
+      console.log('orderId:', orderId);
 
       if (promoCode) {
         await addUserToPromoCode(user.uid, promoCode.id).then((res) => {
@@ -220,7 +221,6 @@ function Checkout(props) {
 
     let customerId = stripeCustomerId;
     if (!customerId) {
-      console.log('creating customer');
       const response = await fetch('/.netlify/functions/create-customer', {
         method: 'post',
         headers: {
@@ -232,11 +232,13 @@ function Checkout(props) {
           phone
         })
       });
-      const customer = await response.json();
-      console.log(customer);
+
+      const { customer } = await response.json();
       customerId = customer.id;
 
-      dispatch(setStripeCustomerId(customerId));
+      await updateUser(user.uid, { stripeCustomerId: customerId }).then((res) =>
+        dispatch(setStripeCustomerId(customerId))
+      );
     }
 
     try {
