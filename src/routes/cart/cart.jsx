@@ -42,7 +42,6 @@ import {
   firestore,
   getProducts,
   getPromoCodeById,
-  removeAllCartItems,
   updateAllCartItemsToPurchased
 } from '../../utils/firebase/firebase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
