@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 // React Router
 import { useParams } from 'react-router-dom';
 
+// React Icons
+import { FaQuestionCircle } from 'react-icons/fa';
+
 // Bootstrap
 import { Col, Row } from 'react-bootstrap';
 
@@ -36,6 +39,7 @@ import BackButton from '../../../../components/back-button/back-button';
 import DetailImages from '../../../../components/detail/detail-images/detail-images';
 import DetailInfo from '../../../../components/detail/detail-info/detail-info';
 import NotSignedInModal from '../../../../components/modals/not-signed-in-modal/not-signed-in-modal';
+import PageEmpty from '../../../../components/page-empty/page-empty';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../../../exports/constants';
@@ -213,7 +217,15 @@ function Detail() {
             </div>
           </Col>
         </Row>
-        {selectedProduct && (
+        {!selectedProduct ? (
+          <PageEmpty
+            icon={FaQuestionCircle}
+            title="We cannot find that product!"
+            text="Maybe you can find what you need with the search bar."
+            linkPath={`/${NAVIGATION_PATHS.shop}`}
+            linkText="Let's search."
+          />
+        ) : (
           <>
             <Row sm={1} md={1} lg={1} xl={2}>
               <Col className="detail-images-container">

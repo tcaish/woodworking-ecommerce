@@ -2,7 +2,20 @@
 import { Card, Col, Container, Placeholder, Row } from 'react-bootstrap';
 
 // Chakra
-import { Avatar, Center, Divider, Grid, GridItem } from '@chakra-ui/react';
+import {
+  Avatar,
+  Center,
+  Divider,
+  Grid,
+  GridItem,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr
+} from '@chakra-ui/react';
 
 // Images
 import placeholder_img from '../../assets/images/placeholder_img.gif';
@@ -467,5 +480,46 @@ export function PlaceholderCartTotals() {
         xs={12}
       />
     </div>
+  );
+}
+
+export function PlaceholderOrders() {
+  return (
+    <TableContainer className="orders-table-container">
+      <Table variant="striped" colorScheme="gray">
+        <Thead>
+          <Tr>
+            <Th>Order ID</Th>
+            <Th>Product(s)</Th>
+            <Th>Total</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={8} size="sm" />
+              </Placeholder>
+            </Td>
+            <Td>
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={10} size="sm" />
+              </Placeholder>
+            </Td>
+            <Td>
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={4} size="sm" />
+              </Placeholder>
+            </Td>
+            <Td>
+              <Placeholder as="p" animation="wave">
+                <Placeholder xs={8} size="sm" />
+              </Placeholder>
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
+    </TableContainer>
   );
 }

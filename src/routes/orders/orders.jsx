@@ -47,6 +47,7 @@ import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './orders.scss';
+import { PlaceholderOrders } from '../../components/placeholder/placeholder';
 
 function Orders() {
   const dispatch = useDispatch();
@@ -55,24 +56,41 @@ function Orders() {
   const orders = useSelector(selectOrders);
   const products = useSelector(selectProducts);
 
-  const [cartProducts, setCardProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProductsLoading, setCartProductsLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [ordersLoading, setOrdersLoading] = useState(false);
 
   // Fetch purchased card products
   useEffect(() => {
-    if (user)
-      getCartProducts(user.uid, true).then((res) => setCardProducts(res));
+    if (user) {
+      setCartProductsLoading(true);
+
+      getCartProducts(user.uid, true).then((res) => {
+        setCartProducts(res);
+        setCartProductsLoading(false);
+      });
+    }
   }, [user]);
 
   // Fetch products if there aren't any yet
   useEffect(() => {
-    if (products.length === 0)
-      getProducts().then((res) => dispatch(setProducts(res)));
+    if (products.length === 0) {
+      setProductsLoading(true);
+
+      getProducts().then((res) => {
+        dispatch(setProducts(res));
+        setProductsLoading(false);
+      });
+    }
   }, [dispatch, products.length]);
 
   // Remove the listener for orders
   useEffect(() => {
     // Listen to real-time updates on orders table
     if (user) {
+      if (orders.length === 0) setOrdersLoading(true);
+
       const q = query(
         collection(firestore, 'users', user.uid, 'orders').withConverter(
           orderConverter
@@ -87,6 +105,7 @@ function Orders() {
         });
 
         dispatch(setOrders(orders));
+        setOrdersLoading(false);
       });
 
       // This is what gets ran when the user leaves this page
@@ -114,9 +133,54 @@ function Orders() {
     return titles.join(', ');
   }
 
+  // Renders the page with placeholders or orders table
+  function renderOrdersPage() {
+    return cartProductsLoading || productsLoading || ordersLoading ? (
+      <PlaceholderOrders />
+    ) : (
+      <>
+        <Heading className="orders-heading">Your Orders</Heading>
+
+        <TableContainer className="orders-table-container">
+          <Table variant="striped" colorScheme="gray">
+            <Thead>
+              <Tr>
+                <Th>Order ID</Th>
+                <Th>Product(s)</Th>
+                <Th>Total</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {orders.length > 0 &&
+                cartProducts.length > 0 &&
+                products.length > 0 &&
+                orders.map((order, index) => (
+                  <Tr key={index}>
+                    <Td>{order.id}</Td>
+                    <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
+                    <Td>{`$${order.total.toFixed(2)}`}</Td>
+                    <Td>
+                      <a href="#">Invoice</a> &bull;{' '}
+                      <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
+                        Request Refund
+                      </Link>
+                    </Td>
+                  </Tr>
+                ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </>
+    );
+  }
+
   return (
     <div className="main-container">
-      {orders.length === 0 ? (
+      {orders.length === 0 &&
+      !cartProductsLoading &&
+      !productsLoading &&
+      !ordersLoading ? (
         <PageEmpty
           icon={IoReceipt}
           title="You have no orders yet!"
@@ -125,40 +189,7 @@ function Orders() {
           linkText="Browse our furniture."
         />
       ) : (
-        <>
-          <Heading className="orders-heading">Your Orders</Heading>
-
-          <TableContainer className="orders-table-container">
-            <Table variant="striped" colorScheme="gray">
-              <Thead>
-                <Tr>
-                  <Th>Order ID</Th>
-                  <Th>Product(s)</Th>
-                  <Th>Total</Th>
-                  <Th>Actions</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {orders.length > 0 &&
-                  cartProducts.length > 0 &&
-                  products.length > 0 &&
-                  orders.map((order, index) => (
-                    <Tr key={index}>
-                      <Td>{order.id}</Td>
-                      <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
-                      <Td>{`$${order.total.toFixed(2)}`}</Td>
-                      <Td>
-                        <a href="#">Invoice</a> &bull;{' '}
-                        <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
-                          Request Refund
-                        </Link>
-                      </Td>
-                    </Tr>
-                  ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </>
+        renderOrdersPage()
       )}
     </div>
   );
