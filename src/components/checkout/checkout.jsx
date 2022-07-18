@@ -278,24 +278,26 @@ function Checkout(props) {
     }
 
     try {
-      const paymentIntent = await createPaymentIntent(customerId).then(
+      const { paymentIntent } = await createPaymentIntent(customerId).then(
         (res) => res
       );
 
-      const client_secret = `${paymentIntent.client_secret}`;
-      console.log(paymentIntent);
-      console.log(client_secret);
-      const paymentResult = await stripe.confirmCardPayment(client_secret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-          billing_details: {
-            name,
-            email: props.email,
-            phone
-          }
-        },
-        receipt_email: props.email
-      });
+      // const client_secret = `${paymentIntent.client_secret}`;
+      console.log(paymentIntent.client_secret);
+      const paymentResult = await stripe.confirmCardPayment(
+        paymentIntent.client_secret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+            billing_details: {
+              name,
+              email: props.email,
+              phone
+            }
+          },
+          receipt_email: props.email
+        }
+      );
 
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
