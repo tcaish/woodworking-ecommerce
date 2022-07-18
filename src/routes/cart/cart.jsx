@@ -247,7 +247,7 @@ function Cart() {
 
   return (
     <Container className="main-container cart-container">
-      {cartProducts.length === 0 ? (
+      {!cartProductsLoading && !productsLoading && cartProducts.length === 0 ? (
         <PageEmpty
           icon={TiShoppingCart}
           title="Your shopping cart is empty!"

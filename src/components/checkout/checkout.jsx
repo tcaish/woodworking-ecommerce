@@ -255,7 +255,7 @@ function Checkout(props) {
         }
       );
 
-      return await response.json();
+      return await response.json().then((res) => res);
     } catch (err) {
       return null;
     }
