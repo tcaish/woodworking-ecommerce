@@ -67,8 +67,8 @@ function Orders() {
   const [ordersLoading, setOrdersLoading] = useState(false);
 
   useEffect(() => {
-    getChargesForCustomer();
-  }, []);
+    stripeCustomerId && getChargesForCustomer();
+  }, [stripeCustomerId]);
 
   // Fetch purchased card products
   useEffect(() => {
