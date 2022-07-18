@@ -131,7 +131,10 @@ function App() {
         />
         <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
         <Route path={NAVIGATION_PATHS.support} element={<Support />} />
-        <Route path={NAVIGATION_PATHS.return} element={<Return />} />
+        <Route
+          path={`${NAVIGATION_PATHS.return}/:orderId`}
+          element={<Return />}
+        />
       </Route>
     </Routes>
   );

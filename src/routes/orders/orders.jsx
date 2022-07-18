@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// React Router
+import { Link } from 'react-router-dom';
+
 // Chakra
 import {
   Heading,
@@ -34,6 +37,7 @@ import { orderConverter } from '../../classes/Order';
 
 // Exports
 import { getProduct } from '../../exports/functions';
+import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './orders.scss';
@@ -55,10 +59,8 @@ function Orders() {
 
   // Fetch products if there aren't any yet
   useEffect(() => {
-    if (products.length === 0) {
-      console.log('here');
+    if (products.length === 0)
       getProducts().then((res) => dispatch(setProducts(res)));
-    }
   }, [dispatch, products.length]);
 
   // Remove the listener for orders
@@ -131,7 +133,9 @@ function Orders() {
                   <Td>{`$${order.total.toFixed(2)}`}</Td>
                   <Td>
                     <a href="#">Invoice</a> &bull;{' '}
-                    <a href="#">Request Refund</a>
+                    <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
+                      Request Refund
+                    </Link>
                   </Td>
                 </Tr>
               ))}
