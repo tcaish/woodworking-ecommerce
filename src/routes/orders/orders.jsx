@@ -62,7 +62,7 @@ function Orders() {
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   return (
     <div className="main-container">
