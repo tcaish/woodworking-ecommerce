@@ -145,6 +145,7 @@ function Orders() {
           <Table variant="striped" colorScheme="gray">
             <Thead>
               <Tr>
+                <Th>Purchased</Th>
                 <Th>Order ID</Th>
                 <Th>Product(s)</Th>
                 <Th>Total</Th>
@@ -157,6 +158,7 @@ function Orders() {
                 products.length > 0 &&
                 orders.map((order, index) => (
                   <Tr key={index}>
+                    <Td>{order.getOrderedDate()}</Td>
                     <Td>{order.id}</Td>
                     <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
                     <Td>{`$${order.total.toFixed(2)}`}</Td>

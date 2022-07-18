@@ -18,6 +18,19 @@ export class Order {
     this.stripeOrderId = stripeOrderId;
     this.total = total;
   }
+
+  // Formats the ordered date to something human readable
+  getOrderedDate() {
+    const date = this.ordered.toDate();
+    const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(
+      date
+    );
+    const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(
+      date
+    );
+    const day = new Intl.DateTimeFormat('en', { day: 'numeric' }).format(date);
+    return `${month} ${day}, ${year}`;
+  }
 }
 
 // Converts an order collection in the Firestore database to

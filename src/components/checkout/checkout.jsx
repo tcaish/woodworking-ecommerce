@@ -282,8 +282,6 @@ function Checkout(props) {
         (res) => res
       );
 
-      // const client_secret = `${paymentIntent.client_secret}`;
-      console.log(paymentIntent.client_secret);
       const paymentResult = await stripe.confirmCardPayment(
         paymentIntent.client_secret,
         {
@@ -302,7 +300,6 @@ function Checkout(props) {
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
-      console.log('here 2: ', err);
       handlePaymentResult({ error: 'failed' });
       setPlacingOrder(false);
     }
