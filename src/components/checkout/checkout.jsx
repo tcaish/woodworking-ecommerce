@@ -255,9 +255,7 @@ function Checkout(props) {
         }
       );
 
-      const content = await response.json();
-      console.log(content);
-      return content;
+      return await response.json();
     } catch (err) {
       return null;
     }
@@ -280,7 +278,7 @@ function Checkout(props) {
     }
 
     try {
-      const paymentIntent = createPaymentIntent(customerId);
+      const paymentIntent = createPaymentIntent(customerId).then((res) => res);
       console.log(paymentIntent);
       const client_secret = `${paymentIntent.client_secret}`;
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
