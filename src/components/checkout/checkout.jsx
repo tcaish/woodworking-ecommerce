@@ -153,6 +153,8 @@ function Checkout(props) {
     let description = '';
     let status = 'error';
 
+    console.log('here 1: ', paymentResult.error);
+
     if (paymentResult.error) {
       if (paymentResult.error.type === 'card_error') {
         title = 'Card Error';
@@ -281,7 +283,7 @@ function Checkout(props) {
       const paymentIntent = await createPaymentIntent(customerId).then(
         (res) => res
       );
-      console.log(paymentIntent);
+
       const client_secret = `${paymentIntent.client_secret}`;
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
@@ -298,6 +300,7 @@ function Checkout(props) {
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
+      console.log('here 2: ', err);
       handlePaymentResult({ error: 'failed' });
       setPlacingOrder(false);
     }
