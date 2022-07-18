@@ -153,8 +153,6 @@ function Checkout(props) {
     let description = '';
     let status = 'error';
 
-    console.log('here 1: ', paymentResult.error);
-
     if (paymentResult.error) {
       if (paymentResult.error.type === 'card_error') {
         title = 'Card Error';
@@ -285,6 +283,8 @@ function Checkout(props) {
       );
 
       const client_secret = `${paymentIntent.client_secret}`;
+      console.log(paymentIntent);
+      console.log(client_secret);
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
           card: elements.getElement(CardElement),
