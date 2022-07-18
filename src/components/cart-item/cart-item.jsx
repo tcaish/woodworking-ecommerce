@@ -74,7 +74,7 @@ function CartItem(props) {
           description: `${props.cartProduct.quantity} ${
             props.cartProduct.quantity === 1 ? 'order' : 'orders'
           } of ${
-            getProduct(props.cartProduct.product).title
+            getProduct(products, props.cartProduct.product).title
           } were removed from your cart.`,
           status: 'success',
           duration: 7000,
@@ -82,6 +82,7 @@ function CartItem(props) {
         });
       })
       .catch((err) => {
+        console.log(err);
         setRemovingItem(false);
 
         toast({
