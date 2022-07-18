@@ -32,7 +32,10 @@ import {
 
 // Slices
 import { selectOrders, setOrders } from '../../redux/slices/ordersSlice';
-import { selectUser } from '../../redux/slices/userSlice';
+import {
+  selectStripeCustomerId,
+  selectUser
+} from '../../redux/slices/userSlice';
 import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 
 // Classes
@@ -53,13 +56,19 @@ function Orders() {
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
+  const stripeCustomerId = useSelector(selectStripeCustomerId);
   const orders = useSelector(selectOrders);
   const products = useSelector(selectProducts);
 
+  const [charges, setCharges] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [ordersLoading, setOrdersLoading] = useState(false);
+
+  useEffect(() => {
+    getChargesForCustomer();
+  }, []);
 
   // Fetch purchased card products
   useEffect(() => {
@@ -115,6 +124,30 @@ function Orders() {
     }
     // eslint-disable-next-line
   }, [user]);
+
+  // Return all charges for the given customer
+  async function getChargesForCustomer() {
+    try {
+      const response = await fetch(
+        '/.netlify/functions/list-charges-for-customer',
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            customer: stripeCustomerId
+          })
+        }
+      );
+
+      const { data } = await response.json();
+      setCharges(data);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   // Returns the cart product given an ID
   function getCartProduct(cartProductId) {
