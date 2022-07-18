@@ -112,8 +112,9 @@ function Detail() {
   // Returns whether or not a product is already in the user's cart
   function isItemAlreadyInCart() {
     return (
-      cartProducts.filter((item) => item.product === selectedProduct.id)
-        .length === 1
+      cartProducts.filter(
+        (item) => item.product === selectedProduct.id && !item.purchased
+      ).length === 1
     );
   }
 
@@ -178,6 +179,7 @@ function Detail() {
         isClosable: true
       });
     }
+
     return false;
   }
 

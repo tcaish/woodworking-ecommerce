@@ -263,7 +263,11 @@ export async function addProductToCart(
 
   const cartRef = collection(firestore, 'users', userId, 'cart');
 
-  const q = query(cartRef, where('product', '==', product));
+  const q = query(
+    cartRef,
+    where('product', '==', product),
+    where('purchased', '==', false)
+  );
   const querySnapshot = await getDocs(q);
 
   // If the cart item already exists

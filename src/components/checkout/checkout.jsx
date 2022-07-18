@@ -207,19 +207,9 @@ function Checkout(props) {
     }
   }
 
-  // Handles submitting the payment
-  async function submitPayment() {
-    if (!isFormValid()) return;
-
-    // Everything is valid so reset all invalid states to defaults
-    resetInvalidStatesToDefaults();
-
-    setPlacingOrder(true);
-
-    await updateUser(user.uid, { phoneNumber: phone });
-
-    let customerId = stripeCustomerId;
-    if (!customerId) {
+  // Creates a new Stripe customer
+  async function createCustomer() {
+    try {
       const response = await fetch('/.netlify/functions/create-customer', {
         method: 'post',
         headers: {
@@ -233,13 +223,20 @@ function Checkout(props) {
       });
 
       const { customer } = await response.json();
-      customerId = customer.id;
+      const customerId = customer.id;
 
       await updateUser(user.uid, { stripeCustomerId: customerId }).then((res) =>
         dispatch(setStripeCustomerId(customerId))
       );
-    }
 
+      return customerId;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Create the payment intent with purchase details
+  async function createPaymentIntent(customerId) {
     try {
       const totalWithoutDecimal = `${total}`.replace('.', '');
       const response = await fetch(
@@ -257,9 +254,33 @@ function Checkout(props) {
           })
         }
       );
-      const content = await response.json();
 
-      const client_secret = `${content.paymentIntent.client_secret}`;
+      const content = await response.json();
+      return content;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Handles submitting the payment
+  async function submitPayment() {
+    if (!isFormValid()) return;
+
+    // Everything is valid so reset all invalid states to defaults
+    resetInvalidStatesToDefaults();
+
+    setPlacingOrder(true);
+
+    await updateUser(user.uid, { phoneNumber: phone });
+
+    let customerId = stripeCustomerId;
+    if (!customerId) {
+      customerId = await createCustomer(customerId).then((res) => res);
+    }
+
+    try {
+      const paymentIntent = createPaymentIntent(customerId);
+      const client_secret = `${paymentIntent.client_secret}`;
       const paymentResult = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
           card: elements.getElement(CardElement),
