@@ -141,9 +141,9 @@ function Orders() {
         }
       );
 
-      const { data } = await response.json();
-      setCharges(data);
-      console.log(data);
+      const content = await response.json();
+      console.log(content);
+      // setCharges(data);
     } catch (err) {
       console.log(err);
     }
