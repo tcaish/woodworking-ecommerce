@@ -122,20 +122,27 @@ function App() {
           }
         />
         <Route
-          path={NAVIGATION_PATHS.sign_in}
+          path={`${NAVIGATION_PATHS.return}/:orderId`}
           element={
-            <ProtectedNoUserRoute>
-              <SignIn />
-            </ProtectedNoUserRoute>
+            <ProtectedUserRoute
+              user={user}
+              redirectPath={NAVIGATION_PATHS.sign_in}
+            >
+              <Return />
+            </ProtectedUserRoute>
           }
         />
-        <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
-        <Route path={NAVIGATION_PATHS.support} element={<Support />} />
-        <Route
-          path={`${NAVIGATION_PATHS.return}/:orderId`}
-          element={<Return />}
-        />
       </Route>
+      <Route
+        path={NAVIGATION_PATHS.sign_in}
+        element={
+          <ProtectedNoUserRoute>
+            <SignIn />
+          </ProtectedNoUserRoute>
+        }
+      />
+      <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
+      <Route path={NAVIGATION_PATHS.support} element={<Support />} />
     </Routes>
   );
 }
