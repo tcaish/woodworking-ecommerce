@@ -160,6 +160,7 @@ function Checkout(props) {
         paymentResult.error.decline_code &&
           (description += ` | ${paymentResult.error.decline_code}`);
       } else {
+        console.log(paymentResult.error);
         title = 'Payment Failed';
         description =
           'There was error processing your payment. Please try again or contact support.';
