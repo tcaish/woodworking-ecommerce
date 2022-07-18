@@ -15,10 +15,17 @@ import { removeCartItem } from '../../utils/firebase/firebase';
 
 // Slices
 import { selectUser } from '../../redux/slices/userSlice';
-import { selectCartQuantity, setPromoCode } from '../../redux/slices/cartSlice';
+import {
+  selectCartProducts,
+  selectCartQuantity,
+  setPromoCode
+} from '../../redux/slices/cartSlice';
 
 // Components
 import EditCartItemModal from '../modals/edit-cart-item-modal/edit-cart-item-modal';
+
+// Exports
+import { getProduct } from '../../exports/functions';
 
 // Styles
 import './cart-item.scss';
@@ -30,6 +37,7 @@ function CartItem(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const user = useSelector(selectUser);
+  const products = useSelector(selectCartProducts);
   const cartQuantity = useSelector(selectCartQuantity);
 
   const [product, setProduct] = useState(null);
@@ -38,9 +46,9 @@ function CartItem(props) {
 
   // Sets the product specified in the cart product object when available
   useEffect(() => {
-    props.getProduct(props.cartProduct.product) &&
+    getProduct(products, props.cartProduct.product) &&
       setProduct(props.getProduct(props.cartProduct.product));
-  }, [props]);
+  }, [props, products]);
 
   // Adds margin to the bottom of each cart item container if it's not
   // the last one in the list.

@@ -160,13 +160,13 @@ export async function getProducts() {
 }
 
 // Returns the items in the user's cart
-export async function getCartProducts(userId) {
+export async function getCartProducts(userId, purchased = false) {
   const cartProducts = [];
 
   const cartRef = collection(firestore, 'users', userId, 'cart').withConverter(
     cartProductConverter
   );
-  const q = query(cartRef, where('purchased', '==', false));
+  const q = query(cartRef, where('purchased', '==', purchased));
   const cartSnapshot = await getDocs(q);
   cartSnapshot.forEach((doc) => {
     const data = doc.data();

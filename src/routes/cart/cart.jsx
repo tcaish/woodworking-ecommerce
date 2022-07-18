@@ -58,6 +58,7 @@ import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
+import { getProduct } from '../../exports/functions';
 
 // Images
 import CustSatisfactionImg from '../../assets/images/cust_satisfaction_guaranteed.png';
@@ -148,13 +149,13 @@ function Cart() {
   useEffect(() => {
     if (cartProducts.length > 0) {
       const mTotal = cartProducts.reduce((prevValue, cartProd) => {
-        const product = getProduct(cartProd.product);
+        const product = getProduct(products, cartProd.product);
         return product
           ? prevValue + product.cost.materials * cartProd.quantity
           : 0;
       }, 0);
       const lTotal = cartProducts.reduce((prevValue, cartProd) => {
-        const product = getProduct(cartProd.product);
+        const product = getProduct(products, cartProd.product);
         return product ? prevValue + product.cost.labor * cartProd.quantity : 0;
       }, 0);
       const subtotal = mTotal + lTotal;
@@ -176,13 +177,20 @@ function Cart() {
   // Creates a description of all products being ordered for placing the order
   function createOrderDescriptionAndMetaData() {
     const description = cartProducts
-      .map((item) => `${getProduct(item.product).title} (${item.quantity})`)
+      .map(
+        (item) =>
+          `${getProduct(products, item.product).title} (${item.quantity})`
+      )
       .join(', ');
 
-    const titles = cartProducts.map((item) => getProduct(item.product).title);
+    const titles = cartProducts.map(
+      (item) => getProduct(products, item.product).title
+    );
     const costs = cartProducts.map(
       (item) =>
-        `$${(getProduct(item.product).totalCost() * item.quantity).toFixed(2)}`
+        `$${(
+          getProduct(products, item.product).totalCost() * item.quantity
+        ).toFixed(2)}`
     );
     const quantities = cartProducts.map((item) => item.quantity);
     const colors = cartProducts.map((item) => item.color);
@@ -235,11 +243,6 @@ function Cart() {
     }
   }
 
-  // Returns the product given a product ID
-  function getProduct(productId) {
-    return products.filter((product) => product.id === productId)[0];
-  }
-
   return (
     <Container className="main-container cart-container">
       {cartProducts.length === 0 ? (
@@ -261,7 +264,6 @@ function Cart() {
                       <CartItem
                         key={index}
                         index={index}
-                        getProduct={getProduct}
                         cartProduct={cartProduct}
                         cartProductsLength={cartProducts.length}
                       />

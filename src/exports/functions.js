@@ -39,6 +39,12 @@ export function handleSignInUpErrors(err) {
   return description;
 }
 
+// Returns the product given a product ID
+export function getProduct(products, productId) {
+  return products.filter((product) => product.id === productId)[0];
+}
+
+// Returns a firebase timestamp given a date
 export function getFirebaseTimestampFromDate(date) {
   return Timestamp.fromDate(date);
 }

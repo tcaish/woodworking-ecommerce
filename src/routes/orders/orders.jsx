@@ -1,5 +1,5 @@
 // React
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,14 +18,22 @@ import {
 
 // Firebase
 import { collection, onSnapshot, query } from 'firebase/firestore';
-import { firestore } from '../../utils/firebase/firebase';
+import {
+  firestore,
+  getCartProducts,
+  getProducts
+} from '../../utils/firebase/firebase';
 
 // Slices
 import { selectOrders, setOrders } from '../../redux/slices/ordersSlice';
 import { selectUser } from '../../redux/slices/userSlice';
+import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 
 // Classes
 import { orderConverter } from '../../classes/Order';
+
+// Exports
+import { getProduct } from '../../exports/functions';
 
 // Styles
 import './orders.scss';
@@ -35,6 +43,23 @@ function Orders() {
 
   const user = useSelector(selectUser);
   const orders = useSelector(selectOrders);
+  const products = useSelector(selectProducts);
+
+  const [cartProducts, setCardProducts] = useState([]);
+
+  // Fetch purchased card products
+  useEffect(() => {
+    if (user)
+      getCartProducts(user.uid, true).then((res) => setCardProducts(res));
+  }, [user]);
+
+  // Fetch products if there aren't any yet
+  useEffect(() => {
+    if (products.length === 0) {
+      console.log('here');
+      getProducts().then((res) => dispatch(setProducts(res)));
+    }
+  }, [dispatch, products.length]);
 
   // Remove the listener for orders
   useEffect(() => {
@@ -64,6 +89,23 @@ function Orders() {
     // eslint-disable-next-line
   }, [user]);
 
+  // Returns the cart product given an ID
+  function getCartProduct(cartProductId) {
+    return cartProducts.filter(
+      (cartProduct) => cartProduct.id === cartProductId
+    )[0];
+  }
+
+  // Returns all the titles for the products purchased joined by commas
+  function getProductTitlesForOrderAtIndex(index) {
+    const titles = orders[index].cartProducts.map((cartProductId) => {
+      const cartProduct = getCartProduct(cartProductId);
+      const product = getProduct(products, cartProduct.product);
+      return product.title;
+    });
+    return titles.join(', ');
+  }
+
   return (
     <div className="main-container">
       <Heading className="orders-heading">Your Orders</Heading>
@@ -80,10 +122,12 @@ function Orders() {
           </Thead>
           <Tbody>
             {orders.length > 0 &&
+              cartProducts.length > 0 &&
+              products.length > 0 &&
               orders.map((order, index) => (
                 <Tr key={index}>
                   <Td>{order.id}</Td>
-                  <Td>{order.cartProducts.join(', ')}</Td>
+                  <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
                   <Td>{`$${order.total.toFixed(2)}`}</Td>
                   <Td>
                     <a href="#">Invoice</a> &bull;{' '}

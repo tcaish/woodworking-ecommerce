@@ -82,18 +82,6 @@ function Detail() {
     );
   }, [selectedProduct]);
 
-  // Brings down the user's cart if it hasn't been loaded already
-  // useEffect(() => {
-  //   if (cartProducts.length === 0 && user) {
-  //     setCartProductsLoading(true);
-
-  //     getCartProducts(user.uid).then((res) => {
-  //       dispatch(setCartProducts(res));
-  //       setCartProductsLoading(false);
-  //     });
-  //   }
-  // }, [cartProducts.length, user, dispatch]);
-
   // Brings down the ratings if it hasn't been loaded already
   useEffect(() => {
     if (ratings.length === 0 && user && selectedProduct) {
