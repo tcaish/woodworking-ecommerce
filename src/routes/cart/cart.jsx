@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // React Icons
 import { IoMdLock } from 'react-icons/io';
+import { TiShoppingCart } from 'react-icons/ti';
 
 // Bootstrap
 import { Col, Container, Row } from 'react-bootstrap';
@@ -53,12 +54,13 @@ import {
   PlaceholderCartItem,
   PlaceholderCartTotals
 } from '../../components/placeholder/placeholder';
-import CartEmpty from '../../components/cart-empty/cart-empty';
+import PageEmpty from '../../components/page-empty/page-empty';
 import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal';
 
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
 import { getProduct } from '../../exports/functions';
+import { NAVIGATION_PATHS } from '../../exports/constants';
 
 // Images
 import CustSatisfactionImg from '../../assets/images/cust_satisfaction_guaranteed.png';
@@ -246,7 +248,13 @@ function Cart() {
   return (
     <Container className="main-container cart-container">
       {cartProducts.length === 0 ? (
-        <CartEmpty />
+        <PageEmpty
+          icon={TiShoppingCart}
+          title="Your shopping cart is empty!"
+          text="Fill your cart up with some goodies."
+          linkPath={`/${NAVIGATION_PATHS.shop}`}
+          linkText="Browse our furniture."
+        />
       ) : (
         <>
           <Center className="cart-heading">
