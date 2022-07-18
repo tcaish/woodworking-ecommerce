@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 // React Router
 import { Link } from 'react-router-dom';
 
+// React Icons
+import { IoReceipt } from 'react-icons/io5';
+
 // Chakra
 import {
   Heading,
@@ -34,6 +37,9 @@ import { selectProducts, setProducts } from '../../redux/slices/inventorySlice';
 
 // Classes
 import { orderConverter } from '../../classes/Order';
+
+// Components
+import PageEmpty from '../../components/page-empty/page-empty';
 
 // Exports
 import { getProduct } from '../../exports/functions';
@@ -110,38 +116,50 @@ function Orders() {
 
   return (
     <div className="main-container">
-      <Heading className="orders-heading">Your Orders</Heading>
+      {orders.length === 0 ? (
+        <PageEmpty
+          icon={IoReceipt}
+          title="You have no orders yet!"
+          text="Let's go change that!"
+          linkPath={`/${NAVIGATION_PATHS.shop}`}
+          linkText="Browse our furniture."
+        />
+      ) : (
+        <>
+          <Heading className="orders-heading">Your Orders</Heading>
 
-      <TableContainer className="orders-table-container">
-        <Table variant="striped" colorScheme="gray">
-          <Thead>
-            <Tr>
-              <Th>Order ID</Th>
-              <Th>Product(s)</Th>
-              <Th>Total</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {orders.length > 0 &&
-              cartProducts.length > 0 &&
-              products.length > 0 &&
-              orders.map((order, index) => (
-                <Tr key={index}>
-                  <Td>{order.id}</Td>
-                  <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
-                  <Td>{`$${order.total.toFixed(2)}`}</Td>
-                  <Td>
-                    <a href="#">Invoice</a> &bull;{' '}
-                    <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
-                      Request Refund
-                    </Link>
-                  </Td>
+          <TableContainer className="orders-table-container">
+            <Table variant="striped" colorScheme="gray">
+              <Thead>
+                <Tr>
+                  <Th>Order ID</Th>
+                  <Th>Product(s)</Th>
+                  <Th>Total</Th>
+                  <Th>Actions</Th>
                 </Tr>
-              ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+              </Thead>
+              <Tbody>
+                {orders.length > 0 &&
+                  cartProducts.length > 0 &&
+                  products.length > 0 &&
+                  orders.map((order, index) => (
+                    <Tr key={index}>
+                      <Td>{order.id}</Td>
+                      <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
+                      <Td>{`$${order.total.toFixed(2)}`}</Td>
+                      <Td>
+                        <a href="#">Invoice</a> &bull;{' '}
+                        <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
+                          Request Refund
+                        </Link>
+                      </Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </>
+      )}
     </div>
   );
 }
