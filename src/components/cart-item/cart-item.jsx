@@ -74,7 +74,7 @@ function CartItem(props) {
           description: `${props.cartProduct.quantity} ${
             props.cartProduct.quantity === 1 ? 'order' : 'orders'
           } of ${
-            props.getProduct(props.cartProduct.product).title
+            getProduct(props.cartProduct.product).title
           } were removed from your cart.`,
           status: 'success',
           duration: 7000,
