@@ -17,8 +17,7 @@ import { useToast, Divider, useDisclosure } from '@chakra-ui/react';
 import { selectProducts } from '../../../../redux/slices/inventorySlice';
 import {
   addToCart,
-  selectCartProducts,
-  setCartProducts
+  selectCartProducts
 } from '../../../../redux/slices/cartSlice';
 import { selectUser } from '../../../../redux/slices/userSlice';
 import {
@@ -29,7 +28,6 @@ import {
 // Firebase
 import {
   addProductToCart,
-  getCartProducts,
   getRatings
 } from '../../../../utils/firebase/firebase';
 
@@ -68,7 +66,6 @@ function Detail() {
   const [color, setColor] = useState('');
   const [notes, setNotes] = useState('');
   const [addingToCart, setAddingToCart] = useState(false);
-  const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [ratingsLoading, setRatingsLoading] = useState(false);
   const [showNotSignedInModal, setShowNotSignedInModal] = useState(false);
 
@@ -86,16 +83,16 @@ function Detail() {
   }, [selectedProduct]);
 
   // Brings down the user's cart if it hasn't been loaded already
-  useEffect(() => {
-    if (cartProducts.length === 0 && user) {
-      setCartProductsLoading(true);
+  // useEffect(() => {
+  //   if (cartProducts.length === 0 && user) {
+  //     setCartProductsLoading(true);
 
-      getCartProducts(user.uid).then((res) => {
-        dispatch(setCartProducts(res));
-        setCartProductsLoading(false);
-      });
-    }
-  }, [cartProducts.length, user, dispatch]);
+  //     getCartProducts(user.uid).then((res) => {
+  //       dispatch(setCartProducts(res));
+  //       setCartProductsLoading(false);
+  //     });
+  //   }
+  // }, [cartProducts.length, user, dispatch]);
 
   // Brings down the ratings if it hasn't been loaded already
   useEffect(() => {
@@ -236,7 +233,6 @@ function Detail() {
                   mainImage={mainImage}
                   otherImages={otherImages}
                   handleSelectedImage={handleSelectedImage}
-                  pageLoading={cartProductsLoading}
                 />
               </Col>
               <Col>
@@ -247,7 +243,6 @@ function Detail() {
                   isItemAlreadyInCart={isItemAlreadyInCart}
                   addingToCart={addingToCart}
                   handleAddToCart={handleAddToCart}
-                  pageLoading={cartProductsLoading}
                   color={color}
                   setColor={setColor}
                   notes={notes}

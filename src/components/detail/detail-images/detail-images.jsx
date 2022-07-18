@@ -58,7 +58,7 @@ function DetailImages(props) {
               <Image
                 h="100%"
                 alt="Additional Picture"
-                src={!props.pageLoading ? pictureUrl : placeholder_img}
+                src={pictureUrl}
                 onClick={props.handleSelectedImage}
               />
             </Box>
