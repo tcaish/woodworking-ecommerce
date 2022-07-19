@@ -7,6 +7,9 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// React Icons
+import { TbError404 } from 'react-icons/tb';
+
 // Firebase
 import {
   createUserDocumentFromAuth,
@@ -42,6 +45,7 @@ import {
 import Detail from './routes/shop/furniture/detail/detail';
 import Return from './routes/return/return';
 import Orders from './routes/orders/orders';
+import PageEmpty from './components/page-empty/page-empty';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -132,17 +136,29 @@ function App() {
             </ProtectedUserRoute>
           }
         />
+        <Route
+          path={NAVIGATION_PATHS.sign_in}
+          element={
+            <ProtectedNoUserRoute>
+              <SignIn />
+            </ProtectedNoUserRoute>
+          }
+        />
+        <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
+        <Route path={NAVIGATION_PATHS.support} element={<Support />} />
+        <Route
+          path="*"
+          element={
+            <PageEmpty
+              icon={TbError404}
+              title="Page Not Found"
+              text="We couldn't find the page you were looking for."
+              linkPath={NAVIGATION_PATHS.home}
+              linkText="Let's go home."
+            />
+          }
+        />
       </Route>
-      <Route
-        path={NAVIGATION_PATHS.sign_in}
-        element={
-          <ProtectedNoUserRoute>
-            <SignIn />
-          </ProtectedNoUserRoute>
-        }
-      />
-      <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
-      <Route path={NAVIGATION_PATHS.support} element={<Support />} />
     </Routes>
   );
 }
