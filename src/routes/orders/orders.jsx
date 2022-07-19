@@ -68,6 +68,7 @@ function Orders() {
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [chosenReceipt, setChosenReceipt] = useState('');
   const [receiptLoading, setReceiptLoading] = useState(false);
 
   // Fetch purchased card products
@@ -171,6 +172,8 @@ function Orders() {
   async function getReceiptForOrder(stripeOrderId) {
     let tempCharges = charges;
 
+    setChosenReceipt(stripeOrderId);
+
     // If charges haven't been fetched yet, let's fetch them
     if (stripeCustomerId && charges.length === 0) {
       setReceiptLoading(true);
@@ -231,7 +234,10 @@ function Orders() {
                     <Td>
                       <Button
                         variant="link"
-                        isLoading={receiptLoading}
+                        isLoading={
+                          chosenReceipt === order.stripeOrderId &&
+                          receiptLoading
+                        }
                         onClick={() => getReceiptForOrder(order.stripeOrderId)}
                       >
                         Receipt
