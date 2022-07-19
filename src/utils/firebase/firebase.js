@@ -159,6 +159,21 @@ export async function getProducts() {
   return products;
 }
 
+// Returns whether or not a given product has been purchased by the user
+export async function isProductPurchased(userId, productId) {
+  const cartRef = collection(firestore, 'users', userId, 'cart').withConverter(
+    cartProductConverter
+  );
+  const q = query(
+    cartRef,
+    where('purchased', '==', true),
+    where('product', '==', productId)
+  );
+  const querySnapshot = await getDocs(q);
+
+  return !querySnapshot.empty;
+}
+
 // Returns the items in the user's cart
 export async function getCartProducts(userId, purchased = false) {
   const cartProducts = [];

@@ -36,7 +36,11 @@ import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import { selectRatings } from '../../redux/slices/ratingSlice';
 
 // Firebase
-import { addUserRating, editUserRating } from '../../utils/firebase/firebase';
+import {
+  addUserRating,
+  editUserRating,
+  isProductPurchased
+} from '../../utils/firebase/firebase';
 
 // Exports
 import {
@@ -183,6 +187,20 @@ export function SubmitRating({ productId, ratingsLoading }) {
     if (!user || !productId || selectedRating === 0) return;
 
     setSubmittingRating(true);
+
+    const purchased = await isProductPurchased(user.uid, productId);
+    if (!purchased) {
+      toast({
+        title: 'Cannot Submit Rating',
+        description:
+          'You must purchase this item before you can submit a rating.',
+        status: 'error',
+        duration: 7000,
+        isClosable: true
+      });
+      setSubmittingRating(false);
+      return;
+    }
 
     if (!editingRating) {
       await addUserRating(selectedRating, user.uid, productId)
