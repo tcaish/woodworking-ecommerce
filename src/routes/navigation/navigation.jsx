@@ -154,7 +154,11 @@ function Navigation() {
                 </Link>
 
                 {user && (
-                  <Link className="dropdown-item" to={NAVIGATION_PATHS.orders}>
+                  <Link
+                    className="dropdown-item"
+                    to={NAVIGATION_PATHS.orders}
+                    onClick={() => setExpanded(false)}
+                  >
                     Orders
                   </Link>
                 )}
