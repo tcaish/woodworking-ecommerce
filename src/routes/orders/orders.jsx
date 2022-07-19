@@ -68,11 +68,7 @@ function Orders() {
   const [cartProductsLoading, setCartProductsLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [ordersLoading, setOrdersLoading] = useState(false);
-
-  useEffect(() => {
-    stripeCustomerId && getChargesForCustomer();
-    // eslint-disable-next-line
-  }, [stripeCustomerId]);
+  const [receiptLoading, setReceiptLoading] = useState(false);
 
   // Fetch purchased card products
   useEffect(() => {
@@ -147,6 +143,8 @@ function Orders() {
 
       const { charges } = await response.json();
       setCharges(charges.data);
+
+      return charges.data;
     } catch (err) {
       console.log(err);
     }
@@ -170,14 +168,26 @@ function Orders() {
   }
 
   // Downloads the receipt for a given order
-  function getReceiptUrlForOrder(stripeOrderId) {
-    const charge = charges.filter(
+  async function getReceiptForOrder(stripeOrderId) {
+    let tempCharges = charges;
+
+    // If charges haven't been fetched yet, let's fetch them
+    if (stripeCustomerId && charges.length === 0) {
+      setReceiptLoading(true);
+      tempCharges = await getChargesForCustomer().then((res) => {
+        setReceiptLoading(false);
+        return res;
+      });
+      console.log(tempCharges);
+    }
+
+    const charge = tempCharges.filter(
       (item) => item.payment_intent === stripeOrderId
     );
 
     if (charge.length === 1) {
       console.log(charge);
-      return charge.receipt_url;
+      window.open(charge.receipt_url);
     } else {
       toast({
         title: 'Receipt Download Failed',
@@ -222,12 +232,7 @@ function Orders() {
                     <Td>
                       <Button
                         variant="link"
-                        onClick={() => {
-                          const url = getReceiptUrlForOrder(
-                            order.stripeOrderId
-                          );
-                          window.open(url);
-                        }}
+                        onClick={() => getReceiptForOrder(order.stripeOrderId)}
                       >
                         Receipt
                       </Button>
