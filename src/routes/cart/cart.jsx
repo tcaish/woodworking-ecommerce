@@ -65,6 +65,7 @@ import { NAVIGATION_PATHS } from '../../exports/constants';
 // Images
 import CustSatisfactionImg from '../../assets/images/cust_satisfaction_guaranteed.png';
 import MoneyBackImg from '../../assets/images/money_back_guaranteed.png';
+import SecureImg from '../../assets/images/secure.png';
 
 // Styles
 import './cart.scss';
@@ -313,6 +314,12 @@ function Cart() {
                         objectFit="cover"
                         src={MoneyBackImg}
                         alt="100% Money Back"
+                      />
+                      <Image
+                        boxSize="70px"
+                        objectFit="cover"
+                        src={SecureImg}
+                        alt="100% Secure"
                       />
                     </HStack>
                   </Center>

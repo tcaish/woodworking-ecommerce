@@ -13,11 +13,14 @@ import { IoMdLock } from 'react-icons/io';
 // Chakra
 import {
   Button,
+  Center,
   FormControl,
   FormHelperText,
   FormLabel,
   Heading,
+  HStack,
   Icon,
+  Image,
   Input,
   useToast
 } from '@chakra-ui/react';
@@ -56,6 +59,10 @@ import {
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
 import { validateEmail, validatePhoneNumber } from '../../exports/functions';
+
+// Images
+import PoweredByStripeImg from '../../assets/images/stripe.png';
+import SecureImg from '../../assets/images/secure.png';
 
 // Styles
 import './checkout.scss';
@@ -383,6 +390,25 @@ function Checkout(props) {
         >
           Submit Order
         </Button>
+      </div>
+
+      <div className="checkout-logos-container">
+        <Center>
+          <HStack>
+            <Image
+              boxSize="70px"
+              objectFit="cover"
+              src={SecureImg}
+              alt="100% Secure"
+            />
+            <Image
+              w="150px"
+              objectFit="cover"
+              src={PoweredByStripeImg}
+              alt="Powered by Stripe"
+            />
+          </HStack>
+        </Center>
       </div>
     </div>
   );
