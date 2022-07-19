@@ -1,14 +1,18 @@
 .search-bar-container {
   margin-bottom: 15px;
-  width: 100%;
 
   .search-bar-input-group {
     color: black;
-    margin: 0 auto;
-    width: 30%;
+    width: 50%;
 
     input:focus {
       background-color: white;
     }
+  }
+}
+
+.filter-container {
+  select {
+    background-color: #e2e7f0;
   }
 }
