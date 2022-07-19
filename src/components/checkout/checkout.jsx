@@ -372,6 +372,10 @@ function Checkout(props) {
             setCardEmpty(e.empty);
           }}
         />
+        <FormHelperText>
+          We do not store your credit card information. It is handled 100% via
+          Stripe.
+        </FormHelperText>
         <FormHelperText className="checkout-card-error-text">
           {cardError}
         </FormHelperText>
