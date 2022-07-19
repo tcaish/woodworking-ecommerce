@@ -174,20 +174,19 @@ function Orders() {
     // If charges haven't been fetched yet, let's fetch them
     if (stripeCustomerId && charges.length === 0) {
       setReceiptLoading(true);
+
       tempCharges = await getChargesForCustomer().then((res) => {
         setReceiptLoading(false);
         return res;
       });
-      console.log(tempCharges);
     }
 
-    const charge = tempCharges.filter(
+    const filteredCharges = tempCharges.filter(
       (item) => item.payment_intent === stripeOrderId
     );
 
-    if (charge.length === 1) {
-      console.log(charge);
-      window.open(charge.receipt_url);
+    if (filteredCharges.length === 1) {
+      window.open(filteredCharges[0].receipt_url);
     } else {
       toast({
         title: 'Receipt Download Failed',
@@ -232,6 +231,7 @@ function Orders() {
                     <Td>
                       <Button
                         variant="link"
+                        isLoading={receiptLoading}
                         onClick={() => getReceiptForOrder(order.stripeOrderId)}
                       >
                         Receipt
