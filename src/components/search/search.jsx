@@ -1,5 +1,7 @@
 // React Icons
 import { AiOutlineSearch } from 'react-icons/ai';
+// React Redux
+import { useDispatch, useSelector } from 'react-redux';
 
 // Bootstrap
 import { Col, Container, Row } from 'react-bootstrap';
@@ -7,11 +9,34 @@ import { Col, Container, Row } from 'react-bootstrap';
 // Chakra
 import { Input, InputGroup, InputLeftElement, Select } from '@chakra-ui/react';
 
+// Slices
+import {
+  selectProducts,
+  setFilteredProducts
+} from '../../redux/slices/inventorySlice';
+
 // Styles
 import './search.scss';
 import './search.mobile.scss';
 
 function Search() {
+  const dispatch = useDispatch();
+
+  const products = useSelector(selectProducts);
+
+  // Updates the products being shown to have anything relating to what is
+  // being searched for by the user.
+  function searchForProduct(queryString) {
+    queryString = queryString.toLowerCase();
+
+    const filteredProds = products.filter(
+      (product) =>
+        product.title.toLowerCase().includes(queryString) ||
+        product.category.toLowerCase().includes(queryString)
+    );
+    dispatch(setFilteredProducts(filteredProds));
+  }
+
   return (
     <Container>
       <Row>
@@ -29,6 +54,7 @@ function Search() {
                 _placeholder={{ opacity: 1, color: 'black' }}
                 focusBorderColor="#f7d794"
                 variant="filled"
+                onChange={(e) => searchForProduct(e.target.value)}
               />
             </InputGroup>
           </div>
