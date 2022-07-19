@@ -154,3 +154,23 @@ export function loadImage(src) {
     image.src = src;
   });
 }
+
+export async function downloadFileFromUrl(url) {
+  if (!url) return;
+
+  await fetch(url, {
+    method: 'get'
+  }).then((response) => {
+    if (response.ok) {
+      response.blob().then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'image.jpg');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    }
+  });
+}

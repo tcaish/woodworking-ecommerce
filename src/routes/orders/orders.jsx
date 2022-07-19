@@ -12,6 +12,7 @@ import { IoReceipt } from 'react-icons/io5';
 
 // Chakra
 import {
+  Button,
   Heading,
   Table,
   TableContainer,
@@ -19,7 +20,8 @@ import {
   Td,
   Th,
   Thead,
-  Tr
+  Tr,
+  useToast
 } from '@chakra-ui/react';
 
 // Firebase
@@ -53,6 +55,7 @@ import './orders.scss';
 import { PlaceholderOrders } from '../../components/placeholder/placeholder';
 
 function Orders() {
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -68,6 +71,7 @@ function Orders() {
 
   useEffect(() => {
     stripeCustomerId && getChargesForCustomer();
+    // eslint-disable-next-line
   }, [stripeCustomerId]);
 
   // Fetch purchased card products
@@ -141,9 +145,8 @@ function Orders() {
         }
       );
 
-      const content = await response.json();
-      console.log(content);
-      // setCharges(data);
+      const { charges } = await response.json();
+      setCharges(charges.data);
     } catch (err) {
       console.log(err);
     }
@@ -164,6 +167,27 @@ function Orders() {
       return product.title;
     });
     return titles.join(', ');
+  }
+
+  // Downloads the receipt for a given order
+  function getReceiptUrlForOrder(stripeOrderId) {
+    const charge = charges.filter(
+      (item) => item.payment_intent === stripeOrderId
+    );
+
+    if (charge.length === 1) {
+      console.log(charge);
+      return charge.receipt_url;
+    } else {
+      toast({
+        title: 'Receipt Download Failed',
+        description:
+          'There was an error retrieving your receipt. Please try again later.',
+        status: 'error',
+        duration: 7000,
+        isClosable: true
+      });
+    }
   }
 
   // Renders the page with placeholders or orders table
@@ -196,9 +220,20 @@ function Orders() {
                     <Td>{getProductTitlesForOrderAtIndex(index)}</Td>
                     <Td>{`$${order.total.toFixed(2)}`}</Td>
                     <Td>
-                      <a href="#">Invoice</a> &bull;{' '}
+                      <Button
+                        variant="link"
+                        onClick={() => {
+                          const url = getReceiptUrlForOrder(
+                            order.stripeOrderId
+                          );
+                          window.open(url);
+                        }}
+                      >
+                        Receipt
+                      </Button>
+                      <span>&nbsp;&bull;&nbsp;</span>
                       <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
-                        Request Refund
+                        <Button variant="link">Request Refund</Button>
                       </Link>
                     </Td>
                   </Tr>
