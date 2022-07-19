@@ -14,11 +14,13 @@
     }
 
     button {
+      animation: glowing 1300ms infinite;
       background-color: $brand-yellow;
       margin-top: 10px;
       width: 60%;
 
       &:hover {
+        animation: unset;
         opacity: 0.75;
       }
     }

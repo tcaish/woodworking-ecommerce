@@ -1,3 +1,5 @@
+@import './exports/constants.scss';
+
 html {
   min-height: 100%;
   width: 100%;
@@ -60,4 +62,19 @@ body {
 .hvr-grow:focus,
 .hvr-grow:active {
   transform: scale(1.01);
+}
+
+@keyframes glowing {
+  0% {
+    background-color: $brand-yellow;
+    box-shadow: 0 0 3px $brand-yellow;
+  }
+  50% {
+    background-color: $brand-light-yellow;
+    box-shadow: 0 0 10px $brand-light-yellow;
+  }
+  100% {
+    background-color: $brand-yellow;
+    box-shadow: 0 0 3px $brand-yellow;
+  }
 }
