@@ -9,7 +9,7 @@ import './page-empty.scss';
 
 function PageEmpty({ icon, title, text, linkPath, linkText }) {
   return (
-    <div className="main-container page-empty-container">
+    <div className="page-empty-container">
       <Box>
         <Center h="400px" w="auto">
           <Stack spacing={2}>
@@ -18,7 +18,8 @@ function PageEmpty({ icon, title, text, linkPath, linkText }) {
             </Center>
             <Heading>{title}</Heading>
             <Text fontSize="xl">
-              {text} <Link to={linkPath}>{linkText}</Link>
+              {text}{' '}
+              {linkPath && linkText && <Link to={linkPath}>{linkText}</Link>}
             </Text>
           </Stack>
         </Center>
