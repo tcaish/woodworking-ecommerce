@@ -95,10 +95,10 @@ function Search() {
           </div>
         </Col>
 
-        <Col xs={12} sm={4} lg={2}>
+        <Col xs={12} sm={4} lg={3} xl={2}>
           <div className="filter-container">
             <Select
-              placeholder="Filter By Category"
+              placeholder="Filter Category"
               focusBorderColor="#f7d794"
               onChange={(e) => setChosenCategory(e.target.value)}
               value={chosenCategory}
