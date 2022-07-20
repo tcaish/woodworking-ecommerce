@@ -32,6 +32,8 @@ function Search() {
   const products = useSelector(selectProducts);
 
   const [uniqueCategories, setUniqueCategories] = useState([]);
+  const [searchString, setSearchString] = useState('');
+  const [chosenCategory, setChosenCategory] = useState('');
 
   // Returns the unique categories
   useEffect(() => {
@@ -42,19 +44,32 @@ function Search() {
   }, [products]);
 
   // Updates the products being shown to have anything relating to what is
-  // being searched for by the user.
-  function searchForProduct(queryString) {
-    queryString = queryString.toLowerCase();
+  // being searched for by the user in the search bar or category filter
+  // dropdown.
+  useEffect(() => {
+    if (!searchString && !chosenCategory)
+      dispatch(setFilteredProducts(products));
 
-    const filteredProds = products.filter(
+    let queryString = searchString.toLowerCase();
+    let filteredProds = products;
+
+    // Filter by category first
+    chosenCategory &&
+      (filteredProds = filteredProds.filter((product) =>
+        product.category.includes(chosenCategory)
+      ));
+
+    // Filter by search string
+    filteredProds = filteredProds.filter(
       (product) =>
         product.title.toLowerCase().includes(queryString) ||
-        product.category.toLowerCase().includes(queryString)
+        (!chosenCategory &&
+          product.category.toLowerCase().includes(queryString))
     );
-    dispatch(setFilteredProducts(filteredProds));
-  }
 
-  function filterByCategory(category) {}
+    dispatch(setFilteredProducts(filteredProds));
+    // eslint-disable-next-line
+  }, [searchString, chosenCategory]);
 
   return (
     <Container>
@@ -73,7 +88,8 @@ function Search() {
                 _placeholder={{ opacity: 1, color: 'black' }}
                 focusBorderColor="#f7d794"
                 variant="filled"
-                onChange={(e) => searchForProduct(e.target.value)}
+                onChange={(e) => setSearchString(e.target.value)}
+                value={searchString}
               />
             </InputGroup>
           </div>
@@ -81,7 +97,12 @@ function Search() {
 
         <Col xs={12} sm={4} lg={2}>
           <div className="filter-container">
-            <Select placeholder="Filter By Category" focusBorderColor="#f7d794">
+            <Select
+              placeholder="Filter By Category"
+              focusBorderColor="#f7d794"
+              onChange={(e) => setChosenCategory(e.target.value)}
+              value={chosenCategory}
+            >
               {uniqueCategories.map((product, index) => (
                 <option key={index} value={product.category}>
                   {capitalizeFirstLetter(product.category)}
