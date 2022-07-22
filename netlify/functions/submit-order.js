@@ -6,6 +6,7 @@ const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`, {
 exports.handler = async (event) => {
   try {
     const { order_id, total } = JSON.parse(event.body);
+    console.log(order_id, total);
     const resource = stripe.StripeResource.extend({
       request: stripe.StripeResource.method({
         method: 'POST',
@@ -18,6 +19,7 @@ exports.handler = async (event) => {
         expected_total: total
       },
       function (err, response) {
+        console.log(err, response);
         if (response) {
           return {
             statusCode: 200,

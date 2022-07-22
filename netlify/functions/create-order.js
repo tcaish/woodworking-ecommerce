@@ -6,7 +6,6 @@ const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`, {
 exports.handler = async (event) => {
   try {
     const { customer, line_items, metadata } = JSON.parse(event.body);
-    console.log(customer, line_items, metadata);
     const order = await stripe.orders.create({
       currency: 'usd',
       line_items,
@@ -14,13 +13,12 @@ exports.handler = async (event) => {
       metadata,
       expand: ['line_items']
     });
-    console.log({ order });
+
     return {
       statusCode: 200,
       body: JSON.stringify({ order })
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 400,
       body: JSON.stringify({ err })

@@ -345,7 +345,6 @@ function Checkout(props) {
 
     try {
       const { order } = await createStripeOrder(customerId);
-      console.log(order);
 
       const { submittedOrder } = await submitStripeOrder(order.id);
       console.log(submittedOrder);
