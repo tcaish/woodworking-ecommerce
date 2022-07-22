@@ -7,13 +7,14 @@ const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`, {
 exports.handler = async (event) => {
   try {
     const { order_id, total } = JSON.parse(event.body);
-    console.log(`orders/${order_id}/submit`);
     const resource = Stripe.StripeResource.extend({
       request: Stripe.StripeResource.method({
         method: 'post',
         path: `orders/${order_id}/submit`
       })
     });
+
+    console.log('here', resource);
 
     new resource(stripe).request(
       {
@@ -37,6 +38,7 @@ exports.handler = async (event) => {
       }
     );
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 400,
       body: JSON.stringify({ err })
