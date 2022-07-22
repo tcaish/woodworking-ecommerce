@@ -317,7 +317,7 @@ function Checkout(props) {
           description: orderDescription,
           line_items,
           metadata: orderMetaData,
-          promotion_code: promoCode && promoCode.stripe_promo_code_id
+          promotion_code: promoCode ? promoCode.stripe_promo_code_id : ''
         })
       });
 
