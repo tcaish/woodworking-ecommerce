@@ -7,7 +7,7 @@ exports.handler = async (event) => {
     const paymentIntent = await stripe.paymentIntents.retrieve(
       payment_intent_id
     );
-    console.log(paymentIntent);
+
     return {
       statusCode: 200,
       body: JSON.stringify({ paymentIntent })

@@ -314,6 +314,7 @@ function Checkout(props) {
         },
         body: JSON.stringify({
           customer: customerId,
+          description: orderDescription,
           line_items,
           metadata: orderMetaData
         })
@@ -368,7 +369,7 @@ function Checkout(props) {
     try {
       const { order } = await createStripeOrder(customerId);
       const submittedOrder = await submitStripeOrder(order.id);
-      const paymentIntent = await retrievePaymentIntent(
+      const { paymentIntent } = await retrievePaymentIntent(
         submittedOrder.payment.payment_intent
       );
       console.log(paymentIntent);
