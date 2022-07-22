@@ -369,7 +369,7 @@ function Checkout(props) {
       const { order } = await createStripeOrder(customerId);
       const submittedOrder = await submitStripeOrder(order.id);
       const paymentIntent = await retrievePaymentIntent(
-        submitStripeOrder.payment.payment_intent
+        submittedOrder.payment.payment_intent
       );
       console.log(paymentIntent);
 
