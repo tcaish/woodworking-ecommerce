@@ -167,7 +167,9 @@ function Cart() {
       setLaborTotal(lTotal.toFixed(2));
 
       if (promoCode) {
-        const discount = (subtotal * promoCode.discount).toFixed(2);
+        const discount = ((subtotal * promoCode.discount * 100) / 100).toFixed(
+          2
+        );
         dispatch(setDiscountTotal(discount));
         dispatch(setCartTotal((subtotal - discount).toFixed(2)));
       } else {
