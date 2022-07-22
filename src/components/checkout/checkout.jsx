@@ -469,6 +469,7 @@ function Checkout(props) {
           Total: <span>${total}</span>
         </Heading>
         <Button
+          style={{ animation: placingOrder && 'unset' }}
           leftIcon={<Icon as={IoMdLock} w={5} h={5} />}
           spinnerPlacement="end"
           loadingText="Processing payment..."
