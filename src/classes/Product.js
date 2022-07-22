@@ -13,6 +13,7 @@ export class Product {
     id,
     pictures,
     specifications,
+    stripe_product_id,
     title
   ) {
     this.availability = availability;
@@ -25,6 +26,7 @@ export class Product {
     this.id = id;
     this.pictures = pictures;
     this.specifications = specifications;
+    this.stripe_product_id = stripe_product_id;
     this.title = title;
   }
 
@@ -65,6 +67,7 @@ export const productConverter = {
       id: product.id,
       pictures: product.pictures,
       specifications: product.specifications,
+      stripe_product_id: product.stripe_product_id,
       title: product.title
     };
   },
@@ -81,6 +84,7 @@ export const productConverter = {
       data.id,
       data.pictures,
       data.specifications,
+      data.stripe_product_id,
       data.title
     );
   }

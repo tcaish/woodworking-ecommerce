@@ -55,10 +55,15 @@ import {
   selectPromoCode,
   setPromoCode
 } from '../../redux/slices/cartSlice';
+import { selectProducts } from '../../redux/slices/inventorySlice';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
-import { validateEmail, validatePhoneNumber } from '../../exports/functions';
+import {
+  getProduct,
+  validateEmail,
+  validatePhoneNumber
+} from '../../exports/functions';
 
 // Images
 import PoweredByStripeImg from '../../assets/images/stripe.png';
@@ -78,6 +83,7 @@ function Checkout(props) {
 
   const user = useSelector(selectUser);
   const stripeCustomerId = useSelector(selectStripeCustomerId);
+  const products = useSelector(selectProducts);
   const cartProducts = useSelector(selectCartProducts);
   const userDisplayName = useSelector(selectDisplayName);
   const userPhoneNumber = useSelector(selectPhoneNumber);
@@ -268,6 +274,57 @@ function Checkout(props) {
     }
   }
 
+  // Creates an order given the customer ID
+  async function createStripeOrder(customerId) {
+    const line_items = cartProducts.map((item) => {
+      const product = getProduct(products, item.product);
+      return {
+        product: product.stripe_product_id,
+        quantity: item.quantity
+      };
+    });
+
+    try {
+      const response = await fetch('/.netlify/functions/create-order', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          customer: customerId,
+          line_items,
+          metadata: orderMetaData
+        })
+      });
+
+      return await response.json();
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Submits an order given the order ID
+  async function submitStripeOrder(orderId) {
+    const totalWithoutDecimal = `${total}`.replace('.', '');
+
+    try {
+      const response = await fetch('/.netlify/functions/submit-order', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_id: orderId,
+          total: totalWithoutDecimal
+        })
+      });
+
+      return await response.json();
+    } catch (err) {
+      return null;
+    }
+  }
+
   // Handles submitting the payment
   async function submitPayment() {
     if (!isFormValid()) return;
@@ -285,12 +342,17 @@ function Checkout(props) {
     }
 
     try {
-      const { paymentIntent } = await createPaymentIntent(customerId).then(
-        (res) => res
-      );
+      const { order } = await createStripeOrder(customerId);
+      console.log(order);
+
+      const { submittedOrder } = await submitStripeOrder(order.id);
+      console.log(submittedOrder);
+      // const { paymentIntent } = await createPaymentIntent(customerId).then(
+      //   (res) => res
+      // );
 
       const paymentResult = await stripe.confirmCardPayment(
-        paymentIntent.client_secret,
+        submittedOrder.client_secret,
         {
           payment_method: {
             card: elements.getElement(CardElement),
