@@ -316,7 +316,8 @@ function Checkout(props) {
           customer: customerId,
           description: orderDescription,
           line_items,
-          metadata: orderMetaData
+          metadata: orderMetaData,
+          promotion_code: promoCode && promoCode.stripe_promo_code_id
         })
       });
 
@@ -367,9 +368,7 @@ function Checkout(props) {
 
     try {
       const { order } = await createStripeOrder(customerId);
-      console.log(order);
       const submittedOrder = await submitStripeOrder(order.id);
-      console.log(submittedOrder);
       const { paymentIntent } = await retrievePaymentIntent(
         submittedOrder.payment.payment_intent
       );

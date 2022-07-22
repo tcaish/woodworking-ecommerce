@@ -5,7 +5,9 @@ const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`, {
 
 exports.handler = async (event) => {
   try {
-    const { customer, line_items, metadata } = JSON.parse(event.body);
+    const { customer, line_items, metadata, promotion_code } = JSON.parse(
+      event.body
+    );
     const order = await stripe.orders.create({
       currency: 'usd',
       line_items,
@@ -14,7 +16,7 @@ exports.handler = async (event) => {
       expand: ['line_items'],
       discounts: [
         {
-          promotion_code: 'promo_1LOO1mFesmANnI1c88Tl2W5Q'
+          promotion_code
         }
       ]
     });

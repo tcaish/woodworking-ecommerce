@@ -1,11 +1,12 @@
 import { howManyDaysFromToday } from '../exports/functions';
 
 export class PromoCode {
-  constructor(code, discount, ends, id, users) {
+  constructor(code, discount, ends, id, stripe_promo_code_id, users) {
     this.code = code;
     this.discount = discount;
     this.ends = ends;
     this.id = id;
+    this.stripe_promo_code_id = stripe_promo_code_id;
     this.users = users;
   }
 
@@ -24,6 +25,7 @@ export const promoCodeConverter = {
       discount: promoCode.discount,
       ends: promoCode.ends,
       id: promoCode.id,
+      stripe_promo_code_id: promoCode.stripe_promo_code_id,
       users: promoCode.users
     };
   },
@@ -34,6 +36,7 @@ export const promoCodeConverter = {
       data.discount,
       data.ends,
       data.id,
+      data.stripe_promo_code_id,
       data.users
     );
   }
