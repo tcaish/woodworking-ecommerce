@@ -154,3 +154,13 @@ export function loadImage(src) {
     image.src = src;
   });
 }
+
+// Adds a decimal to any number passed in
+export function addDecimalToNumber(number) {
+  let tempNumber = `${number}`;
+  tempNumber =
+    tempNumber.slice(0, tempNumber.length - 2) +
+    '.' +
+    tempNumber.slice(tempNumber.length - 2, tempNumber.length);
+  return Number(tempNumber);
+}

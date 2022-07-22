@@ -53,13 +53,15 @@ import {
   selectOrderDescription,
   selectOrderMetaData,
   selectPromoCode,
-  setPromoCode
+  setPromoCode,
+  setCartTotal
 } from '../../redux/slices/cartSlice';
 import { selectProducts } from '../../redux/slices/inventorySlice';
 
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
 import {
+  addDecimalToNumber,
   getProduct,
   validateEmail,
   validatePhoneNumber
@@ -328,8 +330,8 @@ function Checkout(props) {
   }
 
   // Submits an order given the order ID
-  async function submitStripeOrder(orderId) {
-    const totalWithoutDecimal = `${total}`.replace('.', '');
+  async function submitStripeOrder(orderId, amountTotal) {
+    // const totalWithoutDecimal = `${total}`.replace('.', '');
 
     try {
       const response = await fetch('/.netlify/functions/submit-order', {
@@ -339,7 +341,7 @@ function Checkout(props) {
         },
         body: JSON.stringify({
           order_id: orderId,
-          total: totalWithoutDecimal
+          total: amountTotal
         })
       });
 
@@ -368,9 +370,12 @@ function Checkout(props) {
 
     try {
       const { order } = await createStripeOrder(customerId);
-      console.log(order);
-      const submittedOrder = await submitStripeOrder(order.id);
-      console.log(submittedOrder);
+      dispatch(setCartTotal(addDecimalToNumber(order.amount_total)));
+
+      const submittedOrder = await submitStripeOrder(
+        order.id,
+        order.amount_total
+      );
       const { paymentIntent } = await retrievePaymentIntent(
         submittedOrder.payment.payment_intent
       );
@@ -393,7 +398,6 @@ function Checkout(props) {
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
-      console.log(err);
       handlePaymentResult({ error: 'failed' });
       setPlacingOrder(false);
     }
