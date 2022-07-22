@@ -14,11 +14,13 @@ exports.handler = async (event) => {
       customer,
       metadata,
       expand: ['line_items'],
-      discounts: [
-        {
-          promotion_code
-        }
-      ]
+      discounts: promotion_code
+        ? [
+            {
+              promotion_code
+            }
+          ]
+        : null
     });
     console.log(order);
 
