@@ -249,21 +249,43 @@ function Checkout(props) {
   }
 
   // Create the payment intent with purchase details
-  async function createPaymentIntent(customerId) {
+  // async function createPaymentIntent(customerId) {
+  //   try {
+  //     const totalWithoutDecimal = `${total}`.replace('.', '');
+  //     const response = await fetch(
+  //       '/.netlify/functions/create-payment-intent',
+  //       {
+  //         method: 'post',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({
+  //           amount: totalWithoutDecimal,
+  //           customer: customerId,
+  //           description: orderDescription,
+  //           metadata: orderMetaData
+  //         })
+  //       }
+  //     );
+
+  //     return await response.json();
+  //   } catch (err) {
+  //     return null;
+  //   }
+  // }
+
+  // Retrieves a payment intent given the ID
+  async function retrievePaymentIntent(paymentIntentId) {
     try {
-      const totalWithoutDecimal = `${total}`.replace('.', '');
       const response = await fetch(
-        '/.netlify/functions/create-payment-intent',
+        '/.netlify/functions/retrieve-payment-intent',
         {
           method: 'post',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            amount: totalWithoutDecimal,
-            customer: customerId,
-            description: orderDescription,
-            metadata: orderMetaData
+            payment_intent_id: paymentIntentId
           })
         }
       );
@@ -345,15 +367,18 @@ function Checkout(props) {
 
     try {
       const { order } = await createStripeOrder(customerId);
-
       const submittedOrder = await submitStripeOrder(order.id);
-      console.log(submittedOrder);
+      const paymentIntent = await retrievePaymentIntent(
+        submitStripeOrder.payment.payment_intent
+      );
+      console.log(paymentIntent);
+
       // const { paymentIntent } = await createPaymentIntent(customerId).then(
       //   (res) => res
       // );
 
       const paymentResult = await stripe.confirmCardPayment(
-        submittedOrder.client_secret,
+        paymentIntent.client_secret,
         {
           payment_method: {
             card: elements.getElement(CardElement),
