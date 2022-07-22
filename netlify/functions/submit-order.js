@@ -9,6 +9,7 @@ exports.handler = async (event) => {
     const order = await stripe.orders.submit(order_id, {
       expected_total: total
     });
+    console.log(order);
 
     return {
       statusCode: 200,
