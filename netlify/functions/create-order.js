@@ -12,9 +12,11 @@ exports.handler = async (event) => {
       customer,
       metadata,
       expand: ['line_items'],
-      discounts: {
-        promotion_code: 'promo_1LOO1mFesmANnI1c88Tl2W5Q'
-      }
+      discounts: [
+        {
+          promotion_code: 'promo_1LOO1mFesmANnI1c88Tl2W5Q'
+        }
+      ]
     });
 
     return {
