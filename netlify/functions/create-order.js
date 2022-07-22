@@ -20,6 +20,7 @@ exports.handler = async (event) => {
         }
       ]
     });
+    console.log(order);
 
     return {
       statusCode: 200,
