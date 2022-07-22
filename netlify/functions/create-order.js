@@ -19,6 +19,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({ order })
     };
   } catch (err) {
+    console.log(err);
     return {
       statusCode: 400,
       body: JSON.stringify({ err })
