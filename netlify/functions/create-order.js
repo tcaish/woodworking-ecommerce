@@ -22,14 +22,12 @@ exports.handler = async (event) => {
           ]
         : null
     });
-    console.log(order);
 
     return {
       statusCode: 200,
       body: JSON.stringify({ order })
     };
   } catch (err) {
-    console.log(err);
     return {
       statusCode: 400,
       body: JSON.stringify({ err })
