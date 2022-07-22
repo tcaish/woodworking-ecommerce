@@ -1,15 +1,15 @@
 // require('dotenv').config();
-const stripe = require('stripe')(`${process.env.STRIPE_SECRET_KEY}`, {
+const Stripe = require('stripe');
+const stripe = Stripe(`${process.env.STRIPE_SECRET_KEY}`, {
   apiVersion: '2020-08-27; orders_beta=v4'
 });
 
 exports.handler = async (event) => {
   try {
     const { order_id, total } = JSON.parse(event.body);
-    console.log(order_id, total);
-    const resource = stripe.StripeResource.extend({
-      request: stripe.StripeResource.method({
-        method: 'POST',
+    const resource = Stripe.StripeResource.extend({
+      request: Stripe.StripeResource.method({
+        method: 'post',
         path: `orders/${order_id}/submit`
       })
     });
