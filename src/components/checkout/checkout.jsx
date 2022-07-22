@@ -346,7 +346,7 @@ function Checkout(props) {
     try {
       const { order } = await createStripeOrder(customerId);
 
-      const { submittedOrder } = await submitStripeOrder(order.id);
+      const submittedOrder = await submitStripeOrder(order.id);
       console.log(submittedOrder);
       // const { paymentIntent } = await createPaymentIntent(customerId).then(
       //   (res) => res
