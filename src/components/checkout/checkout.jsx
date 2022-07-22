@@ -323,7 +323,6 @@ function Checkout(props) {
 
       return await response.json();
     } catch (err) {
-      console.log(err);
       return null;
     }
   }
