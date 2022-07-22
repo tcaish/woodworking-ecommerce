@@ -14,16 +14,15 @@ exports.handler = async (event) => {
       })
     });
 
-    return new resource(stripe).request(
+    const response = await new resource(stripe).request(
       {
         expected_total: total
       },
-      function (err, response) {
-        console.log(err, response);
-        if (response) {
+      function (err, res) {
+        if (res) {
           return {
             statusCode: 200,
-            body: JSON.stringify(response)
+            body: JSON.stringify(res)
           };
         }
 
@@ -35,6 +34,9 @@ exports.handler = async (event) => {
         }
       }
     );
+
+    console.log(response);
+    return response;
   } catch (err) {
     console.log(err);
     return {
