@@ -322,6 +322,7 @@ function Checkout(props) {
 
       return await response.json();
     } catch (err) {
+      console.log(err);
       return null;
     }
   }
@@ -389,6 +390,7 @@ function Checkout(props) {
       handlePaymentResult(paymentResult);
       setPlacingOrder(false);
     } catch (err) {
+      console.log(err);
       handlePaymentResult({ error: 'failed' });
       setPlacingOrder(false);
     }
