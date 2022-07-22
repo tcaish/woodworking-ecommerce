@@ -14,9 +14,7 @@ exports.handler = async (event) => {
       })
     });
 
-    console.log('here', resource);
-
-    new resource(stripe).request(
+    return new resource(stripe).request(
       {
         expected_total: total
       },
