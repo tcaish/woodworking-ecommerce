@@ -13,7 +13,7 @@ exports.handler = async (event) => {
       metadata,
       expand: ['line_items'],
       discounts: {
-        promotion_code: 'TEST20'
+        promotion_code: 'promo_1LOO1mFesmANnI1c88Tl2W5Q'
       }
     });
 
