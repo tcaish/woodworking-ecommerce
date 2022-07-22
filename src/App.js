@@ -67,8 +67,8 @@ function App() {
     onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user).then((res) => {
-          if (!res.error && res.type === 'get' && res.data.phoneNumber) {
-            dispatch(setPhoneNumber(res.data.phoneNumber));
+          if (!res.error && res.type === 'get' && res.data.phone_number) {
+            dispatch(setPhoneNumber(res.data.phone_number));
             dispatch(setStripeCustomerId(res.data.stripeCustomerId));
           }
         });

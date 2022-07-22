@@ -183,7 +183,7 @@ function Profile() {
 
     setUpdatePhoneLoading(true);
 
-    await updateUser(user.uid, { phoneNumber: formInput.phoneNumber })
+    await updateUser(user.uid, { phone_number: formInput.phoneNumber })
       .then((res) => {
         handleProfileUpdateOrError(
           'Phone Number Updated',

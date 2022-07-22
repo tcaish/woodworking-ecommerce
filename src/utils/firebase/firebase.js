@@ -127,13 +127,13 @@ export async function createUserDocumentFromAuth(
   // if user data exists
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
-    const createdAt = new Date();
+    const created_at = new Date();
 
     try {
       await setDoc(userDocRef, {
-        displayName,
+        display_name: displayName,
         email,
-        createdAt,
+        created_at,
         ...additionalInfo
       });
       return { type: 'set' };

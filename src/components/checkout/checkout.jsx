@@ -358,7 +358,7 @@ function Checkout(props) {
 
     setPlacingOrder(true);
 
-    await updateUser(user.uid, { phoneNumber: phone });
+    await updateUser(user.uid, { phone_number: phone });
 
     let customerId = stripeCustomerId;
     if (!customerId) {
