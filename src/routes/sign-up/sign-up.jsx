@@ -31,7 +31,8 @@ import {
   signInWithGooglePopup,
   signInWithFacebookPopup,
   createAuthUserWithEmailAndPassword,
-  updateUserProfile
+  updateUserProfile,
+  updateUser
 } from '../../utils/firebase/firebase';
 
 // Slices
@@ -171,6 +172,9 @@ function SignUp() {
             .then((updateRes) => {
               newUser.displayName = formInput.displayName;
               dispatch(setUser(newUser));
+
+              // Add display name to database
+              updateUser(newUser.uid, { display_name: formInput.displayName });
             })
             .catch((err) => {
               toast({
