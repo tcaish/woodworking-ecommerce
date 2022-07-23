@@ -310,7 +310,8 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
   const batch = writeBatch(firestore);
 
   const cartRef = collection(firestore, 'users', userId, 'cart');
-  const querySnapshot = await getDocs(cartRef);
+  const q = query(cartRef, where('purchased', '==', false));
+  const querySnapshot = await getDocs(q);
 
   const cartItem = querySnapshot.docs[0].data();
   if (cartItem.promoCode === promoCodeId) {
