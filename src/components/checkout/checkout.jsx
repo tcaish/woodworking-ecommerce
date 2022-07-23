@@ -44,6 +44,7 @@ import {
   selectPhoneNumber,
   selectStripeCustomerId,
   selectUser,
+  setPhoneNumber,
   setStripeCustomerId
 } from '../../redux/slices/userSlice';
 import {
@@ -335,11 +336,13 @@ function Checkout(props) {
 
     setPlacingOrder(true);
 
-    await updateUser(user.uid, { phone_number: phone });
+    await updateUser(user.uid, { phone_number: phone }).then((res) =>
+      dispatch(setPhoneNumber(phone))
+    );
 
     let customerId = stripeCustomerId;
     if (!customerId) {
-      customerId = await createCustomer(customerId).then((res) => res);
+      customerId = await createCustomer(customerId);
     }
 
     try {
