@@ -148,7 +148,6 @@ function ProfileDesktop(props) {
             onChange={(value) =>
               props.setFormInput({ ...props.formInput, phoneNumber: value })
             }
-            isInvalid={props.formInput.phoneNumber === ''}
           />
           <Button
             className="profile-form-update-button"

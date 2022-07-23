@@ -169,16 +169,20 @@ function Profile() {
 
   // Handles updating the user's phone number
   async function handlePhoneNumberUpdate() {
-    if (formInput.phoneNumber === '' || phoneNumber === formInput.phoneNumber)
-      return;
+    if (phoneNumber === formInput.phoneNumber) return;
 
-    if (!validatePhoneNumber(formInput.phoneNumber)) {
-      handleProfileUpdateOrError(
-        'Phone Number Invalid',
-        'Please enter a valid phone number (e.g. (555) 555-5555).',
-        { code: '' }
-      );
-      return;
+    // If the phone number exists, validate it
+    if (formInput.phoneNumber !== '' && formInput.phoneNumber) {
+      if (!validatePhoneNumber(formInput.phoneNumber)) {
+        handleProfileUpdateOrError(
+          'Phone Number Invalid',
+          'Please enter a valid phone number (e.g. (555) 555-5555).',
+          { code: '' }
+        );
+        return;
+      }
+    } else {
+      formInput.phoneNumber = '';
     }
 
     setUpdatePhoneLoading(true);
