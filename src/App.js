@@ -69,7 +69,10 @@ function App() {
         createUserDocumentFromAuth(user).then((res) => {
           if (!res.error && res.type === 'get' && res.data.phone_number) {
             dispatch(setPhoneNumber(res.data.phone_number));
-            dispatch(setStripeCustomerId(res.data.stripeCustomerId));
+          }
+
+          if (!res.error && res.type === 'get' && res.data.stripe_customer_id) {
+            dispatch(setStripeCustomerId(res.data.stripe_customer_id));
           }
         });
 

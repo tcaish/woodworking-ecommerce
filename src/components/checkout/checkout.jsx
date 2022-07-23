@@ -240,8 +240,8 @@ function Checkout(props) {
       const { customer } = await response.json();
       const customerId = customer.id;
 
-      await updateUser(user.uid, { stripeCustomerId: customerId }).then((res) =>
-        dispatch(setStripeCustomerId(customerId))
+      await updateUser(user.uid, { stripe_customer_id: customerId }).then(
+        (res) => dispatch(setStripeCustomerId(customerId))
       );
 
       return customerId;
