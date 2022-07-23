@@ -250,32 +250,6 @@ function Checkout(props) {
     }
   }
 
-  // Create the payment intent with purchase details
-  // async function createPaymentIntent(customerId) {
-  //   try {
-  //     const totalWithoutDecimal = `${total}`.replace('.', '');
-  //     const response = await fetch(
-  //       '/.netlify/functions/create-payment-intent',
-  //       {
-  //         method: 'post',
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //         body: JSON.stringify({
-  //           amount: totalWithoutDecimal,
-  //           customer: customerId,
-  //           description: orderDescription,
-  //           metadata: orderMetaData
-  //         })
-  //       }
-  //     );
-
-  //     return await response.json();
-  //   } catch (err) {
-  //     return null;
-  //   }
-  // }
-
   // Retrieves a payment intent given the ID
   async function retrievePaymentIntent(paymentIntentId) {
     try {
