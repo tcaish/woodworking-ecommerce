@@ -98,6 +98,12 @@ function Support() {
         });
         setLoading(false);
       });
+    } else if (params.orderId && orders.length > 0) {
+      setFormInput({
+        ...formInput,
+        issue: 'Request Refund',
+        order_id: selectedOrder.id
+      });
     }
     // eslint-disable-next-line
   }, [user]);
