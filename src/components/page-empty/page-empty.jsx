@@ -7,9 +7,9 @@ import { Box, Center, Heading, Icon, Stack, Text } from '@chakra-ui/react';
 // Styles
 import './page-empty.scss';
 
-function PageEmpty({ icon, title, text, linkPath, linkText }) {
+function PageEmpty({ icon, title, text, linkPath, linkText, is404 = false }) {
   return (
-    <div className="page-empty-container">
+    <div className={`page-empty-container ${is404 && 'main-container'}`}>
       <Box>
         <Center h="400px" w="auto">
           <Stack spacing={2}>

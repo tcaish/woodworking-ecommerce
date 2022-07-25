@@ -32,22 +32,54 @@ const defaultFormInput = {
   message: ''
 };
 
+const defaultInvalidFormInputs = {
+  name: false,
+  email: false,
+  message: false
+};
+
 function Support() {
   const name = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
 
   const [formInput, setFormInput] = useState(defaultFormInput);
+  const [invalidFormInputs, setInvalidFormInputs] = useState(
+    defaultInvalidFormInputs
+  );
   const [submitting, setSubmitting] = useState(false);
 
   // Update form when user details become available if user is logged in
   useEffect(() => {
-    (name || email) && setFormInput({ ...formInput, name, email });
+    setFormInput({
+      ...formInput,
+      name: name ? name : '',
+      email: email ? email : ''
+    });
     // eslint-disable-next-line
   }, [name, email]);
+
+  // Validates the form input
+  function formIsValid() {
+    let valid = true;
+
+    if (!formInput.name || !formInput.email || !formInput.message) {
+      valid = false;
+    }
+
+    setInvalidFormInputs({
+      name: !formInput.name,
+      email: !formInput.email,
+      message: !formInput.message
+    });
+
+    return valid;
+  }
 
   // Submits the contact form
   async function submitForm(e) {
     e.preventDefault();
+
+    if (!formIsValid()) return;
 
     await fetch('/', {
       method: 'post',
@@ -71,7 +103,11 @@ function Support() {
         method="post"
         data-netlify="true"
       >
-        <FormControl className="support-margin-bottom" isRequired>
+        <FormControl
+          className="support-margin-bottom"
+          isRequired
+          isInvalid={invalidFormInputs.name}
+        >
           <FormLabel>Full Name</FormLabel>
           <Input
             type="text"
@@ -84,7 +120,11 @@ function Support() {
           />
         </FormControl>
 
-        <FormControl className="support-margin-bottom" isRequired>
+        <FormControl
+          className="support-margin-bottom"
+          isRequired
+          isInvalid={invalidFormInputs.email}
+        >
           <FormLabel>Email address</FormLabel>
           <Input
             type="email"
@@ -114,7 +154,11 @@ function Support() {
           </RadioGroup>
         </FormControl>
 
-        <FormControl className="support-margin-bottom" isRequired>
+        <FormControl
+          className="support-margin-bottom"
+          isRequired
+          isInvalid={invalidFormInputs.message}
+        >
           <FormLabel>Message</FormLabel>
           <Textarea
             name="message"
