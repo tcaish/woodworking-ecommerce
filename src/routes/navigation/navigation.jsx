@@ -24,7 +24,9 @@ import {
   selectUser,
   selectDisplayName,
   selectPhotoURL,
-  setUser
+  setUser,
+  setPhoneNumber,
+  setStripeCustomerId
 } from '../../redux/slices/userSlice';
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
 import {
@@ -32,6 +34,7 @@ import {
   selectCartQuantity,
   setCartProducts
 } from '../../redux/slices/cartSlice';
+import { setOrders } from '../../redux/slices/ordersSlice';
 
 // Components
 import Footer from '../../components/footer/footer';
@@ -76,6 +79,9 @@ function Navigation() {
         setExpanded(false);
 
         dispatch(setCartProducts([]));
+        dispatch(setOrders([]));
+        dispatch(setPhoneNumber(''));
+        dispatch(setStripeCustomerId(''));
         dispatch(setUser(null));
 
         setSigningOut(false);
