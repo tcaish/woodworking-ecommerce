@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 
 // React Redux
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import {
   Button,
   FormControl,
+  FormHelperText,
   FormLabel,
   Heading,
   Input,
@@ -20,6 +21,9 @@ import {
 // Bootstrap
 import { Col, Container, Row } from 'react-bootstrap';
 
+// Third party
+import Recaptcha from 'react-google-recaptcha';
+
 // Slices
 import { selectDisplayName, selectEmail } from '../../redux/slices/userSlice';
 
@@ -31,8 +35,10 @@ const defaultFormInput = {
   email: '',
   issue: '',
   message: '',
-  'form-name': 'contact'
+  'form-name': 'contact' // Netlify attribute
 };
+
+const RECAPTCHA_SITE_KEY = '6LcuXh0hAAAAAA6HUMcO2JdGxJNcTQKIGaeDgzoA';
 
 function Support() {
   const toast = useToast();
@@ -40,7 +46,9 @@ function Support() {
   const name = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
 
+  const recaptchaRef = createRef();
   const [formInput, setFormInput] = useState(defaultFormInput);
+  const [recaptchaVerified, setRecaptchaVerified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   // Update form when user details become available if user is logged in
@@ -57,18 +65,33 @@ function Support() {
   async function submitForm(e) {
     e.preventDefault();
 
-    if (!formInput.name || !formInput.email || !formInput.message) return;
+    if (
+      !formInput.name ||
+      !formInput.email ||
+      !formInput.message ||
+      !recaptchaVerified
+    )
+      return;
+
+    const recaptchaValue = recaptchaRef.current.getValue();
 
     setSubmitting(true);
 
     await fetch('/', {
       method: 'post',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formInput).toString()
+      body: new URLSearchParams({
+        ...formInput,
+        'g-recaptcha-response': recaptchaValue
+      }).toString()
     })
       .then((res) => {
         setSubmitting(false);
+
         setFormInput(defaultFormInput);
+        setRecaptchaVerified(false);
+        recaptchaRef.current.value = null;
+
         toast({
           title: 'Message Sent Successfully',
           description:
@@ -165,10 +188,20 @@ function Support() {
               />
             </FormControl>
 
-            <div
-              className="support-margin-bottom"
-              data-netlify-recaptcha="true"
-            ></div>
+            <FormControl className="support-margin-bottom">
+              <FormLabel>ReCaptcha</FormLabel>
+              <Recaptcha
+                ref={recaptchaRef}
+                sitekey={RECAPTCHA_SITE_KEY}
+                size="normal"
+                onChange={() => setRecaptchaVerified(true)}
+              />
+              {!recaptchaVerified && (
+                <FormHelperText className="recaptcha-helper-text">
+                  Please verify you are not a robot.
+                </FormHelperText>
+              )}
+            </FormControl>
 
             <Button isLoading={submitting} type="submit">
               Submit
