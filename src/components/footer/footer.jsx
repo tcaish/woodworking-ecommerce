@@ -26,7 +26,7 @@ function Footer() {
           <GridItem className="footer-link-align-center">
             <Link to={`/${NAVIGATION_PATHS.support}`}>Support</Link>
             {' • '}
-            <Link to={`/${NAVIGATION_PATHS.return}`}>Returns</Link>
+            <Link to={`/${NAVIGATION_PATHS.policies}`}>Policies</Link>
           </GridItem>
           <GridItem className="footer-link-align-right">
             <HStack spacing="15px">

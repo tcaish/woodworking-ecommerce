@@ -9,7 +9,7 @@ export const NAVIGATION_PATHS = {
   sign_in: 'sign-in',
   sign_up: 'sign-up',
   support: 'support',
-  return: 'return',
+  policies: 'policies',
   orders: 'orders'
 };
 

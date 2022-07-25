@@ -43,9 +43,9 @@ import {
   ProtectedNoUserRoute
 } from './routes/protected/protected';
 import Detail from './routes/shop/furniture/detail/detail';
-import Return from './routes/return/return';
 import Orders from './routes/orders/orders';
 import PageEmpty from './components/page-empty/page-empty';
+import Policies from './routes/policies/policies';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -129,17 +129,6 @@ function App() {
           }
         />
         <Route
-          path={`${NAVIGATION_PATHS.return}/:orderId`}
-          element={
-            <ProtectedUserRoute
-              user={user}
-              redirectPath={NAVIGATION_PATHS.sign_in}
-            >
-              <Return />
-            </ProtectedUserRoute>
-          }
-        />
-        <Route
           path={NAVIGATION_PATHS.sign_in}
           element={
             <ProtectedNoUserRoute>
@@ -149,6 +138,7 @@ function App() {
         />
         <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
         <Route path={NAVIGATION_PATHS.support} element={<Support />} />
+        <Route path={NAVIGATION_PATHS.policies} element={<Policies />} />
         <Route
           path="*"
           element={
