@@ -15,6 +15,7 @@ React Router - https://reactrouter.com/
 SASS
 
 ### Third-Party
+React Google ReCaptcha - https://www.npmjs.com/package/react-google-recaptcha<br/>
 React Icons - https://react-icons.github.io/react-icons<br/>
 React Phone Number - https://www.npmjs.com/package/react-phone-number-input<br/>
 React Ratings - https://github.com/ekeric13/react-ratings-declarative
