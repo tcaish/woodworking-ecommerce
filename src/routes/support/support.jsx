@@ -29,7 +29,8 @@ const defaultFormInput = {
   name: '',
   email: '',
   issue: 'Products',
-  message: ''
+  message: '',
+  'form-name': 'contact'
 };
 
 const defaultInvalidFormInputs = {
@@ -97,14 +98,7 @@ function Support() {
   }
   return (
     <Container className="main-container">
-      <form
-        className="support-form"
-        name="contact"
-        method="post"
-        data-netlify="true"
-      >
-        <input type="hidden" name="form-name" value="contact" />
-
+      <form className="support-form" method="post" data-netlify="true">
         <FormControl
           className="support-margin-bottom"
           isRequired
