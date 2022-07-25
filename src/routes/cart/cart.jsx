@@ -113,8 +113,8 @@ function Cart() {
         dispatch(setCartProducts(cartProds));
 
         // If there are cart products and the first one has a promo code
-        if (cartProds.length > 0 && cartProds[0].promoCode) {
-          getPromoCodeById(cartProds[0].promoCode).then((res) => {
+        if (cartProds.length > 0 && cartProds[0].promo_code) {
+          getPromoCodeById(cartProds[0].promo_code).then((res) => {
             // If there is no error
             if (!res.error) {
               dispatch(setPromoCode(res));

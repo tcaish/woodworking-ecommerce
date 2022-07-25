@@ -314,13 +314,13 @@ export async function addPromoCodeToCartProducts(promoCodeId, userId) {
   const querySnapshot = await getDocs(q);
 
   const cartItem = querySnapshot.docs[0].data();
-  if (cartItem.promoCode === promoCodeId) {
+  if (cartItem.promo_code === promoCodeId) {
     return { error: 'in_use' };
   }
 
   querySnapshot.forEach((document) => {
     const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
-    batch.update(cartProductRef, { promoCode: promoCodeId });
+    batch.update(cartProductRef, { promo_code: promoCodeId });
   });
 
   return await batch
