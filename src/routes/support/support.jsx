@@ -91,6 +91,11 @@ function Support() {
 
       getOrder(user.uid, params.orderId).then((res) => {
         setSelectedOrder(res);
+        setFormInput({
+          ...formInput,
+          issue: 'Request Refund',
+          order_id: res.id
+        });
         setLoading(false);
       });
     }
