@@ -4,12 +4,14 @@
   margin-bottom: 20px;
 }
 
-.support-form {
-  button {
-    background-color: $brand-yellow !important;
+.support-container {
+  .support-form {
+    button {
+      background-color: $brand-yellow !important;
 
-    &:hover {
-      opacity: 0.75;
+      &:hover {
+        opacity: 0.75;
+      }
     }
   }
 }

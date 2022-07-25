@@ -9,16 +9,16 @@ import {
   Button,
   FormControl,
   FormLabel,
-  HStack,
+  Heading,
   Input,
-  Radio,
-  RadioGroup,
+  Select,
+  Text,
   Textarea,
   useToast
 } from '@chakra-ui/react';
 
 // Bootstrap
-import { Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 // Slices
 import { selectDisplayName, selectEmail } from '../../redux/slices/userSlice';
@@ -59,6 +59,8 @@ function Support() {
 
     if (!formInput.name || !formInput.email || !formInput.message) return;
 
+    setSubmitting(true);
+
     await fetch('/', {
       method: 'post',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -90,68 +92,86 @@ function Support() {
   }
   return (
     <Container className="main-container">
-      <form className="support-form" method="post" onSubmit={submitForm}>
-        <input type="hidden" name="form-name" value="contact" />
+      <Row className="support-container">
+        <Col></Col>
+        <Col sm={12} lg={5}>
+          <Heading>Contact Us</Heading>
+          <Text className="support-margin-bottom">
+            If you're having an issue with any aspect of this website, please
+            reach out to us via the contact form below. We will get back to you
+            within 1-2 business days!
+          </Text>
 
-        <FormControl className="support-margin-bottom" isRequired>
-          <FormLabel>Full Name</FormLabel>
-          <Input
-            type="text"
-            name="name"
-            placeholder="e.g. John Doe"
-            onChange={(e) =>
-              setFormInput({ ...formInput, name: e.target.value })
-            }
-            value={formInput.name}
-          />
-        </FormControl>
+          <form className="support-form" method="post" onSubmit={submitForm}>
+            <input type="hidden" name="form-name" value="contact" />
 
-        <FormControl className="support-margin-bottom" isRequired>
-          <FormLabel>Email address</FormLabel>
-          <Input
-            type="email"
-            name="email"
-            placeholder="e.g. john.doe@gmail.com"
-            onChange={(e) =>
-              setFormInput({ ...formInput, email: e.target.value })
-            }
-            value={formInput.email}
-          />
-        </FormControl>
+            <FormControl className="support-margin-bottom" isRequired>
+              <FormLabel>Full Name</FormLabel>
+              <Input
+                type="text"
+                name="name"
+                placeholder="e.g. John Doe"
+                variant="filled"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, name: e.target.value })
+                }
+                value={formInput.name}
+              />
+            </FormControl>
 
-        <FormControl className="support-margin-bottom" as="fieldset" isRequired>
-          <FormLabel as="legend">Type of Issue</FormLabel>
-          <RadioGroup
-            name="issue[]"
-            onChange={(value) => setFormInput({ ...formInput, issue: value })}
-            value={formInput.issue}
-          >
-            <HStack spacing="24px">
-              <Radio value="Products">Products</Radio>
-              <Radio value="Orders">Orders</Radio>
-              <Radio value="Profile">Profile</Radio>
-              <Radio value="Website">Website</Radio>
-              <Radio value="Other">Other</Radio>
-            </HStack>
-          </RadioGroup>
-        </FormControl>
+            <FormControl className="support-margin-bottom" isRequired>
+              <FormLabel>Email address</FormLabel>
+              <Input
+                type="email"
+                name="email"
+                placeholder="e.g. john.doe@gmail.com"
+                variant="filled"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, email: e.target.value })
+                }
+                value={formInput.email}
+              />
+            </FormControl>
 
-        <FormControl className="support-margin-bottom" isRequired>
-          <FormLabel>Message</FormLabel>
-          <Textarea
-            name="message"
-            placeholder="Tell us the problem you are experiencing..."
-            onChange={(e) =>
-              setFormInput({ ...formInput, message: e.target.value })
-            }
-            value={formInput.message}
-          />
-        </FormControl>
+            <FormControl className="support-margin-bottom" isRequired>
+              <FormLabel as="legend">Type of Issue</FormLabel>
+              <Select
+                name="issue[]"
+                placeholder="Select type of issue"
+                variant="filled"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, issue: e.target.value })
+                }
+                value={formInput.issue}
+              >
+                <option value="Products">Products</option>
+                <option value="Orders">Orders</option>
+                <option value="Profile">Profile</option>
+                <option value="Website">Website</option>
+                <option value="Other">Other</option>
+              </Select>
+            </FormControl>
 
-        <Button isLoading={submitting} type="submit">
-          Submit
-        </Button>
-      </form>
+            <FormControl className="support-margin-bottom" isRequired>
+              <FormLabel>Message</FormLabel>
+              <Textarea
+                name="message"
+                placeholder="Tell us the problem you are experiencing..."
+                variant="filled"
+                onChange={(e) =>
+                  setFormInput({ ...formInput, message: e.target.value })
+                }
+                value={formInput.message}
+              />
+            </FormControl>
+
+            <Button isLoading={submitting} type="submit">
+              Submit
+            </Button>
+          </form>
+        </Col>
+        <Col></Col>
+      </Row>
     </Container>
   );
 }
