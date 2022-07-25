@@ -245,9 +245,9 @@ function Orders() {
                         Receipt
                       </Button>
                       <span>&nbsp;&bull;&nbsp;</span>
-                      {/* <Link to={`/${NAVIGATION_PATHS.return}/${order.id}`}>
+                      <Link to={`/${NAVIGATION_PATHS.support}/${order.id}`}>
                         <Button variant="link">Request Refund</Button>
-                      </Link> */}
+                      </Link>
                     </Td>
                   </Tr>
                 ))}

@@ -249,6 +249,8 @@ export async function getPromoCodeById(promoCodeId) {
 
 // Returns the orders for a user
 export async function getOrders(userId) {
+  if (!userId) return;
+
   const orders = [];
 
   const ordersRef = collection(
@@ -264,6 +266,28 @@ export async function getOrders(userId) {
     orders.push(data);
   });
   return orders;
+}
+
+// Returns an order given the order ID
+export async function getOrder(userId, orderId) {
+  if (!userId || !orderId) return;
+
+  const orderRef = doc(
+    firestore,
+    'users',
+    userId,
+    'orders',
+    orderId
+  ).withConverter(orderConverter);
+  const orderSnapshot = await getDoc(orderRef);
+
+  if (orderSnapshot.exists()) {
+    let order = orderSnapshot.data();
+    order.id = orderSnapshot.id;
+    return order;
+  }
+
+  return null;
 }
 
 // Adds a product to the user's cart

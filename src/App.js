@@ -138,6 +138,10 @@ function App() {
         />
         <Route path={NAVIGATION_PATHS.sign_up} element={<SignUp />} />
         <Route path={NAVIGATION_PATHS.support} element={<Support />} />
+        <Route
+          path={`${NAVIGATION_PATHS.support}/:orderId`}
+          element={<Support />}
+        />
         <Route path={NAVIGATION_PATHS.policies} element={<Policies />} />
         <Route
           path="*"
