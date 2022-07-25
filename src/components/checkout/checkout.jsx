@@ -170,16 +170,8 @@ function Checkout(props) {
     let status = 'error';
 
     if (paymentResult.error) {
-      if (paymentResult.error.type === 'card_error') {
-        title = 'Card Error';
-        description = `${paymentResult.error.message}`;
-        paymentResult.error.decline_code &&
-          (description += ` | ${paymentResult.error.decline_code}`);
-      } else {
-        title = 'Payment Failed';
-        description =
-          'There was error processing your payment. Please try again or contact support.';
-      }
+      title = 'Payment Failed';
+      description = `${paymentResult.error.message}`;
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
         handlePaymentSuccess(paymentResult.paymentIntent);
