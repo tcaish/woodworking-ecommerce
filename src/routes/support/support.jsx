@@ -42,6 +42,7 @@ function Support() {
   // Update form when user details become available if user is logged in
   useEffect(() => {
     (name || email) && setFormInput({ ...formInput, name, email });
+    // eslint-disable-next-line
   }, [name, email]);
 
   // Submits the contact form

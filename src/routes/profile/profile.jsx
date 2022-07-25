@@ -68,7 +68,7 @@ function Profile() {
   useEffect(() => {
     setProfileLoading(true);
 
-    if (displayName) {
+    if (displayName || photoURL || email || phoneNumber) {
       setFormInput({
         displayName,
         photoURL,
