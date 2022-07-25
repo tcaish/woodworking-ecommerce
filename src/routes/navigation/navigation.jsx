@@ -122,14 +122,14 @@ function Navigation() {
                 Furniture
               </Link>
               <Link
-                className="nav-link"
+                className="nav-link disabled-link"
                 to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_custom}`}
                 onClick={() => setExpanded(false)}
               >
                 Custom Builds
               </Link>
               <Link
-                className="nav-link"
+                className="nav-link disabled-link"
                 to={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_restoration}`}
                 onClick={() => setExpanded(false)}
               >

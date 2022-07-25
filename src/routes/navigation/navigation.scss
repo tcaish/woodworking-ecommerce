@@ -20,6 +20,12 @@
     }
   }
 
+  .disabled-link {
+    color: grey !important;
+    cursor: default;
+    pointer-events: none;
+  }
+
   .navbar-right-link {
     margin-right: 10px;
   }
