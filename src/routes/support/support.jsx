@@ -98,7 +98,9 @@ function Support() {
   }
   return (
     <Container className="main-container">
-      <form className="support-form" method="post" data-netlify="true">
+      <form className="support-form" method="post" onSubmit={submitForm}>
+        <input type="hidden" name="form-name" value="contact" />
+
         <FormControl
           className="support-margin-bottom"
           isRequired
@@ -166,7 +168,7 @@ function Support() {
           />
         </FormControl>
 
-        <Button isLoading={submitting} onClick={submitForm}>
+        <Button isLoading={submitting} type="submit">
           Submit
         </Button>
       </form>
