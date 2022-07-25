@@ -103,6 +103,8 @@ function Support() {
         method="post"
         data-netlify="true"
       >
+        <input type="hidden" name="form-name" value="contact" />
+
         <FormControl
           className="support-margin-bottom"
           isRequired
