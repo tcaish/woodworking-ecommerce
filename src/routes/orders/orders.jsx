@@ -160,7 +160,7 @@ function Orders() {
 
   // Returns all the titles for the products purchased joined by commas
   function getProductTitlesForOrderAtIndex(index) {
-    const titles = orders[index].cartProducts.map((cartProductId) => {
+    const titles = orders[index].cart_products.map((cartProductId) => {
       const cartProduct = getCartProduct(cartProductId);
       const product = getProduct(products, cartProduct.product);
       return product.title;
@@ -235,10 +235,12 @@ function Orders() {
                       <Button
                         variant="link"
                         isLoading={
-                          chosenReceipt === order.stripeOrderId &&
+                          chosenReceipt === order.stripe_order_id &&
                           receiptLoading
                         }
-                        onClick={() => getReceiptForOrder(order.stripeOrderId)}
+                        onClick={() =>
+                          getReceiptForOrder(order.stripe_order_id)
+                        }
                       >
                         Receipt
                       </Button>

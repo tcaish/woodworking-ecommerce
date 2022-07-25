@@ -1,21 +1,21 @@
 export class Order {
   constructor(
-    cartProducts,
-    discountTotal,
+    cart_products,
+    discount_total,
     id,
     ordered,
     refunded,
-    refundStatus,
-    stripeOrderId,
+    refund_status,
+    stripe_order_id,
     total
   ) {
-    this.cartProducts = cartProducts;
-    this.discountTotal = discountTotal;
+    this.cart_products = cart_products;
+    this.discount_total = discount_total;
     this.id = id;
     this.ordered = ordered;
     this.refunded = refunded;
-    this.refundStatus = refundStatus;
-    this.stripeOrderId = stripeOrderId;
+    this.refund_status = refund_status;
+    this.stripe_order_id = stripe_order_id;
     this.total = total;
   }
 
@@ -38,26 +38,26 @@ export class Order {
 export const orderConverter = {
   toFirestore: (order) => {
     return {
-      cartProducts: order.cartProducts,
-      discountTotal: order.discountTotal,
+      cart_products: order.cart_products,
+      discount_total: order.discount_total,
       id: order.id,
       ordered: order.ordered,
       refunded: order.refunded,
-      refundStatus: order.refundStatus,
-      stripeOrderId: order.stripeOrderId,
+      refund_status: order.refund_status,
+      stripe_order_id: order.stripe_order_id,
       total: order.total
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     return new Order(
-      data.cartProducts,
-      data.discountTotal,
+      data.cart_products,
+      data.discount_total,
       data.id,
       data.ordered,
       data.refunded,
-      data.refundStatus,
-      data.stripeOrderId,
+      data.refund_status,
+      data.stripe_order_id,
       data.total
     );
   }
