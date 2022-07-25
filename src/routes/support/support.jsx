@@ -29,7 +29,7 @@ import './support.scss';
 const defaultFormInput = {
   name: '',
   email: '',
-  issue: 'Products',
+  issue: '',
   message: '',
   'form-name': 'contact'
 };
@@ -97,9 +97,9 @@ function Support() {
         <Col sm={12} lg={5}>
           <Heading>Contact Us</Heading>
           <Text className="support-margin-bottom">
-            If you're having an issue with any aspect of this website, please
-            reach out to us via the contact form below. We will get back to you
-            within 1-2 business days!
+            If you're having an issue with any aspect of this website or your
+            account, please reach out to us via the contact form below. We will
+            get back to you within 1-2 business days!
           </Text>
 
           <form className="support-form" method="post" onSubmit={submitForm}>
@@ -164,6 +164,11 @@ function Support() {
                 value={formInput.message}
               />
             </FormControl>
+
+            <div
+              className="support-margin-bottom"
+              data-netlify-recaptcha="true"
+            ></div>
 
             <Button isLoading={submitting} type="submit">
               Submit

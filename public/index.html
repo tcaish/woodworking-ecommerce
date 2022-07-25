@@ -48,11 +48,18 @@
     <div id="root"></div>
 
     <!--This is a hidden form to work with Netlify Forms-->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <form
+      name="contact"
+      netlify
+      netlify-honeypot="bot-field"
+      data-netlify-recaptcha="true"
+      hidden
+    >
       <input type="text" name="name" />
       <input type="email" name="email" />
       <select name="issue" />
       <textarea name="message"></textarea>
+      <div data-netlify-recaptcha="true"></div>
     </form>
   </body>
 </html>
