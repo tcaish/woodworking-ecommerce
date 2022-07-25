@@ -1,11 +1,14 @@
+// Bootstrap
+import { Container } from 'react-bootstrap';
+
 // Styles
 import './policies.scss';
 
 function Policies() {
   return (
-    <div className="main-container">
+    <Container className="main-container">
       <h1>Test</h1>
-    </div>
+    </Container>
   );
 }
 
