@@ -1,5 +1,5 @@
 // React
-import { createRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // React Redux
 import { useSelector } from 'react-redux';
@@ -46,7 +46,6 @@ function Support() {
   const name = useSelector(selectDisplayName);
   const email = useSelector(selectEmail);
 
-  const recaptchaRef = createRef();
   const [formInput, setFormInput] = useState(defaultFormInput);
   const [recaptchaVerified, setRecaptchaVerified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -72,8 +71,6 @@ function Support() {
       !recaptchaVerified
     )
       return;
-
-    const recaptchaValue = recaptchaRef.current.getValue();
 
     setSubmitting(true);
 
@@ -186,10 +183,10 @@ function Support() {
 
             <FormControl className="support-margin-bottom">
               <Recaptcha
-                ref={recaptchaRef}
                 sitekey={RECAPTCHA_SITE_KEY}
                 size="normal"
                 onChange={() => setRecaptchaVerified(true)}
+                onExpired={() => setRecaptchaVerified(false)}
               />
               {!recaptchaVerified && (
                 <FormHelperText className="recaptcha-helper-text">
