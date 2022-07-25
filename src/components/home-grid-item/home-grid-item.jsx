@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // Chakra
-import { Button, Center, GridItem, VStack } from '@chakra-ui/react';
+import { Button, Center, GridItem, Tooltip, VStack } from '@chakra-ui/react';
 
 // Slices
 import { selectScreenWidth } from '../../redux/slices/screenSlice';
@@ -27,6 +27,7 @@ function HomeGridItem({
   title,
   titleColor = 'black',
   buttonTitle,
+  buttonIsDisabled = false,
   path,
   image,
   rowSpan,
@@ -60,9 +61,22 @@ function HomeGridItem({
         <VStack spacing={4} direction="row">
           <h1 style={{ color: `${titleColor}` }}>{title}</h1>
           <Link className="home-grid-item-link" to={path}>
-            <Button colorScheme="gray" variant="solid" size={buttonSize()}>
-              {buttonTitle}
-            </Button>
+            <Tooltip
+              hasArrow
+              shouldWrapChildren
+              mt="5"
+              label="This feature is currently disabled."
+              isDisabled={!buttonIsDisabled}
+            >
+              <Button
+                colorScheme="gray"
+                variant="solid"
+                size={buttonSize()}
+                isDisabled={buttonIsDisabled}
+              >
+                {buttonTitle}
+              </Button>
+            </Tooltip>
           </Link>
         </VStack>
       </Center>

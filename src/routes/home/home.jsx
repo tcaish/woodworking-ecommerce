@@ -37,6 +37,7 @@ function Home() {
         <HomeGridItem
           title="Custom Builds"
           buttonTitle="Submit Build"
+          buttonIsDisabled={true}
           path={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_custom}`}
           image={bg2}
           rowSpan={null}
@@ -45,6 +46,7 @@ function Home() {
         <HomeGridItem
           title="Restoration"
           buttonTitle="Submit Restoration"
+          buttonIsDisabled={true}
           path={`${NAVIGATION_PATHS.shop}/${NAVIGATION_PATHS.shop_restoration}`}
           image={bg1}
           rowSpan={null}
