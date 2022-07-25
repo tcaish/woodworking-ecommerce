@@ -80,17 +80,13 @@ function Support() {
     await fetch('/', {
       method: 'post',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        ...formInput,
-        'g-recaptcha-response': recaptchaValue
-      }).toString()
+      body: new URLSearchParams(formInput).toString()
     })
       .then((res) => {
         setSubmitting(false);
 
         setFormInput(defaultFormInput);
         setRecaptchaVerified(false);
-        recaptchaRef.current.value = null;
 
         toast({
           title: 'Message Sent Successfully',
@@ -189,7 +185,6 @@ function Support() {
             </FormControl>
 
             <FormControl className="support-margin-bottom">
-              <FormLabel>ReCaptcha</FormLabel>
               <Recaptcha
                 ref={recaptchaRef}
                 sitekey={RECAPTCHA_SITE_KEY}
