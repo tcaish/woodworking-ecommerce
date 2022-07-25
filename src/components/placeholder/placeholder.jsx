@@ -52,7 +52,7 @@ export function PlaceholderProfileDesktop() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={6} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+          <Placeholder.Button className="button-placeholder" xs={2} />
         </div>
 
         <div className="profile-form-control">
@@ -62,7 +62,7 @@ export function PlaceholderProfileDesktop() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={6} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+          <Placeholder.Button className="button-placeholder" xs={2} />
         </div>
 
         <div className="profile-form-control">
@@ -72,7 +72,7 @@ export function PlaceholderProfileDesktop() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={6} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+          <Placeholder.Button className="button-placeholder" xs={2} />
         </div>
 
         <div className="profile-form-control">
@@ -82,7 +82,7 @@ export function PlaceholderProfileDesktop() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={6} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={2} />
+          <Placeholder.Button className="button-placeholder" xs={2} />
         </div>
       </GridItem>
 
@@ -169,7 +169,7 @@ export function PlaceholderProfileMobile() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={8} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+          <Placeholder.Button className="button-placeholder" xs={4} />
         </div>
 
         <div className="profile-form-control">
@@ -179,7 +179,7 @@ export function PlaceholderProfileMobile() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={8} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+          <Placeholder.Button className="button-placeholder" xs={4} />
         </div>
 
         <div className="profile-form-control">
@@ -189,7 +189,7 @@ export function PlaceholderProfileMobile() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={8} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+          <Placeholder.Button className="button-placeholder" xs={4} />
         </div>
 
         <div className="profile-form-control">
@@ -199,7 +199,7 @@ export function PlaceholderProfileMobile() {
           <Placeholder as="p" animation="wave">
             <Placeholder xs={8} />
           </Placeholder>
-          <Placeholder.Button className="profile-button-placeholder" xs={4} />
+          <Placeholder.Button className="button-placeholder" xs={4} />
         </div>
       </GridItem>
     </Grid>
@@ -521,5 +521,58 @@ export function PlaceholderOrders() {
         </Tbody>
       </Table>
     </TableContainer>
+  );
+}
+
+export function PlaceholderSupport() {
+  return (
+    <>
+      <Placeholder
+        className="placeholder-margin-bottom"
+        as="p"
+        animation="wave"
+      >
+        <Placeholder xs={6} size="lg" />
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+
+      <Placeholder
+        className="placeholder-margin-bottom"
+        as="p"
+        animation="wave"
+      >
+        <Placeholder xs={6} size="lg" />
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+
+      <Placeholder
+        className="placeholder-margin-bottom"
+        as="p"
+        animation="wave"
+      >
+        <Placeholder xs={6} size="lg" />
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+
+      <Placeholder
+        className="placeholder-margin-bottom"
+        as="p"
+        animation="wave"
+      >
+        <Placeholder xs={6} size="lg" />
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+
+      <Placeholder
+        className="placeholder-margin-bottom"
+        as="p"
+        animation="wave"
+      >
+        <Placeholder xs={6} size="lg" />
+        <Placeholder xs={10} size="sm" />
+      </Placeholder>
+
+      <Placeholder.Button className="button-placeholder" xs={3} />
+    </>
   );
 }

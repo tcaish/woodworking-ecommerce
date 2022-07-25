@@ -12,7 +12,11 @@
   }
 }
 
-.profile-button-placeholder:disabled {
+.placeholder-margin-bottom {
+  margin-bottom: 20px;
+}
+
+.button-placeholder:disabled {
   background-color: $brand-yellow !important;
   border-color: $brand-yellow !important;
 }
