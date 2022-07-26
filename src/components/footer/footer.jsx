@@ -22,7 +22,7 @@ function Footer() {
     <div className="footer-container">
       <Container>
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-          <GridItem>Copyright © 2022 Caish Enterprises, LLC</GridItem>
+          <GridItem>Copyright © 2022 Timothy Caish</GridItem>
           <GridItem className="footer-link-align-center">
             <Link to={`/${NAVIGATION_PATHS.support}`}>Support</Link>
             {' • '}
