@@ -33,13 +33,6 @@ function DeliveryPolicy() {
         <Text as="mark">$0.75</Text> cents per extra mile we will have to drive.
       </Text>
 
-      <Heading fontSize="2xl">Delivery Date</Heading>
-      <Text fontSize="lg" marginBottom="20px">
-        Depending on the item(s) you purchased, the delivery date will vary.
-        Once we receive your order, we will calculate a delivery date and email
-        you with those details.
-      </Text>
-
       <Heading fontSize="2xl">Contact Us</Heading>
       <Text fontSize="lg">
         If you have any questions regarding the above policy, please reach out
