@@ -1,0 +1,9 @@
+@import '../../exports/constants.scss';
+
+.policy-support-link {
+  color: $brand-dark-yellow;
+
+  &:hover {
+    color: $brand-yellow;
+  }
+}

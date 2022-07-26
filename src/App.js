@@ -52,6 +52,7 @@ import { NAVIGATION_PATHS } from './exports/constants';
 
 // Styles
 import './App.scss';
+import RefundReturnPolicy from './routes/policies/refund-return-policy/refund-return-policy';
 
 function App() {
   const dispatch = useDispatch();
@@ -142,7 +143,13 @@ function App() {
           path={`${NAVIGATION_PATHS.support}/:orderId`}
           element={<Support />}
         />
-        <Route path={NAVIGATION_PATHS.policies} element={<Policies />} />
+        <Route path={NAVIGATION_PATHS.policies}>
+          <Route index element={<Policies />} />
+          <Route
+            path={NAVIGATION_PATHS.policy_refund_return}
+            element={<RefundReturnPolicy />}
+          />
+        </Route>
         <Route
           path="*"
           element={

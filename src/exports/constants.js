@@ -10,6 +10,7 @@ export const NAVIGATION_PATHS = {
   sign_up: 'sign-up',
   support: 'support',
   policies: 'policies',
+  policy_refund_return: 'refund-return',
   orders: 'orders'
 };
 
