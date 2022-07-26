@@ -7,9 +7,6 @@ import { RiRefund2Line } from 'react-icons/ri';
 // Chakra
 import { Heading, List } from '@chakra-ui/react';
 
-// Bootstrap
-import { Container } from 'react-bootstrap';
-
 // Exports
 import { NAVIGATION_PATHS } from '../../exports/constants';
 
