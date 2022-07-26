@@ -46,13 +46,14 @@ import Detail from './routes/shop/furniture/detail/detail';
 import Orders from './routes/orders/orders';
 import PageEmpty from './components/page-empty/page-empty';
 import Policies from './routes/policies/policies';
+import RefundReturnPolicy from './routes/policies/refund-return-policy/refund-return-policy';
+import DeliveryPolicy from './routes/policies/delivery-policy/delivery-policy';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
 
 // Styles
 import './App.scss';
-import RefundReturnPolicy from './routes/policies/refund-return-policy/refund-return-policy';
 
 function App() {
   const dispatch = useDispatch();
@@ -148,6 +149,10 @@ function App() {
           <Route
             path={NAVIGATION_PATHS.policy_refund_return}
             element={<RefundReturnPolicy />}
+          />
+          <Route
+            path={NAVIGATION_PATHS.policy_delivery}
+            element={<DeliveryPolicy />}
           />
         </Route>
         <Route
