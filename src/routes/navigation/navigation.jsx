@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // React Router
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,6 +50,7 @@ import './navigation.scss';
 import './navigation.mobile.scss';
 
 function Navigation() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -67,6 +68,12 @@ function Navigation() {
     if (cartProducts.length === 0 && user)
       getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
   }, [cartProducts.length, user, dispatch]);
+
+  // Handles what happens when a dropdown menu item is selected
+  function handleDropdownItemSelect(eventKey) {
+    navigate(eventKey);
+    setExpanded(false);
+  }
 
   // Handles signing the user out
   async function handleSigningOut() {
@@ -136,7 +143,7 @@ function Navigation() {
                 Restoration
               </Link>
             </Nav>
-            <Nav>
+            <Nav onSelect={handleDropdownItemSelect}>
               <NavDropdown
                 className="avatar-dropdown-link"
                 title={
@@ -149,34 +156,27 @@ function Navigation() {
                   />
                 }
               >
-                <Link
-                  className="navbar-right-link dropdown-item"
-                  to={
+                <NavDropdown.Item
+                  eventKey={
                     user ? NAVIGATION_PATHS.profile : NAVIGATION_PATHS.sign_in
                   }
-                  onClick={() => setExpanded(false)}
                 >
                   {user ? 'Profile' : 'Sign In'}
-                </Link>
+                </NavDropdown.Item>
 
                 {user && (
-                  <Link
-                    className="dropdown-item"
-                    to={NAVIGATION_PATHS.orders}
-                    onClick={() => setExpanded(false)}
-                  >
+                  <NavDropdown.Item eventKey={NAVIGATION_PATHS.orders}>
                     Orders
-                  </Link>
+                  </NavDropdown.Item>
                 )}
 
                 {user && (
-                  <Link
-                    className="dropdown-item"
-                    to={NAVIGATION_PATHS.home}
+                  <NavDropdown.Item
+                    eventKey={NAVIGATION_PATHS.home}
                     onClick={handleSigningOut}
                   >
                     Sign Out {signingOut && <Spinner size="sm" />}
-                  </Link>
+                  </NavDropdown.Item>
                 )}
               </NavDropdown>
               <Link
