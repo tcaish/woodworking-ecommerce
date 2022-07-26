@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // React Router
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 // Chakra
 import {
@@ -41,6 +41,9 @@ import {
 } from '../../redux/slices/userSlice';
 import { selectOrders } from '../../redux/slices/ordersSlice';
 
+// Exports
+import { NAVIGATION_PATHS } from '../../exports/constants';
+
 // Styles
 import './support.scss';
 
@@ -55,6 +58,7 @@ const defaultFormInput = {
 const RECAPTCHA_SITE_KEY = '6LcuXh0hAAAAAA6HUMcO2JdGxJNcTQKIGaeDgzoA';
 
 function Support() {
+  const location = useLocation();
   const params = useParams();
   const toast = useToast();
 
@@ -73,16 +77,6 @@ function Support() {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Update form when user details become available if user is logged in
-  useEffect(() => {
-    setFormInput({
-      ...formInput,
-      name: name ? name : '',
-      email: email ? email : ''
-    });
-    // eslint-disable-next-line
-  }, [name, email]);
-
   // Fetches the order if there are no orders loaded
   useEffect(() => {
     // If order ID is in URL, there's a user, and there are no orders
@@ -93,20 +87,32 @@ function Support() {
         setSelectedOrder(res);
         setFormInput({
           ...formInput,
+          name,
+          email,
           issue: 'Request Refund',
           order_id: res.id
         });
         setLoading(false);
       });
-    } else if (params.orderId && orders.length > 0) {
+    } else if (params.orderId && selectedOrder && orders.length > 0) {
       setFormInput({
         ...formInput,
+        name,
+        email,
         issue: 'Request Refund',
         order_id: selectedOrder.id
       });
+    } else if (location.pathname === `/${NAVIGATION_PATHS.support}`) {
+      setSelectedOrder(null);
+      setFormInput({
+        ...formInput,
+        name,
+        email,
+        issue: ''
+      });
     }
     // eslint-disable-next-line
-  }, [user]);
+  }, [user, name, email, location]);
 
   // Submits the contact form
   async function submitForm(e) {
