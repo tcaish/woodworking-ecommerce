@@ -48,6 +48,7 @@ import PageEmpty from './components/page-empty/page-empty';
 import Policies from './routes/policies/policies';
 import RefundReturnPolicy from './routes/policies/refund-return-policy/refund-return-policy';
 import DeliveryPolicy from './routes/policies/delivery-policy/delivery-policy';
+import CancellationPolicy from './routes/policies/cancellation-policy/cancellation-policy';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -153,6 +154,10 @@ function App() {
           <Route
             path={NAVIGATION_PATHS.policy_delivery}
             element={<DeliveryPolicy />}
+          />
+          <Route
+            path={NAVIGATION_PATHS.policy_cancellation}
+            element={<CancellationPolicy />}
           />
         </Route>
         <Route

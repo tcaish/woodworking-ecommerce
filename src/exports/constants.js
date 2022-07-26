@@ -12,6 +12,7 @@ export const NAVIGATION_PATHS = {
   policies: 'policies',
   policy_refund_return: 'refund-return',
   policy_delivery: 'delivery',
+  policy_cancellation: 'cancellation',
   orders: 'orders'
 };
 
