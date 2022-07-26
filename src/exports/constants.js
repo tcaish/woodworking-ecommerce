@@ -13,6 +13,7 @@ export const NAVIGATION_PATHS = {
   policy_refund_return: 'refund-return',
   policy_delivery: 'delivery',
   policy_cancellation: 'cancellation',
+  policy_privacy: 'privacy',
   orders: 'orders'
 };
 

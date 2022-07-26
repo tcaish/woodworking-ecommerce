@@ -49,6 +49,7 @@ import Policies from './routes/policies/policies';
 import RefundReturnPolicy from './routes/policies/refund-return-policy/refund-return-policy';
 import DeliveryPolicy from './routes/policies/delivery-policy/delivery-policy';
 import CancellationPolicy from './routes/policies/cancellation-policy/cancellation-policy';
+import PrivacyPolicy from './routes/policies/privacy-policy/privacy-policy';
 
 // Exports
 import { NAVIGATION_PATHS } from './exports/constants';
@@ -158,6 +159,10 @@ function App() {
           <Route
             path={NAVIGATION_PATHS.policy_cancellation}
             element={<CancellationPolicy />}
+          />
+          <Route
+            path={NAVIGATION_PATHS.policy_privacy}
+            element={<PrivacyPolicy />}
           />
         </Route>
         <Route
