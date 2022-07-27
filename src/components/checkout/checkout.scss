@@ -5,8 +5,20 @@
     color: rgb(207, 0, 0);
   }
 
+  .checkout-policy-checkbox {
+    margin-top: 10px;
+
+    .checkout-policy-link {
+      color: $brand-dark-yellow;
+
+      &:hover {
+        color: $brand-yellow;
+      }
+    }
+  }
+
   .checkout-total-pay-container {
-    margin-top: 40px;
+    margin-top: 20px;
     text-align: center;
 
     h2 > span {

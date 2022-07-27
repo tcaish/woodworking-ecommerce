@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 
 // React Router
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,7 @@ import { IoMdLock } from 'react-icons/io';
 import {
   Button,
   Center,
+  Checkbox,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -103,6 +104,8 @@ function Checkout(props) {
   const [phoneInvalid, setPhoneInvalid] = useState(false);
   const [cardError, setCardError] = useState('');
   const [cardEmpty, setCardEmpty] = useState(true);
+  const [policyChecked, setPolicyChecked] = useState(false);
+  const [policyCheckInvalid, setPolicyCheckInvalid] = useState(false);
   const [placingOrder, setPlacingOrder] = useState(false);
 
   const card_options = {
@@ -132,6 +135,7 @@ function Checkout(props) {
     setEmailInvalid(false);
     setPhoneInvalid(false);
     setCardError('');
+    setPolicyCheckInvalid(false);
   }
 
   // Returns whether or not the inputs are invalid in order to submit form
@@ -156,6 +160,10 @@ function Checkout(props) {
     }
     if (cardError || cardEmpty) {
       !cardError && setCardError('Please enter your credit card information.');
+      formValid = false;
+    }
+    if (!policyChecked) {
+      setPolicyCheckInvalid(true);
       formValid = false;
     }
 
@@ -439,6 +447,44 @@ function Checkout(props) {
         <FormHelperText className="checkout-card-error-text">
           {cardError}
         </FormHelperText>
+      </FormControl>
+
+      <FormControl isRequired isInvalid={policyCheckInvalid}>
+        <Checkbox
+          className="checkout-policy-checkbox"
+          size="md"
+          isChecked={policyChecked}
+          onChange={(e) => {
+            setPolicyChecked(e.target.checked);
+            e.target.checked && setPolicyCheckInvalid(false);
+          }}
+        >
+          I affirm that I have read and agree with the{' '}
+          <Link
+            className="checkout-policy-link"
+            target="_blank"
+            to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_cancellation}`}
+          >
+            cancellation policy
+          </Link>
+          ,{' '}
+          <Link
+            className="checkout-policy-link"
+            target="_blank"
+            to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_delivery}`}
+          >
+            delivery policy
+          </Link>
+          , and{' '}
+          <Link
+            className="checkout-policy-link"
+            target="_blank"
+            to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_refund_return}`}
+          >
+            refund/return policy
+          </Link>
+          .
+        </Checkbox>
       </FormControl>
 
       <div className="checkout-total-pay-container">
