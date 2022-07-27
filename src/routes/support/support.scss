@@ -1,10 +1,21 @@
 @import '../../exports/constants.scss';
 
-.support-margin-bottom {
+.support-margin-bottom-20 {
   margin-bottom: 20px;
+}
+.support-margin-bottom-10 {
+  margin-bottom: 10px;
 }
 
 .support-container {
+  .support-policy-link {
+    color: $brand-dark-yellow;
+
+    &:hover {
+      color: $brand-yellow;
+    }
+  }
+
   .support-form {
     button {
       background-color: $brand-yellow !important;

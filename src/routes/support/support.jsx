@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // React Router
-import { useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 // Chakra
 import {
@@ -166,11 +166,26 @@ function Support() {
         <Col></Col>
         <Col sm={12} lg={5}>
           <Heading>{selectedOrder ? 'Request a Refund' : 'Contact Us'}</Heading>
-          <Text className="support-margin-bottom">
+          <Text className="support-margin-bottom-10">
             {selectedOrder
               ? 'We understand things happen! Refunds are fulfilled for any legitimate reason. Fill out the information below with a reason for your request for a refund, and we will get back to you within 1-2 business days!'
               : "If you're having an issue with any aspect of this website or your account, please reach out to us via the contact form below. We will get back to you within 1-2 business days!"}
           </Text>
+
+          {selectedOrder && (
+            <Text className="support-margin-bottom-20">
+              Please re-read the{' '}
+              <Link
+                className="support-policy-link"
+                target="_blank"
+                to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_refund_return}`}
+              >
+                refund/return policy
+              </Link>{' '}
+              before submitting your request to make sure you fulfill all the
+              requirements that you agreed to when you submitted your order.
+            </Text>
+          )}
 
           {loading ? (
             <PlaceholderSupport />
@@ -178,7 +193,7 @@ function Support() {
             <form className="support-form" method="post" onSubmit={submitForm}>
               <input type="hidden" name="form-name" value="contact" />
 
-              <FormControl className="support-margin-bottom" isRequired>
+              <FormControl className="support-margin-bottom-20" isRequired>
                 <FormLabel>Full Name</FormLabel>
                 <Input
                   type="text"
@@ -192,7 +207,7 @@ function Support() {
                 />
               </FormControl>
 
-              <FormControl className="support-margin-bottom" isRequired>
+              <FormControl className="support-margin-bottom-20" isRequired>
                 <FormLabel>Email address</FormLabel>
                 <Input
                   type="email"
@@ -207,7 +222,7 @@ function Support() {
               </FormControl>
 
               <FormControl
-                className="support-margin-bottom"
+                className="support-margin-bottom-20"
                 isRequired
                 isDisabled={selectedOrder}
               >
@@ -234,7 +249,7 @@ function Support() {
 
               {selectedOrder && (
                 <FormControl
-                  className="support-margin-bottom"
+                  className="support-margin-bottom-20"
                   isRequired
                   isDisabled={true}
                 >
@@ -247,7 +262,7 @@ function Support() {
                 </FormControl>
               )}
 
-              <FormControl className="support-margin-bottom" isRequired>
+              <FormControl className="support-margin-bottom-20" isRequired>
                 <FormLabel>Message</FormLabel>
                 <Textarea
                   name="message"
@@ -264,7 +279,7 @@ function Support() {
                 />
               </FormControl>
 
-              <FormControl className="support-margin-bottom">
+              <FormControl className="support-margin-bottom-20">
                 <Recaptcha
                   sitekey={RECAPTCHA_SITE_KEY}
                   size="normal"
