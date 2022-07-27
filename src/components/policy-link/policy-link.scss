@@ -1,0 +1,15 @@
+@import '../../exports/constants.scss';
+
+.policy-support-link {
+  color: $brand-dark-yellow;
+
+  &:hover {
+    color: $brand-yellow;
+  }
+}
+
+.policy-support-icon {
+  color: $brand-dark-yellow !important;
+  margin-bottom: 2px;
+  margin-left: 5px;
+}
