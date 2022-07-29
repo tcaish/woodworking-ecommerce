@@ -17,6 +17,7 @@ import {
   IconButton,
   Input,
   Switch,
+  Text,
   useToast
 } from '@chakra-ui/react';
 
@@ -206,14 +207,28 @@ function SignIn() {
             </FormLabel>
           </FormControl>
         </div>
+
         <div className="sign-in-button-container sign-in-up-button-margin">
           <Button
             className="log-in-button"
             isLoading={isLoading}
             onClick={signInViaEmailPassword}
           >
-            Log In
+            Sign In
           </Button>
+        </div>
+
+        <div className="sign-in-up-policy-text-container">
+          <Text fontSize="sm">
+            By signing in, you are agreeing to our{' '}
+            <Link
+              target="_blank"
+              to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_privacy}`}
+            >
+              privacy policy
+            </Link>
+            .
+          </Text>
         </div>
 
         <div className="sign-in-create-account-container">

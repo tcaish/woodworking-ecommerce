@@ -23,6 +23,7 @@ import {
   Icon,
   IconButton,
   Input,
+  Text,
   useToast
 } from '@chakra-ui/react';
 
@@ -319,6 +320,7 @@ function SignUp() {
             {renderConfirmPasswordHelperText()}
           </FormControl>
         </div>
+
         <div className="sign-in-button-container">
           <Button
             className="log-in-button"
@@ -328,6 +330,20 @@ function SignUp() {
             Sign Up
           </Button>
         </div>
+
+        <div className="sign-in-up-policy-text-container">
+          <Text fontSize="sm">
+            By signing up, you are agreeing to our{' '}
+            <Link
+              target="_blank"
+              to={`/${NAVIGATION_PATHS.policies}/${NAVIGATION_PATHS.policy_privacy}`}
+            >
+              privacy policy
+            </Link>
+            .
+          </Text>
+        </div>
+
         <div className="sign-in-create-account-container">
           <Center>
             <Link to={`/${NAVIGATION_PATHS.sign_in}`}>
