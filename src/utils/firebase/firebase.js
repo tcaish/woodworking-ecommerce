@@ -205,6 +205,30 @@ export async function getRatings() {
   return ratings;
 }
 
+// Returns the promo code that is advertisable on the website
+export async function getAdvertisablePromoCode() {
+  const promoRef = collection(firestore, 'promo_codes').withConverter(
+    promoCodeConverter
+  );
+  const q = query(promoRef, where('advertise', '==', true));
+  const querySnapshot = await getDocs(q);
+
+  // If the promo code doesn't exist
+  if (querySnapshot.empty) return null;
+
+  // Get promo code that hasn't expired
+  let promoCode = null;
+  querySnapshot.forEach((doc) => {
+    let data = doc.data();
+    data.id = doc.id;
+    if (!data.expired()) {
+      promoCode = data;
+    }
+  });
+
+  return promoCode;
+}
+
 // Returns the promo code that matches the given code
 export async function getPromoCode(code, userId) {
   if (!code || !userId) return;

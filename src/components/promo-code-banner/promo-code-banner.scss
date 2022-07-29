@@ -1,0 +1,19 @@
+@import '../../exports/constants.scss';
+
+.promo-code-banner-container {
+  margin-bottom: 15px;
+  width: 100%;
+
+  .promo-code-alert-container {
+    width: 65%;
+
+    .promo-code-alert {
+      background-color: $brand-light-yellow !important;
+      border-top-color: $brand-dark-yellow !important;
+
+      .promo-code-alert-icon {
+        color: $brand-dark-yellow !important;
+      }
+    }
+  }
+}

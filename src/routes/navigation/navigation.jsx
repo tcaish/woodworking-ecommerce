@@ -17,7 +17,11 @@ import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Avatar, IconButton, Spinner } from '@chakra-ui/react';
 
 // Firebase
-import { getCartProducts, signOutUser } from '../../utils/firebase/firebase';
+import {
+  getAdvertisablePromoCode,
+  getCartProducts,
+  signOutUser
+} from '../../utils/firebase/firebase';
 
 // Slices
 import {
@@ -48,6 +52,7 @@ import { NAVIGATION_PATHS } from '../../exports/constants';
 // Styles
 import './navigation.scss';
 import './navigation.mobile.scss';
+import PromoCodeBanner from '../../components/promo-code-banner/promo-code-banner';
 
 function Navigation() {
   const navigate = useNavigate();
@@ -60,6 +65,7 @@ function Navigation() {
   const cartProducts = useSelector(selectCartProducts);
   const cartQuantity = useSelector(selectCartQuantity);
 
+  const [advertisablePromoCode, setAdvertisablePromoCode] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
@@ -68,6 +74,11 @@ function Navigation() {
     if (cartProducts.length === 0 && user)
       getCartProducts(user.uid).then((res) => dispatch(setCartProducts(res)));
   }, [cartProducts.length, user, dispatch]);
+
+  // Fetches any promo code that is advertisable and not expired
+  useEffect(() => {
+    getAdvertisablePromoCode().then((res) => setAdvertisablePromoCode(res));
+  }, []);
 
   // Handles what happens when a dropdown menu item is selected
   function handleDropdownItemSelect(eventKey) {
@@ -204,6 +215,11 @@ function Navigation() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      {advertisablePromoCode && (
+        <PromoCodeBanner promoCode={advertisablePromoCode} />
+      )}
+
       <Outlet />
       <Footer />
     </Container>
