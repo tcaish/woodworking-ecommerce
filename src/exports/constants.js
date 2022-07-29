@@ -1,3 +1,5 @@
+export const MAX_DELAY = 2147483647;
+
 export const NAVIGATION_PATHS = {
   home: '/',
   shop: 'shop',

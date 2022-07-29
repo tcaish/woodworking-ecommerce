@@ -265,6 +265,7 @@ export async function getPromoCodeById(promoCodeId) {
 
   if (promoSnapshot.exists()) {
     const promoCode = promoSnapshot.data();
+    promoCode.id = promoSnapshot.id;
     return promoCode.expired() ? { error: 'expired' } : promoCode;
   }
 

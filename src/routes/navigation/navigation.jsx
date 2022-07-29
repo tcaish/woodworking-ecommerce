@@ -42,17 +42,17 @@ import { setOrders } from '../../redux/slices/ordersSlice';
 
 // Components
 import Footer from '../../components/footer/footer';
+import PromoCodeBanner from '../../components/promo-code-banner/promo-code-banner';
 
 // Images
 import Logo from '../../assets/images/logo/logo_yellow_symbol.png';
 
 // Exports
-import { NAVIGATION_PATHS } from '../../exports/constants';
+import { MAX_DELAY, NAVIGATION_PATHS } from '../../exports/constants';
 
 // Styles
 import './navigation.scss';
 import './navigation.mobile.scss';
-import PromoCodeBanner from '../../components/promo-code-banner/promo-code-banner';
 
 function Navigation() {
   const navigate = useNavigate();
@@ -80,10 +80,14 @@ function Navigation() {
     getAdvertisablePromoCode().then((res) => {
       setAdvertisablePromoCode(res);
 
+      const delay = res.ends.toDate().getTime() - Date.now();
+
       // Remove alert when promo code expires
-      setTimeout(() => {
-        setAdvertisablePromoCode(null);
-      }, res.ends.toDate().getTime() - Date.now());
+      if (delay < MAX_DELAY) {
+        setTimeout(() => {
+          setAdvertisablePromoCode(null);
+        }, delay);
+      }
     });
   }, []);
 

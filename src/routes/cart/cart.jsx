@@ -62,7 +62,7 @@ import CheckoutModal from '../../components/modals/checkout-modal/checkout-modal
 // Exports
 import { cartProductConverter } from '../../classes/CartProduct';
 import { getProduct } from '../../exports/functions';
-import { NAVIGATION_PATHS } from '../../exports/constants';
+import { MAX_DELAY, NAVIGATION_PATHS } from '../../exports/constants';
 
 // Images
 import CustSatisfactionImg from '../../assets/images/cust_satisfaction_guaranteed.png';
@@ -122,10 +122,14 @@ function Cart() {
             if (!res.error) {
               dispatch(setPromoCode(res));
 
+              const delay = res.ends.toDate().getTime() - Date.now();
+
               // Remove promo code when it expires
-              setTimeout(() => {
-                handleRemovingDiscount();
-              }, res.ends.toDate().getTime() - Date.now());
+              if (delay < MAX_DELAY) {
+                setTimeout(() => {
+                  handleRemovingDiscount();
+                }, delay);
+              }
             }
           });
         }
