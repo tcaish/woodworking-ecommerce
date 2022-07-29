@@ -32,6 +32,16 @@
     .cart-checkout-value {
       color: rgb(214, 0, 0);
     }
+
+    .cart-checkout-discount-cancel-icon {
+      margin-left: 5px;
+      margin-bottom: 2px;
+
+      &:hover {
+        color: rgb(255, 94, 94);
+        cursor: pointer;
+      }
+    }
   }
 
   .cart-checkout-total-container {

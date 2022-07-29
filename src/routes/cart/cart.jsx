@@ -19,7 +19,8 @@ import {
   HStack,
   Icon,
   Image,
-  useDisclosure
+  useDisclosure,
+  useToast
 } from '@chakra-ui/react';
 
 // Slices
@@ -43,6 +44,7 @@ import {
   firestore,
   getProducts,
   getPromoCodeById,
+  removePromoCodeFromCartProducts,
   updateAllCartItemsToPurchased
 } from '../../utils/firebase/firebase';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
@@ -71,6 +73,7 @@ import SecureImg from '../../assets/images/secure.png';
 import './cart.scss';
 
 function Cart() {
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -121,7 +124,7 @@ function Cart() {
 
               // Remove promo code when it expires
               setTimeout(() => {
-                dispatch(setPromoCode(null));
+                handleRemovingDiscount();
               }, res.ends.toDate().getTime() - Date.now());
             }
           });
@@ -178,6 +181,23 @@ function Cart() {
     }
     // eslint-disable-next-line
   }, [cartProducts.length, cartProducts, discountTotal, promoCode]);
+
+  // Handles removing the applied discount
+  async function handleRemovingDiscount() {
+    await removePromoCodeFromCartProducts(user.uid).then((res) => {
+      if (!res.error) {
+        dispatch(setPromoCode(null));
+        toast({
+          title: 'Promo Code Expired',
+          description:
+            'The promo code you had applied to your order expired, so it can no longer be used.',
+          status: 'info',
+          duration: 10000,
+          isClosable: true
+        });
+      }
+    });
+  }
 
   // Creates a description of all products being ordered for placing the order
   function createOrderDescriptionAndMetaData() {

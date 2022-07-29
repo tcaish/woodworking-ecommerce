@@ -497,6 +497,27 @@ export async function removeAllCartItems(userId) {
   return await batch.commit();
 }
 
+// Removes the promo code from each item in the user's cart
+export async function removePromoCodeFromCartProducts(userId) {
+  if (!userId) return;
+
+  const batch = writeBatch(firestore);
+
+  const cartRef = collection(firestore, 'users', userId, 'cart');
+  const q = query(cartRef, where('purchased', '==', false));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((document) => {
+    const cartProductRef = doc(firestore, 'users', userId, 'cart', document.id);
+    batch.update(cartProductRef, { promo_code: null });
+  });
+
+  return await batch
+    .commit()
+    .then((res) => true)
+    .catch((err) => ({ error: err }));
+}
+
 // Updates the user with the given options
 export async function updateUser(userId, options) {
   if (!userId || !options) return;

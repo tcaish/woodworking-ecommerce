@@ -4,11 +4,15 @@ import { useState } from 'react';
 // React Redux
 import { useDispatch, useSelector } from 'react-redux';
 
+// React Icons
+import { MdCancel } from 'react-icons/md';
+
 // Chakra
 import {
   Button,
   FormControl,
   FormLabel,
+  Icon,
   Input,
   useToast
 } from '@chakra-ui/react';
@@ -16,7 +20,8 @@ import {
 // Firebase
 import {
   addPromoCodeToCartProducts,
-  getPromoCode
+  getPromoCode,
+  removePromoCodeFromCartProducts
 } from '../../utils/firebase/firebase';
 
 // Slices
@@ -74,6 +79,31 @@ function CartTotals(props) {
         setPromoCodeInvalid(true);
         handlePromoCodeSuccessError({ error: err });
       });
+  }
+
+  // Handles removing the applied discount
+  async function handleRemovingDiscount() {
+    await removePromoCodeFromCartProducts(user.uid).then((res) => {
+      if (!res.error) {
+        dispatch(setPromoCode(null));
+        toast({
+          title: 'Promo Code Removed',
+          description: 'The promo code was removed successfully!',
+          status: 'success',
+          duration: 7000,
+          isClosable: true
+        });
+      } else {
+        toast({
+          title: 'Error Removing Promo Code',
+          description:
+            'There was an error removing the promo code. Please try again later.',
+          status: 'error',
+          duration: 7000,
+          isClosable: true
+        });
+      }
+    });
   }
 
   // Handles showing success or error messages depending on the result of
@@ -149,7 +179,13 @@ function CartTotals(props) {
         <div className="cart-checkout-discount-container cart-checkout-grid">
           <p className="cart-checkout-title">
             {promoCode.code} ({promoCode.discount * 100}%)
+            <Icon
+              className="cart-checkout-discount-cancel-icon"
+              as={MdCancel}
+              onClick={handleRemovingDiscount}
+            />
           </p>
+
           <p className="cart-checkout-value">{`-$${props.discountTotal}`}</p>
         </div>
       )}
