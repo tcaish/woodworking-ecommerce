@@ -142,10 +142,7 @@ function DetailInfo(props) {
           />
         </h3>
 
-        <ShareToSocialButtons
-          title={props.selectedProduct.title}
-          text={`Check out the ${props.selectedProduct.title} on Caish Workshop's website!`}
-        />
+        <ShareToSocialButtons />
       </div>
     </div>
   );

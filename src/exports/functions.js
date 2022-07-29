@@ -63,35 +63,26 @@ export function getFullURLEncoded() {
   return encodeURIComponent(window.location.href);
 }
 
-// Opens a popup window to share page
-export async function shareToSocialMedia(
-  title,
-  text,
-  url = getFullURLEncoded()
-) {
-  await navigator.share({
-    title,
-    text,
-    url
-  });
-  // let shareLink = '';
+// Opens a popup window to share page to specified social media
+export function shareToSocialMedia(socialType) {
+  let shareLink = '';
 
-  // if (socialType === SOCIAL_TYPES.facebook) {
-  //   shareLink = 'https://www.facebook.com/sharer/sharer.php?u=';
-  // } else if (socialType === SOCIAL_TYPES.twitter) {
-  //   shareLink = 'https://twitter.com/intent/tweet?url=';
-  // } else if (socialType === SOCIAL_TYPES.linkedin) {
-  //   shareLink = 'http://www.linkedin.com/shareArticle?mini=true&url=';
-  // } else {
-  //   return;
-  // }
+  if (socialType === SOCIAL_TYPES.facebook) {
+    shareLink = 'https://www.facebook.com/sharer/sharer.php?u=';
+  } else if (socialType === SOCIAL_TYPES.twitter) {
+    shareLink = 'https://twitter.com/intent/tweet?url=';
+  } else if (socialType === SOCIAL_TYPES.linkedin) {
+    shareLink = 'http://www.linkedin.com/shareArticle?mini=true&url=';
+  } else {
+    return;
+  }
 
-  // window.open(
-  //   `${shareLink}${getFullURLEncoded()}`,
-  //   'popup',
-  //   'width=600,height=600,scrollbars=no,resizable=no'
-  // );
-  // return false;
+  window.open(
+    `${shareLink}${getFullURLEncoded()}`,
+    'popup',
+    'width=600,height=600,scrollbars=no,resizable=no'
+  );
+  return false;
 }
 
 // Returns the ratings for a given product
