@@ -1,4 +1,4 @@
-# Caish Workshop
+# Caish Workshop - A React E-Commerce Website
 
 ## Demo
 [https://caishworkshop.netlify.app](https://caishworkshop.netlify.app)
