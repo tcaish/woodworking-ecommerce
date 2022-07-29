@@ -11,27 +11,27 @@ import { shareToSocialMedia } from '../../exports/functions';
 // Styles
 import './share-to-social-buttons.scss';
 
-function ShareToSocialButtons() {
+function ShareToSocialButtons({ title, text }) {
   return (
     <HStack>
       <Button
         colorScheme={SOCIAL_TYPES.facebook}
         leftIcon={<FaFacebook />}
-        onClick={() => shareToSocialMedia(SOCIAL_TYPES.facebook)}
+        onClick={() => shareToSocialMedia(title, text)}
       >
         Facebook
       </Button>
       <Button
         colorScheme={SOCIAL_TYPES.twitter}
         leftIcon={<FaTwitter />}
-        onClick={() => shareToSocialMedia(SOCIAL_TYPES.twitter)}
+        onClick={() => shareToSocialMedia(title, text)}
       >
         Twitter
       </Button>
       <Button
         className="detail-social-button-linkedin"
         leftIcon={<FaLinkedin />}
-        onClick={() => shareToSocialMedia(SOCIAL_TYPES.linkedin)}
+        onClick={() => shareToSocialMedia(title, text)}
       >
         LinkedIn
       </Button>
