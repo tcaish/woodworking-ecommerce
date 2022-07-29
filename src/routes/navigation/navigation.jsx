@@ -77,7 +77,14 @@ function Navigation() {
 
   // Fetches any promo code that is advertisable and not expired
   useEffect(() => {
-    getAdvertisablePromoCode().then((res) => setAdvertisablePromoCode(res));
+    getAdvertisablePromoCode().then((res) => {
+      setAdvertisablePromoCode(res);
+
+      // Remove alert when promo code expires
+      setTimeout(() => {
+        setAdvertisablePromoCode(null);
+      }, res.ends.toDate().getTime() - Date.now());
+    });
   }, []);
 
   // Handles what happens when a dropdown menu item is selected
