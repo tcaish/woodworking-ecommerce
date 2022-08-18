@@ -30,18 +30,10 @@ function Footer() {
           </GridItem>
           <GridItem className="footer-link-align-right">
             <HStack spacing="15px">
-              <a
-                href="https://www.facebook.com/caishworkshop/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="#" rel="noreferrer">
                 <BsFacebook className="footer-social-icon" />
               </a>
-              <a
-                href="https://www.instagram.com/caish_workshop/"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="#" rel="noreferrer">
                 <BsInstagram className="footer-social-icon" />
               </a>
             </HStack>
