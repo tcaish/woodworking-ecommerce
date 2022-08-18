@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 
 // React Icons
-import { BsFacebook, BsInstagram } from 'react-icons/bs';
+import { BsFacebook, BsInstagram, BsLinkedin } from 'react-icons/bs';
 
 // Bootstrao
 import { Container } from 'react-bootstrap';
@@ -30,11 +30,14 @@ function Footer() {
           </GridItem>
           <GridItem className="footer-link-align-right">
             <HStack spacing="15px">
-              <a href="#" rel="noreferrer">
+              <a href="/" rel="noreferrer">
                 <BsFacebook className="footer-social-icon" />
               </a>
-              <a href="#" rel="noreferrer">
+              <a href="/" rel="noreferrer">
                 <BsInstagram className="footer-social-icon" />
+              </a>
+              <a href="/" rel="noreferrer">
+                <BsLinkedin className="footer-social-icon" />
               </a>
             </HStack>
           </GridItem>
