@@ -1,4 +1,6 @@
 # Caish Workshop - A React E-Commerce Website
+<img src='./src/assets/images/logo/logo_yellow_symbol_white_bg.png' width='auto' height='85px' />
+
 This is an e-commerce website for selling woodworking products and services. Features include:
 - Add, update, and delete items in your cart
 - Apply a coupon to receive a discount on your purchase
