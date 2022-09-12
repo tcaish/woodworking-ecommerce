@@ -1,4 +1,13 @@
 # Caish Workshop - A React E-Commerce Website
+This is an e-commerce website for selling woodworking products and services. Features include:
+- Add, update, and delete items in your cart
+- Apply a coupon to receive a discount on your purchase
+- Purchase items in your cart with a credit card
+- Receive an email confirmation/receipt after a purchase
+- View orders made to see receipts or request a refund
+- Update profile information
+
+This website is limited in that it only has a few products listed to play around with. I would advise not using your real credit card when testing out the purchasing feature. Please use the credit card information listed in the testing strategy section below.
 
 ## Demo
 [https://caishworkshop.netlify.app](https://caishworkshop.netlify.app)
