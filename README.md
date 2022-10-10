@@ -14,7 +14,7 @@ This website is limited in that it only has a few products listed to play around
 ## Demo
 [https://caishworkshop.netlify.app](https://caishworkshop.netlify.app)
 
-### Testing strategy
+## Testing strategy
 In order to fully try out the website, you'll need to create an account. Once you create an account, you can add products to your cart. If you'd like to test purchasing items without paying real money, you can use the credit card information below:
 - Card #: 4242 4242 4242 4242
 - CVC: pick a date in the future
